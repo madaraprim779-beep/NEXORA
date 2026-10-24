@@ -14,16 +14,16 @@ export default async function handler(req, res) {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_PUBLISHABLE_KEY;
 
+  const authorization = req.headers.authorization || "";
+  const token = authorization.startsWith("Bearer ")
+    ? authorization.slice(7)
+    : "";
+
   if (!url || !key) {
     return res.status(500).json({
       error: "Configuration Supabase manquante."
     });
   }
-
-  const authorization = req.headers.authorization || "";
-  const token = authorization.startsWith("Bearer ")
-    ? authorization.slice(7)
-    : "";
 
   if (!token) {
     return res.status(401).json({
@@ -36,38 +36,25 @@ export default async function handler(req, res) {
       auth: {
         persistSession: false,
         autoRefreshToken: false
-      },
-      global: {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
       }
     });
 
-    const { data, error: userError } =
+    const { data, error: authError } =
       await supabase.auth.getUser(token);
 
-    if (userError || !data.user) {
+    if (authError || !data.user) {
       return res.status(401).json({
-        error: "Session invalide ou déjà expirée."
+        error: "Session invalide ou expirée."
       });
     }
 
     const { error } = await supabase.auth.admin
-      .signOut()
-      .catch(() => ({
-        error: new Error("Déconnexion impossible.")
-      }));
+      .signOut();
 
     if (error) {
-      const { error: revokeError } =
-        await supabase.auth.signOut({ scope: "global" });
-
-      if (revokeError) {
-        return res.status(500).json({
-          error: "Impossible de révoquer la session."
-        });
-      }
+      return res.status(500).json({
+        error: "Impossible de révoquer la session."
+      });
     }
 
     return res.status(200).json({
@@ -75,10 +62,10 @@ export default async function handler(req, res) {
       message: "Déconnexion effectuée."
     });
   } catch (error) {
-    console.error("Erreur API logout:", error);
+    console.error("Erreur de déconnexion:", error);
 
     return res.status(500).json({
-      error: "Erreur serveur pendant la déconnexion."
+      error: "Erreur serveur."
     });
   }
 }
