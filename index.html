@@ -1,579 +1,224 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#07111f">
-  <meta name="description" content="NEXORA — Discutez simplement, restez connectés.">
-  <title>NEXORA — Connecte-toi au monde</title>
+  <meta name="description" content="NEXORA — Messagerie moderne, rapide et privée.">
+  <title>NEXORA — Messagerie</title>
 
   <style>
     :root {
       color-scheme: dark;
       --bg: #07111f;
-      --surface: #0c192b;
-      --surface-2: #10223a;
-      --border: #203650;
-      --text: #f3f8ff;
-      --muted: #8fa5bf;
-      --cyan: #38d9ff;
-      --blue: #1688ff;
-      --danger: #ff7e8a;
-      --success: #63e6b0;
+      --panel: #0d1b2c;
+      --panel2: #11243a;
+      --line: #21364d;
+      --text: #f2f7ff;
+      --muted: #8da3ba;
+      --cyan: #56e0e9;
+      --blue: #4988ff;
+      --danger: #ff7588;
+      --success: #63e6ad;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       margin: 0;
       min-height: 100vh;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
       background:
-        radial-gradient(ellipse at 10% 0%, #12345a 0, transparent 38%),
-        radial-gradient(ellipse at 100% 100%, #082d42 0, transparent 35%),
+        radial-gradient(ellipse at 15% 10%, #153c58 0, transparent 42%),
+        radial-gradient(ellipse at 90% 90%, #182d61 0, transparent 36%),
         var(--bg);
       color: var(--text);
-      font-family: Inter, "Segoe UI", Arial, sans-serif;
-    }
-
-    button, input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .page {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 440px;
-      max-width: 1240px;
-      margin: auto;
-      padding: 28px;
-      gap: 56px;
-      align-items: center;
-    }
-
-    .brand-panel {
-      padding: 28px 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      font-size: 25px;
-      font-weight: 800;
-      letter-spacing: 5px;
-    }
-
-    .logo {
-      width: 50px;
-      height: 50px;
       display: grid;
       place-items: center;
-      border-radius: 17px;
-      color: #06121f;
-      font-size: 25px;
-      letter-spacing: -2px;
-      background: linear-gradient(140deg, #7af0ff, #19b9ff 60%, #2679ff);
-      box-shadow: 0 0 36px #16bdfb38;
+      padding: 24px;
     }
 
-    .brand span {
-      color: var(--cyan);
-    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
 
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin-top: 68px;
-      padding: 9px 13px;
-      border: 1px solid #25435d;
-      border-radius: 999px;
-      background: #10233b99;
-      color: #b7d5ee;
-      font-size: 12px;
-      letter-spacing: 1.3px;
-      text-transform: uppercase;
-    }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      background: var(--cyan);
-      border-radius: 50%;
-      box-shadow: 0 0 12px var(--cyan);
-    }
-
-    h1 {
-      max-width: 650px;
-      margin: 25px 0 18px;
-      font-size: clamp(38px, 5vw, 66px);
-      line-height: 1.08;
-      letter-spacing: -2.8px;
-    }
-
-    h1 span {
-      color: var(--cyan);
+    .shell {
+      width: min(1040px, 100%);
+      min-height: 620px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      overflow: hidden;
+      border: 1px solid #29445e;
+      border-radius: 28px;
+      background: rgba(8, 20, 35, .94);
+      box-shadow: 0 30px 100px #0008;
     }
 
     .intro {
-      max-width: 490px;
-      color: var(--muted);
-      font-size: 17px;
-      line-height: 1.8;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      max-width: 490px;
-      margin-top: 40px;
-    }
-
-    .feature {
+      padding: 48px;
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      color: #d9e7f7;
-      font-size: 13px;
-      line-height: 1.6;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        linear-gradient(150deg, #102b42e8, #091522f5),
+        radial-gradient(circle at 30% 40%, #1e8192, transparent 50%);
     }
 
+    .brand { display: flex; align-items: center; gap: 13px; }
+    .logo {
+      width: 48px; height: 48px; border-radius: 16px;
+      display: grid; place-items: center;
+      font-size: 24px; font-weight: 900;
+      color: #04131d;
+      background: linear-gradient(135deg, var(--cyan), #5d9dff);
+      box-shadow: 0 8px 30px #56e0e944;
+    }
+    .brand-name { font-size: 22px; font-weight: 850; letter-spacing: 2px; }
+    .brand-sub { margin-top: 4px; font-size: 11px; letter-spacing: 2px; color: var(--muted); }
+
+    .intro h1 {
+      max-width: 480px;
+      font-size: clamp(38px, 5vw, 58px);
+      line-height: 1.04;
+      letter-spacing: -2px;
+      margin: 48px 0 20px;
+    }
+    .gradient {
+      color: var(--cyan);
+      background: linear-gradient(90deg, var(--cyan), #85aaff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .intro p { color: #a8bbcd; line-height: 1.8; max-width: 420px; }
+    .features { display: grid; gap: 13px; margin-top: 30px; }
+    .feature { display: flex; gap: 12px; align-items: center; color: #dce8f5; font-size: 14px; }
     .feature-icon {
-      flex: 0 0 37px;
-      width: 37px;
-      height: 37px;
-      display: grid;
-      place-items: center;
-      color: var(--cyan);
-      border: 1px solid #27445e;
-      background: #10243b;
-      border-radius: 12px;
+      width: 32px; height: 32px; display: grid; place-items: center;
+      border: 1px solid #31556c; border-radius: 11px; color: var(--cyan);
+      background: #153348;
     }
+    .footnote { color: #70879e; font-size: 12px; margin-top: 35px; }
 
-    .feature strong {
-      display: block;
-      margin-bottom: 3px;
-      font-size: 14px;
+    .auth { padding: 46px clamp(24px, 5vw, 54px); display: flex; flex-direction: column; justify-content: center; }
+    .eyebrow { color: var(--cyan); text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: 2px; }
+    .auth h2 { font-size: 30px; margin: 12px 0 8px; letter-spacing: -.7px; }
+    .sub { color: var(--muted); font-size: 14px; line-height: 1.6; margin: 0 0 28px; }
+
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 5px; border: 1px solid var(--line); background: #071321; border-radius: 14px; margin-bottom: 25px; }
+    .tab { border: 0; padding: 12px 8px; border-radius: 10px; color: var(--muted); background: transparent; font-weight: 750; }
+    .tab.active { color: var(--text); background: #1b3449; box-shadow: inset 0 0 0 1px #31536a; }
+
+    .field { display: block; margin-bottom: 17px; }
+    .field-label { display: block; color: #c5d3e2; font-size: 13px; margin-bottom: 9px; font-weight: 650; }
+    .input-wrap { position: relative; }
+    .field input {
+      width: 100%; border: 1px solid #294057; border-radius: 13px;
+      background: #091725; color: var(--text); outline: none;
+      padding: 15px 14px; transition: border .2s, box-shadow .2s;
     }
-
-    .card {
-      width: 100%;
-      padding: 32px;
-      border: 1px solid #253b53;
-      border-radius: 25px;
-      background: linear-gradient(155deg, #11223aee, #091524f5);
-      box-shadow: 0 25px 90px #00000045;
+    .field input:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px #56e0e91c; }
+    .field input::placeholder { color: #60788e; }
+    .password-input { padding-right: 72px !important; }
+    .show-password {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      border: 0; color: var(--cyan); background: transparent; font-size: 12px;
     }
-
-    .mobile-brand {
-      display: none;
+    .hint { color: #71889e; font-size: 11px; margin-top: 7px; }
+    .submit {
+      width: 100%; border: 0; border-radius: 13px; padding: 16px;
+      color: #06121d; font-weight: 850; letter-spacing: .2px;
+      background: linear-gradient(100deg, var(--cyan), #7ca8ff);
+      box-shadow: 0 10px 30px #4dceeb20;
+      transition: transform .2s, filter .2s;
     }
+    .submit:hover { filter: brightness(1.07); transform: translateY(-1px); }
+    .submit:disabled { opacity: .6; cursor: wait; transform: none; }
+    .message { display: none; margin: 0 0 17px; padding: 12px 13px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+    .message.show { display: block; }
+    .message.error { color: #ffc0c9; border: 1px solid #713647; background: #351a29; }
+    .message.success { color: #a9f8d4; border: 1px solid #245a4a; background: #102c28; }
+    .legal { margin-top: 20px; color: #6f859a; font-size: 11px; line-height: 1.6; text-align: center; }
 
-    .card h2 {
-      margin: 0;
-      font-size: 27px;
-      letter-spacing: -0.8px;
-    }
-
-    .subtitle {
-      margin: 10px 0 25px;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.7;
-    }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      padding: 5px;
-      margin-bottom: 24px;
-      border-radius: 13px;
-      background: #07111f;
-      border: 1px solid #1d3249;
-      gap: 5px;
-    }
-
-    .tab {
-      min-height: 43px;
-      color: #8fa5bf;
-      background: transparent;
-      border: 0;
-      border-radius: 9px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .tab.active {
-      color: #f4fbff;
-      background: #19334f;
-      box-shadow: inset 0 0 0 1px #2c506f;
-    }
-
-    .field {
-      margin-bottom: 17px;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 9px;
-      color: #d6e3f2;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    input {
-      width: 100%;
-      height: 52px;
-      padding: 0 15px;
-      color: var(--text);
-      outline: none;
-      background: #071421;
-      border: 1px solid #29415b;
-      border-radius: 12px;
-      transition: border-color .2s, box-shadow .2s;
-    }
-
-    input::placeholder {
-      color: #647b96;
-    }
-
-    input:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px #38d9ff17;
-    }
-
-    .password-input {
-      padding-right: 52px;
-    }
-
-    .eye {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 42px;
-      height: 42px;
-      color: #94aec7;
-      border: 0;
-      background: transparent;
-      border-radius: 9px;
-    }
-
-    .eye:focus-visible,
-    button:focus-visible {
-      outline: 2px solid var(--cyan);
-      outline-offset: 3px;
-    }
-
-    .hint {
-      margin-top: 8px;
-      color: #8298b2;
-      font-size: 11px;
-      line-height: 1.5;
-    }
-
-    .primary {
-      width: 100%;
-      min-height: 53px;
-      margin-top: 7px;
-      border: 0;
-      border-radius: 12px;
-      color: #04121f;
-      background: linear-gradient(105deg, #58e7ff, #22bdf4 55%, #5aabff);
-      font-size: 14px;
-      font-weight: 800;
-      box-shadow: 0 8px 25px #0b9edb27;
-      transition: filter .2s, transform .2s;
-    }
-
-    .primary:hover {
-      filter: brightness(1.08);
-    }
-
-    .primary:active {
-      transform: scale(.99);
-    }
-
-    .primary:disabled {
-      cursor: wait;
-      opacity: .65;
-    }
-
-    .message {
-      display: none;
-      padding: 12px 13px;
-      margin: 0 0 17px;
-      border: 1px solid #31516a;
-      border-radius: 10px;
-      font-size: 13px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .message.show {
-      display: block;
-    }
-
-    .message.error {
-      color: #ffc0c5;
-      border-color: #703b4a;
-      background: #391a28;
-    }
-
-    .message.success {
-      color: #a7f4d1;
-      border-color: #245b4d;
-      background: #102d2a;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      margin: 23px 0;
-      color: #7287a0;
-      font-size: 11px;
-    }
-
-    .divider::before,
-    .divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: #24364b;
-    }
-
-    .switch-text {
-      margin: 0;
-      text-align: center;
-      color: #9aafc6;
-      font-size: 13px;
-    }
-
-    .text-button {
-      padding: 5px;
-      border: 0;
-      background: transparent;
-      color: var(--cyan);
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .privacy {
-      margin-top: 24px;
-      color: #748ba4;
-      font-size: 11px;
-      text-align: center;
-      line-height: 1.7;
-    }
-
-    footer {
-      margin-top: 28px;
-      color: #6f849c;
-      font-size: 11px;
-    }
-
-    @media (max-width: 850px) {
-      .page {
-        grid-template-columns: 1fr;
-        max-width: 520px;
-        padding: 22px 18px 30px;
-        gap: 28px;
-      }
-
-      .brand-panel {
-        display: none;
-      }
-
-      .mobile-brand {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 11px;
-        margin: 10px 0 24px;
-        font-size: 23px;
-        font-weight: 800;
-        letter-spacing: 4px;
-      }
-
-      .mobile-brand .logo {
-        width: 44px;
-        height: 44px;
-        border-radius: 14px;
-      }
-
-      .card {
-        padding: 25px 21px;
-        border-radius: 21px;
-      }
-
-      .card h2 {
-        font-size: 25px;
-      }
-
-      footer {
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .page {
-        padding-inline: 12px;
-      }
-
-      .card {
-        padding: 22px 16px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        transition: none !important;
-      }
+    @media (max-width: 760px) {
+      body { padding: 12px; align-items: start; }
+      .shell { grid-template-columns: 1fr; min-height: 0; border-radius: 22px; }
+      .intro { padding: 24px; min-height: 220px; }
+      .intro h1 { font-size: 34px; margin: 30px 0 10px; letter-spacing: -1px; }
+      .intro p, .features, .footnote { display: none; }
+      .auth { padding: 28px 23px 30px; }
+      .auth h2 { font-size: 27px; }
     }
   </style>
 </head>
 
 <body>
-  <main class="page">
-    <section class="brand-panel">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">N</div>
-        <div>NE<span>X</span>ORA</div>
-      </div>
-
-      <div class="eyebrow">
-        <span class="dot"></span>
-        TON ESPACE. TES CONVERSATIONS.
-      </div>
-
-      <h1>Le monde est plus proche <span>avec NEXORA.</span></h1>
-
-      <p class="intro">
-        Retrouve tes contacts, échange tes idées et reste en contact
-        avec les personnes qui comptent. Une expérience simple,
-        pensée pour toi.
-      </p>
-
-      <div class="features">
-        <div class="feature">
-          <div class="feature-icon" aria-hidden="true">✦</div>
+  <main class="shell">
+    <section class="intro">
+      <div>
+        <div class="brand">
+          <div class="logo">N</div>
           <div>
-            <strong>Simple</strong>
-            Une interface claire et intuitive.
+            <div class="brand-name">NEXORA</div>
+            <div class="brand-sub">CONNECTÉ AU MONDE</div>
           </div>
         </div>
-        <div class="feature">
-          <div class="feature-icon" aria-hidden="true">◇</div>
-          <div>
-            <strong>Confidentiel</strong>
-            Ton compte, tes conversations.
-          </div>
-        </div>
-        <div class="feature">
-          <div class="feature-icon" aria-hidden="true">↗</div>
-          <div>
-            <strong>Connecté</strong>
-            Retrouve tes contacts facilement.
-          </div>
-        </div>
-        <div class="feature">
-          <div class="feature-icon" aria-hidden="true">◎</div>
-          <div>
-            <strong>À ton rythme</strong>
-            Reviens quand tu veux.
-          </div>
+
+        <h1>Les échanges.<br><span class="gradient">Sans limites.</span></h1>
+        <p>Une expérience de messagerie pensée pour rester simple, fluide et accessible sur tous tes écrans.</p>
+
+        <div class="features">
+          <div class="feature"><span class="feature-icon">✦</span> Conversations en temps réel</div>
+          <div class="feature"><span class="feature-icon">◎</span> Contacts et profils personnalisés</div>
+          <div class="feature"><span class="feature-icon">↗</span> Une interface adaptée au mobile</div>
         </div>
       </div>
-
-      <footer>© 2026 NEXORA · Une nouvelle façon de rester connecté.</footer>
+      <div class="footnote">NEXORA · TA CONVERSATION, TON ESPACE.</div>
     </section>
 
-    <section class="card" aria-labelledby="formTitle">
-      <div class="mobile-brand">
-        <div class="logo" aria-hidden="true">N</div>
-        <div>NE<span style="color:var(--cyan)">X</span>ORA</div>
-      </div>
+    <section class="auth">
+      <div class="eyebrow">Ton espace de communication</div>
+      <h2 id="heading">Crée ton compte</h2>
+      <p class="sub" id="subheading">Rejoins NEXORA en quelques instants.</p>
 
-      <h2 id="formTitle">Rejoins NEXORA</h2>
-      <p class="subtitle" id="formSubtitle">
-        Crée ton compte et commence à discuter.
-      </p>
-
-      <div class="tabs" role="tablist" aria-label="Accès au compte">
-        <button class="tab active" id="registerTab" type="button"
-          role="tab" aria-selected="true">Créer un compte</button>
-        <button class="tab" id="loginTab" type="button"
-          role="tab" aria-selected="false">Connexion</button>
+      <div class="tabs">
+        <button class="tab active" id="registerTab" type="button">Créer un compte</button>
+        <button class="tab" id="loginTab" type="button">Connexion</button>
       </div>
 
       <div id="message" class="message" role="status" aria-live="polite"></div>
 
-      <form id="authForm" novalidate>
-        <div class="field">
-          <label for="username">Pseudo</label>
-          <input id="username" name="username" type="text"
-            placeholder="Ex. madara_225" minlength="3" maxlength="24"
-            pattern="[A-Za-z0-9_]{3,24}" autocomplete="username"
-            autocapitalize="none" spellcheck="false" required>
+      <form id="authForm">
+        <label class="field">
+          <span class="field-label">Pseudo</span>
+          <input id="username" name="username" autocomplete="username"
+                 minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}"
+                 placeholder="ex. Madara_225" required>
           <div class="hint">3 à 24 caractères : lettres, chiffres et _</div>
-        </div>
+        </label>
 
-        <div class="field">
-          <label for="password">Mot de passe</label>
+        <label class="field">
+          <span class="field-label">Mot de passe</span>
           <div class="input-wrap">
             <input class="password-input" id="password" name="password"
-              type="password" placeholder="8 caractères minimum"
-              minlength="8" maxlength="128" autocomplete="new-password"
-              required>
-            <button class="eye" type="button" data-toggle="password"
-              aria-label="Afficher ou masquer le mot de passe">◉</button>
+                   type="password" autocomplete="new-password"
+                   minlength="8" maxlength="128" placeholder="8 caractères minimum" required>
+            <button class="show-password" id="togglePassword" type="button">Afficher</button>
           </div>
-        </div>
+        </label>
 
-        <div class="field" id="confirmField">
-          <label for="confirmPassword">Confirmer le mot de passe</label>
+        <label class="field" id="confirmField">
+          <span class="field-label">Confirmer le mot de passe</span>
           <div class="input-wrap">
-            <input class="password-input" id="confirmPassword"
-              name="confirmPassword" type="password"
-              placeholder="Saisis le même mot de passe"
-              minlength="8" maxlength="128"
-              autocomplete="new-password" required>
-            <button class="eye" type="button"
-              data-toggle="confirmPassword"
-              aria-label="Afficher ou masquer la confirmation">◉</button>
+            <input class="password-input" id="confirmPassword" name="confirmPassword"
+                   type="password" autocomplete="new-password"
+                   minlength="8" maxlength="128" placeholder="Répète ton mot de passe">
+            <button class="show-password" id="toggleConfirm" type="button">Afficher</button>
           </div>
-        </div>
+        </label>
 
-        <button class="primary" id="submitButton" type="submit">
-          CRÉER MON COMPTE
-        </button>
+        <button class="submit" id="submitButton" type="submit">Créer mon compte</button>
       </form>
 
-      <div class="divider">OU</div>
-
-      <p class="switch-text" id="switchText">
-        Tu as déjà un compte ?
-        <button class="text-button" id="switchMode" type="button">
-          Se connecter
-        </button>
-      </p>
-
-      <p class="privacy">
-        En continuant, protège ton mot de passe et utilise un mot de passe
-        unique. Ne le partage avec personne.
-      </p>
+      <div class="legal">En continuant, utilise un mot de passe que tu n'emploies pas ailleurs. Ne partage jamais tes identifiants.</div>
     </section>
   </main>
 
@@ -584,186 +229,117 @@
     const confirmInput = document.getElementById("confirmPassword");
     const confirmField = document.getElementById("confirmField");
     const submitButton = document.getElementById("submitButton");
+    const messageBox = document.getElementById("message");
     const registerTab = document.getElementById("registerTab");
     const loginTab = document.getElementById("loginTab");
-    const formTitle = document.getElementById("formTitle");
-    const formSubtitle = document.getElementById("formSubtitle");
-    const switchText = document.getElementById("switchText");
-    const switchModeButton = document.getElementById("switchMode");
-    const messageBox = document.getElementById("message");
 
     let mode = "register";
-    let busy = false;
 
-    function showMessage(text, type) {
+    function showMessage(text, type = "error") {
       messageBox.textContent = text;
       messageBox.className = "message show " + type;
-    }
-
-    function clearMessage() {
-      messageBox.textContent = "";
-      messageBox.className = "message";
     }
 
     function setMode(nextMode) {
       mode = nextMode;
       const registering = mode === "register";
-
       registerTab.classList.toggle("active", registering);
       loginTab.classList.toggle("active", !registering);
-      registerTab.setAttribute("aria-selected", String(registering));
-      loginTab.setAttribute("aria-selected", String(!registering));
-
       confirmField.hidden = !registering;
       confirmInput.required = registering;
-      confirmInput.value = "";
-
-      formTitle.textContent = registering
-        ? "Rejoins NEXORA"
-        : "Content de te revoir";
-      formSubtitle.textContent = registering
-        ? "Crée ton compte et commence à discuter."
+      passwordInput.autocomplete = registering ? "new-password" : "current-password";
+      document.getElementById("heading").textContent = registering ? "Crée ton compte" : "Content de te revoir";
+      document.getElementById("subheading").textContent = registering
+        ? "Rejoins NEXORA en quelques instants."
         : "Connecte-toi pour retrouver tes conversations.";
-      submitButton.textContent = registering
-        ? "CRÉER MON COMPTE"
-        : "SE CONNECTER";
-      switchText.firstChild.textContent = registering
-        ? "Tu as déjà un compte ? "
-        : "Tu n'as pas encore de compte ? ";
-      switchModeButton.textContent = registering
-        ? "Se connecter"
-        : "Créer un compte";
-
-      passwordInput.autocomplete = registering
-        ? "new-password"
-        : "current-password";
-
-      clearMessage();
+      submitButton.textContent = registering ? "Créer mon compte" : "Se connecter";
+      messageBox.className = "message";
     }
 
     registerTab.addEventListener("click", () => setMode("register"));
     loginTab.addEventListener("click", () => setMode("login"));
-    switchModeButton.addEventListener("click", () => {
-      setMode(mode === "register" ? "login" : "register");
+
+    function toggleVisibility(inputId, button) {
+      const input = document.getElementById(inputId);
+      input.type = input.type === "password" ? "text" : "password";
+      button.textContent = input.type === "password" ? "Afficher" : "Masquer";
+    }
+    document.getElementById("togglePassword").addEventListener("click", function () {
+      toggleVisibility("password", this);
+    });
+    document.getElementById("toggleConfirm").addEventListener("click", function () {
+      toggleVisibility("confirmPassword", this);
     });
 
-    document.querySelectorAll("[data-toggle]").forEach(button => {
-      button.addEventListener("click", () => {
-        const input = document.getElementById(button.dataset.toggle);
-        input.type = input.type === "password" ? "text" : "password";
-      });
-    });
-
-    function friendlyError(data, status) {
-      if (data && typeof data.error === "string" && data.error.trim()) {
-        return data.error;
+    function openChat(data) {
+      if (!data.session?.access_token || !data.session?.refresh_token || !data.user?.id) {
+        return false;
       }
-      if (status >= 500) {
-        return "Le serveur rencontre un problème. Réessaie plus tard.";
-      }
-      return "Une erreur est survenue. Vérifie les informations et réessaie.";
+      sessionStorage.setItem("nexora_session", JSON.stringify(data.session));
+      sessionStorage.setItem("nexora_user", JSON.stringify(data.user));
+      window.location.assign("/chat.html");
+      return true;
     }
 
-    form.addEventListener("submit", async event => {
+    // Une session déjà enregistrée peut être réutilisée pendant cet onglet.
+    try {
+      const saved = JSON.parse(sessionStorage.getItem("nexora_session") || "null");
+      if (saved?.access_token && saved?.refresh_token) {
+        window.location.replace("/chat.html");
+      }
+    } catch (_) {
+      sessionStorage.removeItem("nexora_session");
+      sessionStorage.removeItem("nexora_user");
+    }
+
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (busy) return;
-      clearMessage();
 
-      const username = usernameInput.value.trim().toLowerCase();
+      const username = usernameInput.value.trim();
       const password = passwordInput.value;
-      const confirmation = confirmInput.value;
 
-      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
-        showMessage(
-          "Le pseudo doit contenir 3 à 24 caractères : lettres, chiffres ou _.",
-          "error"
-        );
-        usernameInput.focus();
+      if (mode === "register" && password !== confirmInput.value) {
+        showMessage("Les deux mots de passe ne correspondent pas.");
         return;
       }
 
-      if (password.length < 8 || password.length > 128) {
-        showMessage("Le mot de passe doit contenir entre 8 et 128 caractères.", "error");
-        passwordInput.focus();
-        return;
-      }
-
-      if (mode === "register" && password !== confirmation) {
-        showMessage("Les deux mots de passe ne correspondent pas.", "error");
-        confirmInput.focus();
-        return;
-      }
-
-      busy = true;
       submitButton.disabled = true;
-      submitButton.textContent = mode === "register"
-        ? "CRÉATION EN COURS…"
-        : "CONNEXION…";
+      submitButton.textContent = mode === "register" ? "Création en cours…" : "Connexion…";
+      messageBox.className = "message";
 
       try {
         const response = await fetch("/api/auth", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: mode,
-            username,
-            password
-          })
+          body: JSON.stringify({ action: mode, username, password })
         });
 
         const data = await response.json().catch(() => ({}));
 
         if (!response.ok || !data.success) {
-          showMessage(friendlyError(data, response.status), "error");
-          return;
+          throw new Error(data.error || data.message || "Impossible de continuer. Réessaie.");
         }
+
+        if (openChat(data)) return;
 
         if (mode === "register") {
-          /*
-           * Le compte a été créé, mais l'API actuelle ne connecte pas
-           * automatiquement les nouveaux comptes.
-           * On conserve donc le compte et on propose la connexion.
-           */
-          passwordInput.value = "";
-          confirmInput.value = "";
           setMode("login");
           usernameInput.value = username;
+          passwordInput.value = "";
+          confirmInput.value = "";
           passwordInput.focus();
           showMessage(
-            "Compte créé avec succès. Connecte-toi avec ton pseudo et ton mot de passe.",
+            data.message || "Compte créé. Connecte-toi pour continuer.",
             "success"
           );
-          return;
+        } else {
+          throw new Error("Connexion reçue sans session valide. Vérifie la configuration de l'API.");
         }
-
-        const token = data.session?.access_token;
-        const user = data.user;
-
-        if (!token || !user?.id) {
-          showMessage(
-            "Connexion reçue, mais la session est incomplète. Réessaie.",
-            "error"
-          );
-          return;
-        }
-
-        sessionStorage.setItem("nexora_session", JSON.stringify(data.session));
-        sessionStorage.setItem("nexora_user", JSON.stringify(user));
-
-        showMessage("Connexion réussie. Ouverture de NEXORA…", "success");
-        window.location.assign("/chat.html");
       } catch (error) {
-        console.error("Erreur d'authentification:", error);
-        showMessage(
-          "Impossible de joindre le serveur. Vérifie ta connexion Internet.",
-          "error"
-        );
+        showMessage(error.message || "Une erreur est survenue.");
       } finally {
-        busy = false;
         submitButton.disabled = false;
-        submitButton.textContent = mode === "register"
-          ? "CRÉER MON COMPTE"
-          : "SE CONNECTER";
+        submitButton.textContent = mode === "register" ? "Créer mon compte" : "Se connecter";
       }
     });
   </script>
