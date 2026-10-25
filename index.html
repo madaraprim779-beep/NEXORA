@@ -1,354 +1,592 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090a12">
+  <meta name="theme-color" content="#080b16">
+  <meta name="description" content="NEXORA — Discutez librement, simplement et en toute sécurité.">
   <title>NEXORA — Connexion</title>
+
   <style>
     :root {
-      --bg:#090a12;--panel:#121522;--border:#2a3046;
-      --text:#f7f7ff;--muted:#9ba3bb;
-      --accent:#8b5cf6;--blue:#4361ee;
+      --bg: #080b16;
+      --panel: #11172a;
+      --panel2: #171f36;
+      --blue: #6675ff;
+      --cyan: #31d8ff;
+      --text: #f5f7ff;
+      --muted: #9ba8c7;
+      --border: rgba(160, 177, 255, .15);
+      --danger: #ff647c;
+      --success: #5df0b1;
     }
-    *{box-sizing:border-box}
-    body{
-      margin:0;min-height:100vh;color:var(--text);
-      font-family:system-ui,sans-serif;
-      background:radial-gradient(ellipse at top,#302052,transparent 50%),var(--bg)
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-    header{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:18px 5%;border-bottom:1px solid #ffffff12
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 15% 15%, #263276 0, transparent 38%),
+        radial-gradient(ellipse at 85% 85%, #102c4d 0, transparent 38%),
+        var(--bg);
+      font-family: system-ui, -apple-system, sans-serif;
     }
-    .brand{font-size:24px;font-weight:900;letter-spacing:1px}
-    .logo{
-      display:inline-grid;place-items:center;width:40px;height:40px;
-      margin-right:8px;border-radius:13px;
-      background:linear-gradient(135deg,var(--accent),var(--blue))
+
+    .container {
+      width: 100%;
+      max-width: 430px;
     }
-    select,input,button{font:inherit}
-    select{
-      max-width:145px;padding:9px;border-radius:10px;
-      color:var(--text);background:var(--panel);border:1px solid var(--border)
+
+    .top {
+      text-align: center;
+      margin-bottom: 25px;
     }
-    main{
-      width:min(460px,100%);margin:35px auto;padding:18px
+
+    .logo {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      border-radius: 25px;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      box-shadow: 0 12px 45px #596bff45;
+      font-size: 34px;
+      font-weight: 900;
+      color: white;
+      transform: rotate(-3deg);
     }
-    .card{
-      padding:26px;border:1px solid #ffffff18;border-radius:22px;
-      background:#121522ed;box-shadow:0 20px 70px #0005
+
+    h1 {
+      font-size: 34px;
+      letter-spacing: 3px;
+      font-weight: 900;
     }
-    h1{margin:0 0 8px;font-size:30px}
-    .muted{color:var(--muted);font-size:14px;line-height:1.6}
-    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:22px 0}
-    .tab{
-      padding:12px;border:0;border-radius:10px;
-      background:#090c15;color:var(--muted)
+
+    h1 span {
+      color: var(--cyan);
     }
-    .tab.active{background:linear-gradient(110deg,var(--accent),var(--blue));color:white}
-    .field{margin-bottom:17px}
-    label{display:block;margin-bottom:8px;font-size:13px;font-weight:700}
-    input{
-      width:100%;padding:13px;border:1px solid var(--border);
-      border-radius:11px;background:#090c15;color:white;outline:none
+
+    .subtitle {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 14px;
     }
-    input:focus{border-color:var(--accent)}
-    .langbox{padding:12px;border:1px solid var(--border);border-radius:12px}
-    .lang-toggle{
-      width:100%;padding:6px;border:0;background:transparent;color:white;
-      text-align:left;display:flex;justify-content:space-between
+
+    .card {
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 25px;
+      background: rgba(17, 23, 42, .94);
+      box-shadow: 0 24px 80px #0005;
+      backdrop-filter: blur(16px);
     }
-    .lang-list{display:none;margin-top:10px}
-    .lang-list.open{display:block}
-    .lang-options{max-height:190px;overflow:auto;margin-top:8px}
-    .lang-option{
-      display:block;width:100%;padding:10px;text-align:left;
-      border:0;border-radius:8px;background:transparent;color:white
+
+    .language {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 18px;
     }
-    .lang-option:hover,.lang-option.selected{background:#8b5cf633}
-    .primary{
-      width:100%;padding:14px;border:0;border-radius:11px;
-      color:white;font-weight:800;
-      background:linear-gradient(110deg,var(--accent),var(--blue))
+
+    select {
+      max-width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: var(--panel2);
+      outline: none;
     }
-    .primary:disabled{opacity:.6}
-    .message{display:none;margin:14px 0;padding:12px;border-radius:10px;font-size:13px;overflow-wrap:anywhere}
-    .message.show{display:block}
-    .error{background:#ff53631c;color:#ff9da8}
-    .success{background:#40d9a51c;color:#7df0ca}
-    footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
-    [hidden]{display:none!important}
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 5px;
+      margin-bottom: 24px;
+      border-radius: 14px;
+      background: #080c18;
+    }
+
+    .tab {
+      padding: 12px 7px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-size: 14px;
+      font-weight: 750;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: white;
+      background: linear-gradient(110deg, #596aff, #397fe9);
+      box-shadow: 0 5px 20px #596aff30;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+      font-size: 23px;
+    }
+
+    .description {
+      margin-bottom: 23px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .field {
+      margin-bottom: 17px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #dce4ff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 15px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      color: white;
+      background: #0b1020;
+      font: inherit;
+      font-size: 14px;
+      transition: border .2s, box-shadow .2s;
+    }
+
+    input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px #6675ff20;
+    }
+
+    input::placeholder {
+      color: #6f7b9a;
+    }
+
+    .hint {
+      margin-top: 7px;
+      color: #8290b2;
+      font-size: 11px;
+    }
+
+    .submit {
+      width: 100%;
+      margin-top: 5px;
+      padding: 15px;
+      border: none;
+      border-radius: 13px;
+      color: white;
+      background: linear-gradient(110deg, #596aff, #397fe9);
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+    }
+
+    .submit:active {
+      transform: scale(.98);
+    }
+
+    .submit:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      margin-bottom: 17px;
+      border-radius: 11px;
+      font-size: 13px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .message.error {
+      display: block;
+      color: #ffb7c3;
+      background: #70263a35;
+      border: 1px solid #ff647c40;
+    }
+
+    .message.success {
+      display: block;
+      color: #a3ffdb;
+      background: #155d4530;
+      border: 1px solid #5df0b140;
+    }
+
+    .footer {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+    .security {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      margin-top: 15px;
+      color: #a4b2d3;
+      font-size: 12px;
+    }
+
+    @media (max-width: 380px) {
+      body {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 19px;
+      }
+
+      h1 {
+        font-size: 29px;
+      }
+    }
   </style>
 </head>
-<body>
-  <header>
-    <div class="brand"><span class="logo">N</span>NEXORA</div>
-    <select id="topLanguage" aria-label="Langue"></select>
-  </header>
 
-  <main>
+<body>
+  <main class="container">
+    <header class="top">
+      <div class="logo">N</div>
+      <h1>NEX<span>ORA</span></h1>
+      <p class="subtitle" id="subtitle">
+        Connecte-toi au monde.
+      </p>
+    </header>
+
     <section class="card">
-      <h1 id="title">Bienvenue sur NEXORA</h1>
-      <p class="muted" id="subtitle">Discute avec le monde. Ton compte t'attend.</p>
+      <div class="language">
+        <select id="language" aria-label="Langue">
+          <option value="fr">🇫🇷 Français</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="pt">🇵🇹 Português</option>
+          <option value="ar">🇸🇦 العربية</option>
+        </select>
+      </div>
 
       <div class="tabs">
-        <button class="tab active" id="loginTab" type="button">Connexion</button>
-        <button class="tab" id="registerTab" type="button">Inscription</button>
+        <button class="tab active" id="loginTab" type="button">
+          Se connecter
+        </button>
+        <button class="tab" id="registerTab" type="button">
+          Inscription
+        </button>
       </div>
+
+      <h2 id="title">Bon retour !</h2>
+      <p class="description" id="description">
+        Connecte-toi pour retrouver tes conversations.
+      </p>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
 
       <form id="authForm">
         <div class="field">
-          <label for="username" id="usernameLabel">Pseudo</label>
-          <input id="username" name="username" autocomplete="username"
-            minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}"
-            placeholder="ex. madara225" required>
+          <label for="username" id="usernameLabel">Nom d'utilisateur</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            placeholder="Ex. MadaraTest"
+            minlength="3"
+            maxlength="24"
+            pattern="[a-zA-Z0-9_]{3,24}"
+            autocomplete="username"
+            autocapitalize="none"
+            spellcheck="false"
+            required
+          >
+          <p class="hint" id="usernameHint">
+            3 à 24 caractères : lettres, chiffres et _.
+          </p>
         </div>
 
         <div class="field">
           <label for="password" id="passwordLabel">Mot de passe</label>
-          <input id="password" name="password" type="password"
-            minlength="8" maxlength="128" autocomplete="current-password"
-            placeholder="8 caractères minimum" required>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="Ton mot de passe"
+            minlength="8"
+            maxlength="128"
+            autocomplete="current-password"
+            required
+          >
+          <p class="hint" id="passwordHint">
+            Au moins 8 caractères.
+          </p>
         </div>
 
-        <div class="field">
-          <label id="languageLabel">Langue de l'application</label>
-          <div class="langbox">
-            <button class="lang-toggle" type="button" id="languageToggle"
-              aria-expanded="false">
-              <span id="selectedLanguage">🇫🇷 Français</span><span>⌄</span>
-            </button>
-            <div class="lang-list" id="languageList">
-              <input id="languageSearch" type="search"
-                placeholder="Rechercher une langue..." aria-label="Rechercher une langue">
-              <div class="lang-options" id="languageOptions"></div>
-            </div>
-          </div>
-        </div>
-
-        <div id="feedback" class="message" role="status" aria-live="polite"></div>
-        <button class="primary" id="submitButton" type="submit">Se connecter</button>
+        <button class="submit" id="submitButton" type="submit">
+          Se connecter
+        </button>
       </form>
 
-      <p class="muted" style="font-size:11px;margin-top:18px">
-        Ne partage jamais ton mot de passe. Utilise NEXORA de manière responsable.
-      </p>
+      <div class="security">
+        <span>🔒</span>
+        <span id="securityText">Connexion sécurisée</span>
+      </div>
     </section>
+
+    <footer class="footer">
+      <p>© 2026 NEXORA</p>
+      <p id="tagline">Ta communauté. Tes conversations. Ton univers.</p>
+    </footer>
   </main>
-  <footer>© <span id="year"></span> NEXORA</footer>
 
   <script>
-    "use strict";
-
-    const LANGUAGES = [
-      ["af","Afrikaans"],["am","አማርኛ"],["ar","العربية"],
-      ["az","Azərbaycanca"],["be","Беларуская"],["bg","Български"],
-      ["bm","Bamanankan"],["bn","বাংলা"],["bs","Bosanski"],
-      ["ca","Català"],["cs","Čeština"],["cy","Cymraeg"],
-      ["da","Dansk"],["de","Deutsch"],["el","Ελληνικά"],
-      ["en","English"],["es","Español"],["et","Eesti"],
-      ["eu","Euskara"],["fa","فارسی"],["fi","Suomi"],
-      ["fil","Filipino"],["fr","Français"],["ga","Gaeilge"],
-      ["gl","Galego"],["gu","ગુજરાતી"],["ha","Hausa"],
-      ["he","עברית"],["hi","हिन्दी"],["hr","Hrvatski"],
-      ["ht","Kreyòl ayisyen"],["hu","Magyar"],["hy","Հայերեն"],
-      ["id","Bahasa Indonesia"],["ig","Igbo"],["is","Íslenska"],
-      ["it","Italiano"],["ja","日本語"],["jv","Basa Jawa"],
-      ["ka","ქართული"],["kk","Қазақша"],["km","ខ្មែរ"],
-      ["kn","ಕನ್ನಡ"],["ko","한국어"],["ku","Kurdî"],
-      ["ky","Кыргызча"],["lo","ລາວ"],["lt","Lietuvių"],
-      ["lv","Latviešu"],["mg","Malagasy"],["mi","Māori"],
-      ["mk","Македонски"],["ml","മലയാളം"],["mn","Монгол"],
-      ["mr","मराठी"],["ms","Bahasa Melayu"],["mt","Malti"],
-      ["my","မြန်မာ"],["ne","नेपाली"],["nl","Nederlands"],
-      ["no","Norsk"],["ny","Chichewa"],["om","Afaan Oromoo"],
-      ["or","ଓଡ଼ିଆ"],["pa","ਪੰਜਾਬੀ"],["pl","Polski"],
-      ["ps","پښتو"],["pt","Português"],["ro","Română"],
-      ["ru","Русский"],["rw","Kinyarwanda"],["si","සිංහල"],
-      ["sk","Slovenčina"],["sl","Slovenščina"],["sn","ChiShona"],
-      ["so","Soomaali"],["sq","Shqip"],["sr","Српски"],
-      ["sv","Svenska"],["sw","Kiswahili"],["ta","தமிழ்"],
-      ["te","తెలుగు"],["th","ไทย"],["ti","ትግርኛ"],
-      ["tr","Türkçe"],["uk","Українська"],["ur","اردو"],
-      ["uz","Oʻzbekcha"],["vi","Tiếng Việt"],["wo","Wolof"],
-      ["xh","isiXhosa"],["yo","Yorùbá"],["zh","中文"],
-      ["zu","isiZulu"],["ak","Akan"],["ee","Eʋegbe"],
-      ["ff","Fulfulde"],["ln","Lingála"],["nd","isiNdebele"],
-      ["rn","Ikirundi"],["sg","Sängö"],["st","Sesotho"],
-      ["tn","Setswana"],["tw","Twi"]
-    ];
-
-    const TEXT = {
-      fr:{
-        title:"Bienvenue sur NEXORA",subtitle:"Discute avec le monde. Ton compte t'attend.",
-        login:"Connexion",register:"Inscription",username:"Pseudo",
-        password:"Mot de passe",language:"Langue de l'application",
-        search:"Rechercher une langue...",submitLogin:"Se connecter",
-        submitRegister:"Créer mon compte",wait:"Patiente...",
-        invalid:"Le pseudo doit contenir 3 à 24 lettres, chiffres ou _.",
-        fail:"Impossible de terminer la demande.",
-        network:"Erreur réseau. Vérifie que NEXORA est déployé.",
-        registered:"Compte créé. Tu peux maintenant te connecter."
+    const translations = {
+      fr: {
+        subtitle: "Connecte-toi au monde.",
+        login: "Se connecter",
+        register: "Inscription",
+        welcome: "Bon retour !",
+        create: "Rejoins NEXORA",
+        loginDesc: "Connecte-toi pour retrouver tes conversations.",
+        registerDesc: "Crée ton compte et entre dans ton univers.",
+        username: "Nom d'utilisateur",
+        usernamePlaceholder: "Ex. MadaraTest",
+        usernameHint: "3 à 24 caractères : lettres, chiffres et _.",
+        password: "Mot de passe",
+        passwordPlaceholder: "Ton mot de passe",
+        passwordHint: "Au moins 8 caractères.",
+        loginButton: "Se connecter",
+        registerButton: "Créer mon compte",
+        security: "Connexion sécurisée",
+        tagline: "Ta communauté. Tes conversations. Ton univers.",
+        registering: "Création du compte...",
+        loggingIn: "Connexion...",
+        registered: "Compte créé ! Connecte-toi avec tes identifiants.",
+        connecting: "Connexion réussie. Ouverture de NEXORA...",
+        genericError: "Une erreur est survenue.",
+        networkError: "Impossible de contacter le serveur. Réessaie.",
+        invalid: "Vérifie ton pseudo et ton mot de passe.",
+        sessionError: "Le serveur n'a pas retourné de session valide."
       },
-      en:{
-        title:"Welcome to NEXORA",subtitle:"Connect with the world.",
-        login:"Sign in",register:"Sign up",username:"Username",
-        password:"Password",language:"App language",
-        search:"Search languages...",submitLogin:"Sign in",
-        submitRegister:"Create account",wait:"Please wait...",
-        invalid:"Username must be 3–24 letters, numbers or underscores.",
-        fail:"The request could not be completed.",
-        network:"Network error. Check the deployment.",
-        registered:"Account created. You can now sign in."
+      en: {
+        subtitle: "Connect to the world.",
+        login: "Log in",
+        register: "Sign up",
+        welcome: "Welcome back!",
+        create: "Join NEXORA",
+        loginDesc: "Log in to find your conversations.",
+        registerDesc: "Create your account and join your world.",
+        username: "Username",
+        usernamePlaceholder: "e.g. MadaraTest",
+        usernameHint: "3–24 characters: letters, numbers and _.",
+        password: "Password",
+        passwordPlaceholder: "Your password",
+        passwordHint: "At least 8 characters.",
+        loginButton: "Log in",
+        registerButton: "Create my account",
+        security: "Secure connection",
+        tagline: "Your community. Your conversations. Your world.",
+        registering: "Creating account...",
+        loggingIn: "Logging in...",
+        registered: "Account created! Now log in.",
+        connecting: "Login successful. Opening NEXORA...",
+        genericError: "Something went wrong.",
+        networkError: "Could not contact the server. Try again.",
+        invalid: "Check your username and password.",
+        sessionError: "The server did not return a valid session."
       },
-      es:{
-        title:"Bienvenido a NEXORA",subtitle:"Conecta con el mundo.",
-        login:"Iniciar sesión",register:"Registrarse",username:"Usuario",
-        password:"Contraseña",language:"Idioma de la aplicación",
-        search:"Buscar idioma...",submitLogin:"Iniciar sesión",
-        submitRegister:"Crear cuenta",wait:"Espera...",
-        invalid:"El usuario debe tener entre 3 y 24 caracteres válidos.",
-        fail:"No se pudo completar la solicitud.",
-        network:"Error de red.",
-        registered:"Cuenta creada. Ya puedes iniciar sesión."
+      es: {
+        subtitle: "Conéctate con el mundo.",
+        login: "Iniciar sesión",
+        register: "Registrarse",
+        welcome: "¡Bienvenido de nuevo!",
+        create: "Únete a NEXORA",
+        loginDesc: "Inicia sesión para ver tus conversaciones.",
+        registerDesc: "Crea tu cuenta y entra en tu mundo.",
+        username: "Nombre de usuario",
+        usernamePlaceholder: "Ej. MadaraTest",
+        usernameHint: "3–24 caracteres: letras, números y _.",
+        password: "Contraseña",
+        passwordPlaceholder: "Tu contraseña",
+        passwordHint: "Al menos 8 caracteres.",
+        loginButton: "Iniciar sesión",
+        registerButton: "Crear mi cuenta",
+        security: "Conexión segura",
+        tagline: "Tu comunidad. Tus conversaciones. Tu mundo.",
+        registering: "Creando cuenta...",
+        loggingIn: "Iniciando sesión...",
+        registered: "¡Cuenta creada! Ahora inicia sesión.",
+        connecting: "Conexión correcta. Abriendo NEXORA...",
+        genericError: "Ha ocurrido un error.",
+        networkError: "No se pudo contactar con el servidor.",
+        invalid: "Comprueba tu usuario y contraseña.",
+        sessionError: "El servidor no devolvió una sesión válida."
       },
-      pt:{
-        title:"Bem-vindo ao NEXORA",subtitle:"Conecte-se com o mundo.",
-        login:"Entrar",register:"Cadastrar",username:"Nome de usuário",
-        password:"Senha",language:"Idioma do aplicativo",
-        search:"Pesquisar idioma...",submitLogin:"Entrar",
-        submitRegister:"Criar conta",wait:"Aguarde...",
-        invalid:"O nome deve ter entre 3 e 24 caracteres válidos.",
-        fail:"Não foi possível concluir a solicitação.",
-        network:"Erro de rede.",
-        registered:"Conta criada. Agora você pode entrar."
+      pt: {
+        subtitle: "Conecta-te ao mundo.",
+        login: "Entrar",
+        register: "Registar",
+        welcome: "Bem-vindo de volta!",
+        create: "Junta-te à NEXORA",
+        loginDesc: "Entra para encontrares as tuas conversas.",
+        registerDesc: "Cria a tua conta e entra no teu universo.",
+        username: "Nome de utilizador",
+        usernamePlaceholder: "Ex. MadaraTest",
+        usernameHint: "3–24 caracteres: letras, números e _.",
+        password: "Palavra-passe",
+        passwordPlaceholder: "A tua palavra-passe",
+        passwordHint: "Pelo menos 8 caracteres.",
+        loginButton: "Entrar",
+        registerButton: "Criar a minha conta",
+        security: "Ligação segura",
+        tagline: "A tua comunidade. As tuas conversas. O teu universo.",
+        registering: "A criar conta...",
+        loggingIn: "A iniciar sessão...",
+        registered: "Conta criada! Agora inicia sessão.",
+        connecting: "Ligação efetuada. A abrir NEXORA...",
+        genericError: "Ocorreu um erro.",
+        networkError: "Não foi possível contactar o servidor.",
+        invalid: "Verifica o nome de utilizador e a palavra-passe.",
+        sessionError: "O servidor não devolveu uma sessão válida."
       },
-      ar:{
-        title:"مرحبًا بك في NEXORA",subtitle:"تواصل مع العالم.",
-        login:"تسجيل الدخول",register:"إنشاء حساب",username:"اسم المستخدم",
-        password:"كلمة المرور",language:"لغة التطبيق",
-        search:"ابحث عن لغة...",submitLogin:"تسجيل الدخول",
-        submitRegister:"إنشاء حساب",wait:"يرجى الانتظار...",
-        invalid:"يجب أن يتكون اسم المستخدم من 3 إلى 24 حرفًا صالحًا.",
-        fail:"تعذر إكمال الطلب.",network:"خطأ في الاتصال.",
-        registered:"تم إنشاء الحساب. يمكنك تسجيل الدخول الآن."
+      ar: {
+        subtitle: "تواصل مع العالم",
+        login: "تسجيل الدخول",
+        register: "إنشاء حساب",
+        welcome: "مرحباً بعودتك!",
+        create: "انضم إلى NEXORA",
+        loginDesc: "سجّل الدخول للوصول إلى محادثاتك.",
+        registerDesc: "أنشئ حسابك وابدأ عالمك.",
+        username: "اسم المستخدم",
+        usernamePlaceholder: "مثال: MadaraTest",
+        usernameHint: "من 3 إلى 24 حرفاً أو رقماً أو _.",
+        password: "كلمة المرور",
+        passwordPlaceholder: "كلمة المرور",
+        passwordHint: "8 أحرف على الأقل.",
+        loginButton: "تسجيل الدخول",
+        registerButton: "إنشاء حسابي",
+        security: "اتصال آمن",
+        tagline: "مجتمعك. محادثاتك. عالمك.",
+        registering: "جارٍ إنشاء الحساب...",
+        loggingIn: "جارٍ تسجيل الدخول...",
+        registered: "تم إنشاء الحساب! سجّل الدخول الآن.",
+        connecting: "تم تسجيل الدخول. جارٍ فتح NEXORA...",
+        genericError: "حدث خطأ.",
+        networkError: "تعذر الاتصال بالخادم. حاول مجدداً.",
+        invalid: "تحقق من اسم المستخدم وكلمة المرور.",
+        sessionError: "لم يُرجع الخادم جلسة صالحة."
       }
     };
 
+    const $ = (id) => document.getElementById(id);
+
     let mode = "login";
     let language = "fr";
-    const $ = id => document.getElementById(id);
 
     function t(key) {
-      return (TEXT[language] || TEXT.fr)[key] || TEXT.fr[key] || key;
+      return translations[language][key] || translations.fr[key] || key;
     }
 
-    function message(text, kind="error") {
-      $("feedback").textContent = text;
-      $("feedback").className = "message show " + kind;
+    function showMessage(text, type) {
+      const box = $("message");
+      box.textContent = text;
+      box.className = "message " + type;
     }
 
-    function applyLanguage(code) {
-      language = LANGUAGES.some(x => x[0] === code) ? code : "fr";
-      try { localStorage.setItem("nexora_language", language); } catch {}
+    function clearMessage() {
+      $("message").textContent = "";
+      $("message").className = "message";
+    }
+
+    function setMode(nextMode) {
+      mode = nextMode;
+      clearMessage();
+
+      $("loginTab").classList.toggle("active", mode === "login");
+      $("registerTab").classList.toggle("active", mode === "register");
+
+      $("title").textContent = mode === "login" ? t("welcome") : t("create");
+      $("description").textContent =
+        mode === "login" ? t("loginDesc") : t("registerDesc");
+
+      $("submitButton").textContent =
+        mode === "login" ? t("loginButton") : t("registerButton");
+
+      $("password").autocomplete =
+        mode === "login" ? "current-password" : "new-password";
+    }
+
+    function applyLanguage() {
+      language = $("language").value;
       document.documentElement.lang = language;
       document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-      $("topLanguage").value = language;
-      $("selectedLanguage").textContent =
-        (LANGUAGES.find(x => x[0] === language)?.[1] || language) +
-        " (" + language + ")";
-      $("title").textContent = t("title");
+
       $("subtitle").textContent = t("subtitle");
       $("loginTab").textContent = t("login");
       $("registerTab").textContent = t("register");
       $("usernameLabel").textContent = t("username");
+      $("username").placeholder = t("usernamePlaceholder");
+      $("usernameHint").textContent = t("usernameHint");
       $("passwordLabel").textContent = t("password");
-      $("languageLabel").textContent = t("language");
-      $("languageSearch").placeholder = t("search");
-      $("submitButton").textContent =
-        mode === "login" ? t("submitLogin") : t("submitRegister");
-      renderLanguages($("languageSearch").value);
-    }
+      $("password").placeholder = t("passwordPlaceholder");
+      $("passwordHint").textContent = t("passwordHint");
+      $("securityText").textContent = t("security");
+      $("tagline").textContent = t("tagline");
 
-    function renderLanguages(query="") {
-      const target = $("languageOptions");
-      target.replaceChildren();
-      const q = query.trim().toLocaleLowerCase();
-      const results = LANGUAGES.filter(([code, name]) =>
-        code.toLowerCase().includes(q) || name.toLocaleLowerCase().includes(q)
-      );
-      results.forEach(([code, name]) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "lang-option" + (code === language ? " selected" : "");
-        btn.textContent = name + " (" + code + ")";
-        btn.addEventListener("click", () => {
-          applyLanguage(code);
-          $("languageList").classList.remove("open");
-          $("languageToggle").setAttribute("aria-expanded", "false");
-        });
-        target.appendChild(btn);
-      });
-      if (!results.length) {
-        const p = document.createElement("p");
-        p.textContent = "Aucun résultat.";
-        target.appendChild(p);
-      }
-    }
-
-    function setMode(next) {
-      mode = next;
-      $("loginTab").classList.toggle("active", mode === "login");
-      $("registerTab").classList.toggle("active", mode === "register");
-      $("password").autocomplete = mode === "login"
-        ? "current-password" : "new-password";
-      $("feedback").className = "message";
-      $("submitButton").textContent =
-        mode === "login" ? t("submitLogin") : t("submitRegister");
+      setMode(mode);
     }
 
     $("loginTab").addEventListener("click", () => setMode("login"));
     $("registerTab").addEventListener("click", () => setMode("register"));
+    $("language").addEventListener("change", applyLanguage);
 
-    $("languageToggle").addEventListener("click", () => {
-      const open = $("languageList").classList.toggle("open");
-      $("languageToggle").setAttribute("aria-expanded", String(open));
-      if (open) $("languageSearch").focus();
-    });
+    $("authForm").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearMessage();
 
-    $("languageSearch").addEventListener("input", e =>
-      renderLanguages(e.target.value)
-    );
-    $("topLanguage").addEventListener("change", e =>
-      applyLanguage(e.target.value)
-    );
-
-    $("authForm").addEventListener("submit", async e => {
-      e.preventDefault();
-
-      const username = $("username").value.trim().toLowerCase();
+      const username = $("username").value.trim();
       const password = $("password").value;
-      const button = $("submitButton");
 
-      if (!/^[a-z0-9_]{3,24}$/.test(username)) {
-        message(t("invalid"));
+      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
+        showMessage(t("invalid"), "error");
         return;
       }
+
       if (password.length < 8 || password.length > 128) {
-        message("Le mot de passe doit contenir entre 8 et 128 caractères.");
+        showMessage(t("invalid"), "error");
         return;
       }
 
+      const button = $("submitButton");
       button.disabled = true;
-      button.textContent = t("wait");
+      button.textContent = mode === "login" ? t("loggingIn") : t("registering");
 
       try {
         const response = await fetch("/api/auth", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json"
+          },
           body: JSON.stringify({
             action: mode === "login" ? "login" : "register",
             username,
@@ -358,67 +596,52 @@
 
         const data = await response.json().catch(() => ({}));
 
-        if (!response.ok || data.error) {
-          throw new Error(data.error || t("fail"));
+        if (!response.ok || data.success !== true) {
+          throw new Error(data.error || data.message || t("genericError"));
         }
 
         if (mode === "register") {
-          message(data.message || t("registered"), "success");
+          $("password").value = "";
           setMode("login");
+          showMessage(t("registered"), "success");
           return;
         }
 
-        if (!data.session || !data.session.access_token ||
-            !data.session.refresh_token) {
-          throw new Error(
-            "Connexion reçue, mais la session n'est pas complète. Il faut adapter api/auth.js pour établir une session persistante."
-          );
+        const session = data.session;
+        const user = data.user;
+
+        if (!session || !session.access_token || !user) {
+          throw new Error(t("sessionError"));
         }
 
-        /*
-         * Cette version ne stocke pas le mot de passe.
-         * Le jeton de session est sensible : cette méthode côté
-         * navigateur est provisoire, à remplacer par des cookies
-         * HttpOnly côté serveur avant une mise en production.
-         */
-        try {
-          sessionStorage.setItem("nexora_session", JSON.stringify(data.session));
-          sessionStorage.setItem("nexora_user", JSON.stringify(data.user || {username}));
-        } catch {
-          throw new Error("Le navigateur ne permet pas de conserver la session.");
-        }
+        // Enregistre la session pour chat.js.
+        sessionStorage.setItem("nexora_session", JSON.stringify(session));
+        sessionStorage.setItem("nexora_user", JSON.stringify(user));
 
-        message("Connexion réussie. La session est prête pour l'intégration de l'écran de discussion.", "success");
+        showMessage(t("connecting"), "success");
+        button.textContent = t("connecting");
 
-        if (data.redirect && data.redirect.startsWith("/") &&
-            !data.redirect.startsWith("//")) {
-          window.location.assign(data.redirect);
-        }
-      } catch (err) {
-        message(err.message || t("network"));
+        // Ouvre l'écran de discussion après connexion.
+        window.location.assign("/chat.html");
+
+      } catch (error) {
+        showMessage(
+          error.message === "Failed to fetch"
+            ? t("networkError")
+            : error.message || t("genericError"),
+          "error"
+        );
       } finally {
         button.disabled = false;
-        $("submitButton").textContent =
-          mode === "login" ? t("submitLogin") : t("submitRegister");
+        if (mode === "login") {
+          button.textContent = t("loginButton");
+        } else {
+          button.textContent = t("registerButton");
+        }
       }
     });
 
-    function init() {
-      $("year").textContent = new Date().getFullYear();
-      LANGUAGES.sort((a,b) => a[1].localeCompare(b[1]));
-      LANGUAGES.forEach(([code, name]) => {
-        const option = document.createElement("option");
-        option.value = code;
-        option.textContent = name;
-        $("topLanguage").appendChild(option);
-      });
-      let saved = "fr";
-      try { saved = localStorage.getItem("nexora_language") || "fr"; } catch {}
-      applyLanguage(saved);
-      setMode("login");
-    }
-
-    init();
+    applyLanguage();
   </script>
 </body>
 </html>
