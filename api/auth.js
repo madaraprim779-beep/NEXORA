@@ -62,6 +62,12 @@ export default async function handler(req, res) {
     const username = normalizeUsername(req.body?.username);
     const password = String(req.body?.password || "");
 
+    if (!["register", "login"].includes(action)) {
+      return send(res, 400, {
+        error: "Action inconnue."
+      });
+    }
+
     if (!USERNAME_REGEX.test(username)) {
       return send(res, 400, {
         error: "Le pseudo doit contenir 3 à 24 caractères : lettres, chiffres ou _."
@@ -74,20 +80,20 @@ export default async function handler(req, res) {
       });
     }
 
+    const email = syntheticEmail(username);
+
     if (action === "register") {
       const admin = getAdminClient();
 
       const { data: created, error: createError } =
         await admin.auth.admin.createUser({
-          email: syntheticEmail(username),
+          email,
           password,
           email_confirm: true,
-          user_metadata: {
-            username
-          }
+          user_metadata: { username }
         });
 
-      if (createError) {
+      if (createError || !created?.user) {
         return send(res, 400, {
           error: "Inscription impossible. Ce pseudo est peut-être déjà utilisé."
         });
@@ -102,7 +108,6 @@ export default async function handler(req, res) {
 
       if (profileError) {
         await admin.auth.admin.deleteUser(created.user.id);
-
         console.error("Création du profil impossible:", profileError);
 
         return send(res, 500, {
@@ -110,38 +115,57 @@ export default async function handler(req, res) {
         });
       }
 
-      return send(res, 201, {
-        success: true,
-        message: "Compte créé. Tu peux maintenant te connecter."
-      });
-    }
-
-    if (action === "login") {
+      // Connexion automatique après création.
       const supabase = getPublicClient();
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: syntheticEmail(username),
-        password
-      });
+      const { data: loginData, error: loginError } =
+        await supabase.auth.signInWithPassword({
+          email,
+          password
+        });
 
-      if (error || !data.session) {
-        return send(res, 401, {
-          error: "Pseudo ou mot de passe incorrect."
+      if (loginError || !loginData.session) {
+        return send(res, 201, {
+          success: true,
+          requires_login: true,
+          message: "Compte créé. Connecte-toi pour continuer."
         });
       }
 
-      return send(res, 200, {
+      return send(res, 201, {
         success: true,
-        session: data.session,
+        requires_login: false,
+        message: "Bienvenue sur NEXORA !",
+        session: loginData.session,
         user: {
-          id: data.user.id,
+          id: loginData.user.id,
           username
         }
       });
     }
 
-    return send(res, 400, {
-      error: "Action inconnue. Utilise register ou login."
+    // Connexion normale d'un compte existant.
+    const supabase = getPublicClient();
+
+    const { data, error } =
+      await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if (error || !data.session) {
+      return send(res, 401, {
+        error: "Pseudo ou mot de passe incorrect."
+      });
+    }
+
+    return send(res, 200, {
+      success: true,
+      session: data.session,
+      user: {
+        id: data.user.id,
+        username
+      }
     });
   } catch (error) {
     console.error("Erreur API NEXORA:", error);
