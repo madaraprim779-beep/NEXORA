@@ -2,386 +2,423 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080D19">
-<title>NEXORA — Messagerie</title>
-<style>
-:root {
-  --bg:#080D19;
-  --panel:#10192B;
-  --card:#142039;
-  --blue:#3988FF;
-  --text:#F4F7FF;
-  --muted:#92A1BC;
-  --border:#26344D;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0; background:var(--bg); color:var(--text);
-  font-family:system-ui,-apple-system,Arial,sans-serif;
-  min-height:100vh;
-}
-button,input { font:inherit; }
-button { cursor:pointer; }
-.app { max-width:650px; min-height:100vh; margin:auto; padding-bottom:80px; }
-header {
-  padding:20px 18px 14px;
-  display:flex; justify-content:space-between; align-items:center;
-  background:linear-gradient(120deg,#101b32,#080D19);
-  border-bottom:1px solid var(--border);
-}
-.brand { display:flex; gap:10px; align-items:center; }
-.logo {
-  width:43px;height:43px;border-radius:15px;
-  display:grid;place-items:center;
-  background:linear-gradient(145deg,#55A2FF,#1554D8);
-  font-size:25px;font-weight:900;color:white;
-  box-shadow:0 5px 24px #1769ff45;
-}
-.brand h1 { font-size:22px;letter-spacing:1px;margin:0; }
-.brand small { color:var(--muted);font-size:10px;letter-spacing:1.5px; }
-.icon-btn {
-  width:42px;height:42px;border:1px solid var(--border);
-  background:var(--panel);color:white;border-radius:14px;font-size:20px;
-}
-.search { padding:15px 16px 5px; }
-.search input {
-  width:100%;padding:14px 16px;border-radius:14px;
-  color:white;background:var(--panel);
-  border:1px solid var(--border);outline:none;
-}
-.search input:focus { border-color:var(--blue); }
-.section-head {
-  display:flex;justify-content:space-between;align-items:center;
-  padding:17px 18px 10px;
-}
-.section-head h2 { font-size:17px;margin:0; }
-.muted { color:var(--muted);font-size:12px; }
-.stories { display:flex;gap:15px;overflow-x:auto;padding:5px 17px 18px; }
-.story { min-width:65px;text-align:center;font-size:12px; }
-.avatar {
-  width:51px;height:51px;border-radius:50%;display:grid;place-items:center;
-  margin:0 auto 7px;background:linear-gradient(145deg,#283e68,#17233c);
-  font-size:20px;border:2px solid #324969;
-}
-.story .avatar { border:2px solid var(--blue); }
-.avatar.me { border:2px dashed #61728e;color:#a9c8ff; }
-.list { padding:0 10px; }
-.chat {
-  display:flex;align-items:center;gap:12px;padding:13px 8px;
-  border-bottom:1px solid #1a263a;cursor:pointer;border-radius:12px;
-}
-.chat:active { background:var(--panel); }
-.chat .avatar { flex-shrink:0;width:51px;height:51px;margin:0; }
-.chat-info { min-width:0;flex:1; }
-.chat-info strong { font-size:14px;font-weight:650; }
-.chat-info p {
-  margin:5px 0 0;color:var(--muted);font-size:12px;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.chat-meta { text-align:right;font-size:10px;color:var(--muted); }
-.unread {
-  display:inline-grid;place-items:center;margin-top:7px;
-  background:var(--blue);color:white;border-radius:12px;
-  min-width:20px;height:20px;padding:0 5px;font-weight:700;
-}
-.bottom-nav {
-  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-  width:100%;max-width:650px;display:grid;grid-template-columns:repeat(4,1fr);
-  background:#0d1525f5;backdrop-filter:blur(16px);
-  border-top:1px solid var(--border);padding:9px 5px max(9px,env(safe-area-inset-bottom));
-  z-index:5;
-}
-.nav-btn {
-  border:0;background:transparent;color:var(--muted);
-  padding:5px 1px;font-size:10px;display:flex;flex-direction:column;
-  align-items:center;gap:5px;
-}
-.nav-btn span { font-size:21px; }
-.nav-btn.active { color:#68a7ff; }
-.page { display:none; }
-.page.active { display:block; }
-.empty {
-  text-align:center;padding:50px 25px;color:var(--muted);
-}
-.empty .big { font-size:45px;margin-bottom:12px; }
-.primary {
-  background:var(--blue);color:white;border:0;border-radius:13px;
-  padding:13px 17px;font-weight:650;
-}
-.secondary {
-  background:var(--card);color:white;border:1px solid var(--border);
-  border-radius:13px;padding:12px 15px;
-}
-.call-actions { display:flex;gap:8px; }
-.call-actions button { font-size:12px;padding:9px; }
-.community-card {
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:17px;padding:16px;margin:10px 14px;
-  display:flex;gap:13px;align-items:center;
-}
-.community-icon {
-  background:#1d3a69;border-radius:14px;width:50px;height:50px;
-  display:grid;place-items:center;font-size:23px;flex-shrink:0;
-}
-.overlay {
-  display:none;position:fixed;inset:0;background:#000b;
-  z-index:10;align-items:center;justify-content:center;padding:20px;
-}
-.overlay.open { display:flex; }
-.modal {
-  width:100%;max-width:400px;background:var(--panel);
-  border:1px solid var(--border);border-radius:22px;padding:22px;
-}
-.modal h2 { margin:0 0 8px;font-size:21px; }
-.modal p { color:var(--muted);font-size:13px;line-height:1.6; }
-.modal input {
-  width:100%;margin:8px 0 13px;padding:14px;
-  border-radius:12px;border:1px solid var(--border);
-  background:var(--bg);color:white;outline:none;
-}
-.modal-actions { display:flex;gap:9px; }
-.modal-actions button { flex:1; }
-.notice {
-  margin:12px 15px;padding:12px;border-radius:12px;
-  background:#132642;color:#a9ccff;font-size:12px;line-height:1.5;
-}
-footer { text-align:center;color:#52617b;font-size:10px;padding:24px; }
-@media(min-width:600px) {
-  .app { border-left:1px solid #17243a;border-right:1px solid #17243a; }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090a12">
+  <title>NEXORA — Connexion</title>
+  <style>
+    :root {
+      --bg:#090a12;--panel:#121522;--border:#2a3046;
+      --text:#f7f7ff;--muted:#9ba3bb;
+      --accent:#8b5cf6;--blue:#4361ee;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;min-height:100vh;color:var(--text);
+      font-family:system-ui,sans-serif;
+      background:radial-gradient(ellipse at top,#302052,transparent 50%),var(--bg)
+    }
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 5%;border-bottom:1px solid #ffffff12
+    }
+    .brand{font-size:24px;font-weight:900;letter-spacing:1px}
+    .logo{
+      display:inline-grid;place-items:center;width:40px;height:40px;
+      margin-right:8px;border-radius:13px;
+      background:linear-gradient(135deg,var(--accent),var(--blue))
+    }
+    select,input,button{font:inherit}
+    select{
+      max-width:145px;padding:9px;border-radius:10px;
+      color:var(--text);background:var(--panel);border:1px solid var(--border)
+    }
+    main{
+      width:min(460px,100%);margin:35px auto;padding:18px
+    }
+    .card{
+      padding:26px;border:1px solid #ffffff18;border-radius:22px;
+      background:#121522ed;box-shadow:0 20px 70px #0005
+    }
+    h1{margin:0 0 8px;font-size:30px}
+    .muted{color:var(--muted);font-size:14px;line-height:1.6}
+    .tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:22px 0}
+    .tab{
+      padding:12px;border:0;border-radius:10px;
+      background:#090c15;color:var(--muted)
+    }
+    .tab.active{background:linear-gradient(110deg,var(--accent),var(--blue));color:white}
+    .field{margin-bottom:17px}
+    label{display:block;margin-bottom:8px;font-size:13px;font-weight:700}
+    input{
+      width:100%;padding:13px;border:1px solid var(--border);
+      border-radius:11px;background:#090c15;color:white;outline:none
+    }
+    input:focus{border-color:var(--accent)}
+    .langbox{padding:12px;border:1px solid var(--border);border-radius:12px}
+    .lang-toggle{
+      width:100%;padding:6px;border:0;background:transparent;color:white;
+      text-align:left;display:flex;justify-content:space-between
+    }
+    .lang-list{display:none;margin-top:10px}
+    .lang-list.open{display:block}
+    .lang-options{max-height:190px;overflow:auto;margin-top:8px}
+    .lang-option{
+      display:block;width:100%;padding:10px;text-align:left;
+      border:0;border-radius:8px;background:transparent;color:white
+    }
+    .lang-option:hover,.lang-option.selected{background:#8b5cf633}
+    .primary{
+      width:100%;padding:14px;border:0;border-radius:11px;
+      color:white;font-weight:800;
+      background:linear-gradient(110deg,var(--accent),var(--blue))
+    }
+    .primary:disabled{opacity:.6}
+    .message{display:none;margin:14px 0;padding:12px;border-radius:10px;font-size:13px;overflow-wrap:anywhere}
+    .message.show{display:block}
+    .error{background:#ff53631c;color:#ff9da8}
+    .success{background:#40d9a51c;color:#7df0ca}
+    footer{text-align:center;padding:20px;color:var(--muted);font-size:12px}
+    [hidden]{display:none!important}
+  </style>
 </head>
 <body>
-<div class="app">
   <header>
-    <div class="brand">
-      <div class="logo">N</div>
-      <div>
-        <h1>NEXORA</h1>
-        <small>CONNECTÉS, SIMPLEMENT.</small>
-      </div>
-    </div>
-    <button class="icon-btn" id="profileBtn" aria-label="Mon profil">♙</button>
+    <div class="brand"><span class="logo">N</span>NEXORA</div>
+    <select id="topLanguage" aria-label="Langue"></select>
   </header>
 
-  <div class="search">
-    <input id="searchInput" type="search"
-      placeholder="⌕  Rechercher une discussion..."
-      aria-label="Rechercher une discussion">
-  </div>
-
   <main>
-    <section class="page active" id="discussions">
-      <div class="section-head">
-        <h2>Discussions</h2>
-        <button class="icon-btn" id="newChat" aria-label="Nouvelle discussion">＋</button>
-      </div>
-      <div class="stories">
-        <div class="story" data-action="profile">
-          <div class="avatar me">＋</div>
-          <div>Mon statut</div>
-        </div>
-        <div class="story"><div class="avatar">👩🏽</div><div>Aminata</div></div>
-        <div class="story"><div class="avatar">👨🏿</div><div>Yao</div></div>
-        <div class="story"><div class="avatar">👩🏻</div><div>Sarah</div></div>
-        <div class="story"><div class="avatar">🧑🏾</div><div>Karim</div></div>
-        <div class="story"><div class="avatar">👨🏻</div><div>David</div></div>
-      </div>
-      <div class="list" id="chatList"></div>
-      <div class="notice">Mode aperçu : les discussions affichées sont des exemples.
-        Les messages ne sont pas encore synchronisés entre utilisateurs.</div>
-    </section>
+    <section class="card">
+      <h1 id="title">Bienvenue sur NEXORA</h1>
+      <p class="muted" id="subtitle">Discute avec le monde. Ton compte t'attend.</p>
 
-    <section class="page" id="statuts">
-      <div class="section-head">
-        <h2>Statuts</h2>
-        <button class="primary" id="addStatus">＋ Publier</button>
+      <div class="tabs">
+        <button class="tab active" id="loginTab" type="button">Connexion</button>
+        <button class="tab" id="registerTab" type="button">Inscription</button>
       </div>
-      <div class="list">
-        <div class="chat" data-action="profile">
-          <div class="avatar me">＋</div>
-          <div class="chat-info"><strong>Ajouter mon statut</strong>
-            <p>Partager un moment avec tes contacts</p></div>
-        </div>
-        <div class="chat"><div class="avatar">👩🏽</div>
-          <div class="chat-info"><strong>Aminata</strong>
-            <p>Mon statut récent</p></div><span class="muted">Aujourd'hui</span></div>
-        <div class="chat"><div class="avatar">👨🏿</div>
-          <div class="chat-info"><strong>Yao</strong>
-            <p>Photo partagée</p></div><span class="muted">Aujourd'hui</span></div>
-      </div>
-      <div class="notice">Les statuts sont des exemples visuels. La publication et l'expiration après 24 h seront connectées plus tard.</div>
-    </section>
 
-    <section class="page" id="appels">
-      <div class="section-head"><h2>Appels</h2></div>
-      <div class="list">
-        <div class="chat"><div class="avatar">👩🏽</div>
-          <div class="chat-info"><strong>Aminata</strong><p>Appel audio</p></div>
-          <div class="call-actions"><button class="secondary" data-call="audio">☎</button><button class="secondary" data-call="video">▣</button></div>
+      <form id="authForm">
+        <div class="field">
+          <label for="username" id="usernameLabel">Pseudo</label>
+          <input id="username" name="username" autocomplete="username"
+            minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}"
+            placeholder="ex. madara225" required>
         </div>
-        <div class="chat"><div class="avatar">👨🏿</div>
-          <div class="chat-info"><strong>Yao</strong><p>Appel vidéo</p></div>
-          <div class="call-actions"><button class="secondary" data-call="audio">☎</button><button class="secondary" data-call="video">▣</button></div>
-        </div>
-      </div>
-      <div class="notice">Les boutons d'appel sont des aperçus. Les appels réels nécessitent une connexion WebRTC et une infrastructure de communication.</div>
-    </section>
 
-    <section class="page" id="communautes">
-      <div class="section-head">
-        <h2>Communautés</h2>
-        <button class="icon-btn" id="newCommunity" aria-label="Créer une communauté">＋</button>
-      </div>
-      <div class="community-card">
-        <div class="community-icon">🌐</div>
-        <div class="chat-info"><strong>Bienvenue sur NEXORA</strong>
-          <p>La communauté officielle à venir</p></div>
-      </div>
-      <div class="empty">
-        <div class="big">♧</div>
-        <strong>Rassemble tes amis</strong>
-        <p>Les communautés permettront de regrouper plusieurs groupes autour d'un même sujet.</p>
-        <button class="primary" id="createCommunity">Créer une communauté</button>
-      </div>
+        <div class="field">
+          <label for="password" id="passwordLabel">Mot de passe</label>
+          <input id="password" name="password" type="password"
+            minlength="8" maxlength="128" autocomplete="current-password"
+            placeholder="8 caractères minimum" required>
+        </div>
+
+        <div class="field">
+          <label id="languageLabel">Langue de l'application</label>
+          <div class="langbox">
+            <button class="lang-toggle" type="button" id="languageToggle"
+              aria-expanded="false">
+              <span id="selectedLanguage">🇫🇷 Français</span><span>⌄</span>
+            </button>
+            <div class="lang-list" id="languageList">
+              <input id="languageSearch" type="search"
+                placeholder="Rechercher une langue..." aria-label="Rechercher une langue">
+              <div class="lang-options" id="languageOptions"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="feedback" class="message" role="status" aria-live="polite"></div>
+        <button class="primary" id="submitButton" type="submit">Se connecter</button>
+      </form>
+
+      <p class="muted" style="font-size:11px;margin-top:18px">
+        Ne partage jamais ton mot de passe. Utilise NEXORA de manière responsable.
+      </p>
     </section>
   </main>
-  <footer>NEXORA © 2026 · Version prototype</footer>
-</div>
+  <footer>© <span id="year"></span> NEXORA</footer>
 
-<nav class="bottom-nav" aria-label="Navigation principale">
-  <button class="nav-btn active" data-page="discussions"><span>▤</span>Discussions</button>
-  <button class="nav-btn" data-page="statuts"><span>◉</span>Statuts</button>
-  <button class="nav-btn" data-page="appels"><span>☎</span>Appels</button>
-  <button class="nav-btn" data-page="communautes"><span>♧</span>Communautés</button>
-</nav>
+  <script>
+    "use strict";
 
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <h2 id="modalTitle">Bienvenue sur NEXORA</h2>
-    <p id="modalText">Entre ton numéro pour préparer la connexion.</p>
-    <form id="phoneForm">
-      <label for="phone">Numéro de téléphone international</label>
-      <input id="phone" type="tel" placeholder="+225 07 XX XX XX XX"
-        autocomplete="tel" required>
-      <div class="modal-actions">
-        <button class="secondary" type="button" id="closeModal">Fermer</button>
-        <button class="primary" type="submit">Continuer</button>
-      </div>
-    </form>
-    <p id="feedback" role="status"></p>
-  </div>
-</div>
+    const LANGUAGES = [
+      ["af","Afrikaans"],["am","አማርኛ"],["ar","العربية"],
+      ["az","Azərbaycanca"],["be","Беларуская"],["bg","Български"],
+      ["bm","Bamanankan"],["bn","বাংলা"],["bs","Bosanski"],
+      ["ca","Català"],["cs","Čeština"],["cy","Cymraeg"],
+      ["da","Dansk"],["de","Deutsch"],["el","Ελληνικά"],
+      ["en","English"],["es","Español"],["et","Eesti"],
+      ["eu","Euskara"],["fa","فارسی"],["fi","Suomi"],
+      ["fil","Filipino"],["fr","Français"],["ga","Gaeilge"],
+      ["gl","Galego"],["gu","ગુજરાતી"],["ha","Hausa"],
+      ["he","עברית"],["hi","हिन्दी"],["hr","Hrvatski"],
+      ["ht","Kreyòl ayisyen"],["hu","Magyar"],["hy","Հայերեն"],
+      ["id","Bahasa Indonesia"],["ig","Igbo"],["is","Íslenska"],
+      ["it","Italiano"],["ja","日本語"],["jv","Basa Jawa"],
+      ["ka","ქართული"],["kk","Қазақша"],["km","ខ្មែរ"],
+      ["kn","ಕನ್ನಡ"],["ko","한국어"],["ku","Kurdî"],
+      ["ky","Кыргызча"],["lo","ລາວ"],["lt","Lietuvių"],
+      ["lv","Latviešu"],["mg","Malagasy"],["mi","Māori"],
+      ["mk","Македонски"],["ml","മലയാളം"],["mn","Монгол"],
+      ["mr","मराठी"],["ms","Bahasa Melayu"],["mt","Malti"],
+      ["my","မြန်မာ"],["ne","नेपाली"],["nl","Nederlands"],
+      ["no","Norsk"],["ny","Chichewa"],["om","Afaan Oromoo"],
+      ["or","ଓଡ଼ିଆ"],["pa","ਪੰਜਾਬੀ"],["pl","Polski"],
+      ["ps","پښتو"],["pt","Português"],["ro","Română"],
+      ["ru","Русский"],["rw","Kinyarwanda"],["si","සිංහල"],
+      ["sk","Slovenčina"],["sl","Slovenščina"],["sn","ChiShona"],
+      ["so","Soomaali"],["sq","Shqip"],["sr","Српски"],
+      ["sv","Svenska"],["sw","Kiswahili"],["ta","தமிழ்"],
+      ["te","తెలుగు"],["th","ไทย"],["ti","ትግርኛ"],
+      ["tr","Türkçe"],["uk","Українська"],["ur","اردو"],
+      ["uz","Oʻzbekcha"],["vi","Tiếng Việt"],["wo","Wolof"],
+      ["xh","isiXhosa"],["yo","Yorùbá"],["zh","中文"],
+      ["zu","isiZulu"],["ak","Akan"],["ee","Eʋegbe"],
+      ["ff","Fulfulde"],["ln","Lingála"],["nd","isiNdebele"],
+      ["rn","Ikirundi"],["sg","Sängö"],["st","Sesotho"],
+      ["tn","Setswana"],["tw","Twi"]
+    ];
 
-<script>
-const sampleChats = [
-  {name:"Aminata",emoji:"👩🏽",message:"Salut ! Comment vas-tu ?",time:"09:41",unread:2},
-  {name:"Yao",emoji:"👨🏿",message:"D'accord, à tout à l'heure.",time:"Hier",unread:0},
-  {name:"Sarah",emoji:"👩🏻",message:"Tu as reçu les photos ?",time:"Hier",unread:1},
-  {name:"Karim",emoji:"🧑🏾",message:"Merci beaucoup !",time:"Lun.",unread:0},
-  {name:"David",emoji:"👨🏻",message:"On se parle bientôt.",time:"Dim.",unread:0}
-];
+    const TEXT = {
+      fr:{
+        title:"Bienvenue sur NEXORA",subtitle:"Discute avec le monde. Ton compte t'attend.",
+        login:"Connexion",register:"Inscription",username:"Pseudo",
+        password:"Mot de passe",language:"Langue de l'application",
+        search:"Rechercher une langue...",submitLogin:"Se connecter",
+        submitRegister:"Créer mon compte",wait:"Patiente...",
+        invalid:"Le pseudo doit contenir 3 à 24 lettres, chiffres ou _.",
+        fail:"Impossible de terminer la demande.",
+        network:"Erreur réseau. Vérifie que NEXORA est déployé.",
+        registered:"Compte créé. Tu peux maintenant te connecter."
+      },
+      en:{
+        title:"Welcome to NEXORA",subtitle:"Connect with the world.",
+        login:"Sign in",register:"Sign up",username:"Username",
+        password:"Password",language:"App language",
+        search:"Search languages...",submitLogin:"Sign in",
+        submitRegister:"Create account",wait:"Please wait...",
+        invalid:"Username must be 3–24 letters, numbers or underscores.",
+        fail:"The request could not be completed.",
+        network:"Network error. Check the deployment.",
+        registered:"Account created. You can now sign in."
+      },
+      es:{
+        title:"Bienvenido a NEXORA",subtitle:"Conecta con el mundo.",
+        login:"Iniciar sesión",register:"Registrarse",username:"Usuario",
+        password:"Contraseña",language:"Idioma de la aplicación",
+        search:"Buscar idioma...",submitLogin:"Iniciar sesión",
+        submitRegister:"Crear cuenta",wait:"Espera...",
+        invalid:"El usuario debe tener entre 3 y 24 caracteres válidos.",
+        fail:"No se pudo completar la solicitud.",
+        network:"Error de red.",
+        registered:"Cuenta creada. Ya puedes iniciar sesión."
+      },
+      pt:{
+        title:"Bem-vindo ao NEXORA",subtitle:"Conecte-se com o mundo.",
+        login:"Entrar",register:"Cadastrar",username:"Nome de usuário",
+        password:"Senha",language:"Idioma do aplicativo",
+        search:"Pesquisar idioma...",submitLogin:"Entrar",
+        submitRegister:"Criar conta",wait:"Aguarde...",
+        invalid:"O nome deve ter entre 3 e 24 caracteres válidos.",
+        fail:"Não foi possível concluir a solicitação.",
+        network:"Erro de rede.",
+        registered:"Conta criada. Agora você pode entrar."
+      },
+      ar:{
+        title:"مرحبًا بك في NEXORA",subtitle:"تواصل مع العالم.",
+        login:"تسجيل الدخول",register:"إنشاء حساب",username:"اسم المستخدم",
+        password:"كلمة المرور",language:"لغة التطبيق",
+        search:"ابحث عن لغة...",submitLogin:"تسجيل الدخول",
+        submitRegister:"إنشاء حساب",wait:"يرجى الانتظار...",
+        invalid:"يجب أن يتكون اسم المستخدم من 3 إلى 24 حرفًا صالحًا.",
+        fail:"تعذر إكمال الطلب.",network:"خطأ في الاتصال.",
+        registered:"تم إنشاء الحساب. يمكنك تسجيل الدخول الآن."
+      }
+    };
 
-const chatList = document.getElementById("chatList");
-const searchInput = document.getElementById("searchInput");
-const overlay = document.getElementById("overlay");
-const feedback = document.getElementById("feedback");
+    let mode = "login";
+    let language = "fr";
+    const $ = id => document.getElementById(id);
 
-function renderChats(query="") {
-  const filtered = sampleChats.filter(c =>
-    (c.name+" "+c.message).toLowerCase().includes(query.toLowerCase())
-  );
-  chatList.innerHTML = "";
-  if (!filtered.length) {
-    chatList.innerHTML = '<div class="empty">Aucune discussion trouvée.</div>';
-    return;
-  }
-  filtered.forEach(c => {
-    const item = document.createElement("div");
-    item.className = "chat";
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.textContent = c.emoji;
-    const info = document.createElement("div");
-    info.className = "chat-info";
-    const name = document.createElement("strong");
-    name.textContent = c.name;
-    const message = document.createElement("p");
-    message.textContent = c.message;
-    info.append(name,message);
-    const meta = document.createElement("div");
-    meta.className = "chat-meta";
-    meta.textContent = c.time;
-    if (c.unread) {
-      const unread = document.createElement("div");
-      unread.className = "unread";
-      unread.textContent = c.unread;
-      meta.appendChild(unread);
+    function t(key) {
+      return (TEXT[language] || TEXT.fr)[key] || TEXT.fr[key] || key;
     }
-    item.append(avatar,info,meta);
-    item.addEventListener("click", () => {
-      showModal("Conversation de démonstration",
-        "La messagerie réelle sera activée après la connexion à la base de données.");
+
+    function message(text, kind="error") {
+      $("feedback").textContent = text;
+      $("feedback").className = "message show " + kind;
+    }
+
+    function applyLanguage(code) {
+      language = LANGUAGES.some(x => x[0] === code) ? code : "fr";
+      try { localStorage.setItem("nexora_language", language); } catch {}
+      document.documentElement.lang = language;
+      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+      $("topLanguage").value = language;
+      $("selectedLanguage").textContent =
+        (LANGUAGES.find(x => x[0] === language)?.[1] || language) +
+        " (" + language + ")";
+      $("title").textContent = t("title");
+      $("subtitle").textContent = t("subtitle");
+      $("loginTab").textContent = t("login");
+      $("registerTab").textContent = t("register");
+      $("usernameLabel").textContent = t("username");
+      $("passwordLabel").textContent = t("password");
+      $("languageLabel").textContent = t("language");
+      $("languageSearch").placeholder = t("search");
+      $("submitButton").textContent =
+        mode === "login" ? t("submitLogin") : t("submitRegister");
+      renderLanguages($("languageSearch").value);
+    }
+
+    function renderLanguages(query="") {
+      const target = $("languageOptions");
+      target.replaceChildren();
+      const q = query.trim().toLocaleLowerCase();
+      const results = LANGUAGES.filter(([code, name]) =>
+        code.toLowerCase().includes(q) || name.toLocaleLowerCase().includes(q)
+      );
+      results.forEach(([code, name]) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "lang-option" + (code === language ? " selected" : "");
+        btn.textContent = name + " (" + code + ")";
+        btn.addEventListener("click", () => {
+          applyLanguage(code);
+          $("languageList").classList.remove("open");
+          $("languageToggle").setAttribute("aria-expanded", "false");
+        });
+        target.appendChild(btn);
+      });
+      if (!results.length) {
+        const p = document.createElement("p");
+        p.textContent = "Aucun résultat.";
+        target.appendChild(p);
+      }
+    }
+
+    function setMode(next) {
+      mode = next;
+      $("loginTab").classList.toggle("active", mode === "login");
+      $("registerTab").classList.toggle("active", mode === "register");
+      $("password").autocomplete = mode === "login"
+        ? "current-password" : "new-password";
+      $("feedback").className = "message";
+      $("submitButton").textContent =
+        mode === "login" ? t("submitLogin") : t("submitRegister");
+    }
+
+    $("loginTab").addEventListener("click", () => setMode("login"));
+    $("registerTab").addEventListener("click", () => setMode("register"));
+
+    $("languageToggle").addEventListener("click", () => {
+      const open = $("languageList").classList.toggle("open");
+      $("languageToggle").setAttribute("aria-expanded", String(open));
+      if (open) $("languageSearch").focus();
     });
-    chatList.appendChild(item);
-  });
-}
 
-function showModal(title,text) {
-  document.getElementById("modalTitle").textContent = title;
-  document.getElementById("modalText").textContent = text;
-  feedback.textContent = "";
-  overlay.classList.add("open");
-}
-function closeModal() { overlay.classList.remove("open"); }
+    $("languageSearch").addEventListener("input", e =>
+      renderLanguages(e.target.value)
+    );
+    $("topLanguage").addEventListener("change", e =>
+      applyLanguage(e.target.value)
+    );
 
-document.querySelectorAll(".nav-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById(btn.dataset.page).classList.add("active");
-    searchInput.value = "";
-    renderChats();
-  });
-});
+    $("authForm").addEventListener("submit", async e => {
+      e.preventDefault();
 
-searchInput.addEventListener("input", e => renderChats(e.target.value));
-document.getElementById("profileBtn").addEventListener("click", () =>
-  showModal("Connexion NEXORA","L'inscription par SMS sera connectée après la configuration sécurisée du service d'authentification.")
-);
-document.getElementById("newChat").addEventListener("click", () =>
-  showModal("Nouvelle discussion","La recherche de vrais utilisateurs sera activée après la création des comptes.")
-);
-document.getElementById("addStatus").addEventListener("click", () =>
-  showModal("Publier un statut","La publication de photos et de textes sera activée dans une prochaine étape.")
-);
-document.getElementById("newCommunity").addEventListener("click", () =>
-  showModal("Nouvelle communauté","La création réelle de communautés sera connectée à la base de données.")
-);
-document.getElementById("createCommunity").addEventListener("click", () =>
-  showModal("Créer une communauté","Cette fonction nécessite encore la connexion à la base de données.")
-);
-document.querySelectorAll("[data-action='profile']").forEach(el =>
-  el.addEventListener("click", () =>
-    showModal("Mon statut","La publication des statuts sera activée dans une prochaine étape.")
-  )
-);
-document.querySelectorAll("[data-call]").forEach(btn =>
-  btn.addEventListener("click", () =>
-    showModal("Appels NEXORA","Les appels "+btn.dataset.call+" ne sont pas encore connectés. Aucun appel n'a été lancé.")
-  )
-);
-document.getElementById("closeModal").addEventListener("click",closeModal);
-overlay.addEventListener("click",e => { if(e.target===overlay) closeModal(); });
-document.getElementById("phoneForm").addEventListener("submit",e => {
-  e.preventDefault();
-  feedback.textContent =
-    "Prototype uniquement : aucun SMS envoyé. Nous devons d'abord configurer le fournisseur SMS et l'authentification.";
-});
-renderChats();
-</script>
+      const username = $("username").value.trim().toLowerCase();
+      const password = $("password").value;
+      const button = $("submitButton");
+
+      if (!/^[a-z0-9_]{3,24}$/.test(username)) {
+        message(t("invalid"));
+        return;
+      }
+      if (password.length < 8 || password.length > 128) {
+        message("Le mot de passe doit contenir entre 8 et 128 caractères.");
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = t("wait");
+
+      try {
+        const response = await fetch("/api/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify({
+            action: mode === "login" ? "login" : "register",
+            username,
+            password
+          })
+        });
+
+        const data = await response.json().catch(() => ({}));
+
+        if (!response.ok || data.error) {
+          throw new Error(data.error || t("fail"));
+        }
+
+        if (mode === "register") {
+          message(data.message || t("registered"), "success");
+          setMode("login");
+          return;
+        }
+
+        if (!data.session || !data.session.access_token ||
+            !data.session.refresh_token) {
+          throw new Error(
+            "Connexion reçue, mais la session n'est pas complète. Il faut adapter api/auth.js pour établir une session persistante."
+          );
+        }
+
+        /*
+         * Cette version ne stocke pas le mot de passe.
+         * Le jeton de session est sensible : cette méthode côté
+         * navigateur est provisoire, à remplacer par des cookies
+         * HttpOnly côté serveur avant une mise en production.
+         */
+        try {
+          sessionStorage.setItem("nexora_session", JSON.stringify(data.session));
+          sessionStorage.setItem("nexora_user", JSON.stringify(data.user || {username}));
+        } catch {
+          throw new Error("Le navigateur ne permet pas de conserver la session.");
+        }
+
+        message("Connexion réussie. La session est prête pour l'intégration de l'écran de discussion.", "success");
+
+        if (data.redirect && data.redirect.startsWith("/") &&
+            !data.redirect.startsWith("//")) {
+          window.location.assign(data.redirect);
+        }
+      } catch (err) {
+        message(err.message || t("network"));
+      } finally {
+        button.disabled = false;
+        $("submitButton").textContent =
+          mode === "login" ? t("submitLogin") : t("submitRegister");
+      }
+    });
+
+    function init() {
+      $("year").textContent = new Date().getFullYear();
+      LANGUAGES.sort((a,b) => a[1].localeCompare(b[1]));
+      LANGUAGES.forEach(([code, name]) => {
+        const option = document.createElement("option");
+        option.value = code;
+        option.textContent = name;
+        $("topLanguage").appendChild(option);
+      });
+      let saved = "fr";
+      try { saved = localStorage.getItem("nexora_language") || "fr"; } catch {}
+      applyLanguage(saved);
+      setMode("login");
+    }
+
+    init();
+  </script>
 </body>
 </html>
