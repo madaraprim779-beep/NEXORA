@@ -1,0 +1,127 @@
+
+/*
+ * NEXORA — Sélecteur de langues
+ * Fichier : js/languages.js
+ */
+
+const NEXORA_LANGUAGES = [
+  "af", "am", "ar", "as", "az", "be", "bg", "bn", "bs",
+  "ca", "cs", "cy", "da", "de", "el", "en", "es", "et",
+  "eu", "fa", "fi", "fil", "fr", "ga", "gl", "gu", "he",
+  "hi", "hr", "hu", "hy", "id", "is", "it", "ja", "jv",
+  "ka", "kk", "km", "kn", "ko", "lo", "lt", "lv", "mk",
+  "ml", "mn", "mr", "ms", "my", "ne", "nl", "no", "or",
+  "pa", "pl", "ps", "pt", "ro", "ru", "si", "sk", "sl",
+  "sq", "sr", "sv", "sw", "ta", "te", "th", "tr", "uk",
+  "ur", "uz", "vi", "xh", "yo", "zh", "zu",
+  "ak", "bm", "ee", "ff", "ha", "ig", "ln", "mg", "nd",
+  "om", "rn", "rw", "sn", "so", "ti", "tw", "wo"
+];
+
+const nexoraDisplayNames = new Intl.DisplayNames(
+  ["fr"],
+  { type: "language" }
+);
+
+function getNexoraLanguages() {
+  return [...new Set(NEXORA_LANGUAGES)]
+    .map(code => ({
+      code,
+      name: nexoraDisplayNames.of(code) || code
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+}
+
+function getNexoraSavedLanguage() {
+  try {
+    return localStorage.getItem("nexora_language") || "fr";
+  } catch {
+    return "fr";
+  }
+}
+
+function setNexoraLanguage(code) {
+  const supported = NEXORA_LANGUAGES.includes(code);
+  if (!supported) return false;
+
+  try {
+    localStorage.setItem("nexora_language", code);
+  } catch {
+    // La préférence reste utilisable pour la session courante.
+  }
+
+  document.documentElement.lang = code;
+
+  window.dispatchEvent(
+    new CustomEvent("nexora:languageChanged", {
+      detail: { code }
+    })
+  );
+
+  return true;
+}
+
+function renderNexoraLanguagePicker(container) {
+  if (!container) return;
+
+  const languages = getNexoraLanguages();
+  const current = getNexoraSavedLanguage();
+
+  container.innerHTML = `
+    <section class="nexora-language">
+      <h2>Choisir une langue</h2>
+      <input
+        type="search"
+        id="nexoraLanguageSearch"
+        placeholder="Rechercher une langue..."
+        aria-label="Rechercher une langue"
+      />
+      <div id="nexoraLanguageList" role="listbox"></div>
+    </section>
+  `;
+
+  const search = container.querySelector("#nexoraLanguageSearch");
+  const list = container.querySelector("#nexoraLanguageList");
+
+  function draw() {
+    const query = search.value.trim().toLocaleLowerCase("fr");
+    const filtered = languages.filter(lang =>
+      lang.name.toLocaleLowerCase("fr").includes(query) ||
+      lang.code.toLowerCase().includes(query)
+    );
+
+    list.replaceChildren();
+
+    filtered.forEach(lang => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "nexora-language-option";
+      button.setAttribute("role", "option");
+      button.setAttribute("aria-selected", String(lang.code === current));
+      button.textContent =
+        `${lang.name} (${lang.code})${lang.code === current ? " ✓" : ""}`;
+
+      button.addEventListener("click", () => {
+        if (setNexoraLanguage(lang.code)) {
+          renderNexoraLanguagePicker(container);
+        }
+      });
+
+      list.appendChild(button);
+    });
+
+    if (filtered.length === 0) {
+      const empty = document.createElement("p");
+      empty.textContent = "Aucune langue trouvée.";
+      list.appendChild(empty);
+    }
+  }
+
+  search.addEventListener("input", draw);
+  draw();
+}
+
+window.NEXORA_LANGUAGES = NEXORA_LANGUAGES;
+window.getNexoraSavedLanguage = getNexoraSavedLanguage;
+window.setNexoraLanguage = setNexoraLanguage;
+window.renderNexoraLanguagePicker = renderNexoraLanguagePicker;
