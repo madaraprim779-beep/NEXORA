@@ -1,4 +1,3 @@
-
 const SYSTEM_PROMPT = `
 Tu es MADARA AI, l'assistant intelligent intégré à NEXORA.
 Réponds en français par défaut et utilise la langue de l'utilisateur.
@@ -22,15 +21,9 @@ export default async function handler(req, res) {
   const supabaseUrl = process.env.SUPABASE_URL;
   const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY;
 
-  if (!apiKey) {
+  if (!apiKey || !supabaseUrl || !supabaseKey) {
     return res.status(500).json({
-      error: "La variable OPENROUTER_API_KEY est manquante."
-    });
-  }
-
-  if (!supabaseUrl || !supabaseKey) {
-    return res.status(500).json({
-      error: "La configuration Supabase est incomplète."
+      error: "Configuration serveur incomplète. Vérifie les variables Vercel."
     });
   }
 
@@ -46,18 +39,16 @@ export default async function handler(req, res) {
   }
 
   try {
-    // Vérifier la session de l'utilisateur avec Supabase.
-    const authResponse = await fetch(
-      `${supabaseUrl.replace(/\/+$/, "")}/auth/v1/user`,
-      {
-        method: "GET",
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${token}`
-        },
-        signal: AbortSignal.timeout(10000)
-      }
-    );
+    const baseUrl = supabaseUrl.replace(/\/+$/, "");
+
+    const authResponse = await fetch(`${baseUrl}/auth/v1/user`, {
+      method: "GET",
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${token}`
+      },
+      signal: AbortSignal.timeout(10000)
+    });
 
     if (!authResponse.ok) {
       return res.status(401).json({
@@ -112,10 +103,7 @@ export default async function handler(req, res) {
         body: JSON.stringify({
           model: "openrouter/free",
           messages: [
-            {
-              role: "system",
-              content: SYSTEM_PROMPT
-            },
+            { role: "system", content: SYSTEM_PROMPT },
             ...history
           ],
           temperature: 0.7,
@@ -130,7 +118,7 @@ export default async function handler(req, res) {
 
     if (!aiResponse.ok) {
       console.error(
-        "OpenRouter status:",
+        "OpenRouter error:",
         aiResponse.status,
         result.error?.message || "Erreur inconnue"
       );
@@ -138,7 +126,7 @@ export default async function handler(req, res) {
       return res.status(502).json({
         error: aiResponse.status === 429
           ? "Limite de requêtes atteinte. Réessaie plus tard."
-          : "OpenRouter n'a pas pu répondre. Vérifie ta clé et la disponibilité du modèle."
+          : "OpenRouter n'a pas pu répondre. Vérifie la clé API et le modèle."
       });
     }
 
@@ -154,7 +142,6 @@ export default async function handler(req, res) {
       reply: reply.trim(),
       model: result.model || "openrouter/free"
     });
-
   } catch (error) {
     console.error("MADARA AI API error:", error.message);
 
