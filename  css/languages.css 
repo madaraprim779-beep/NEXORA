@@ -1,0 +1,46 @@
+
+.nexora-language {
+  color: #fff;
+  background: #10131c;
+  padding: 20px;
+  border-radius: 18px;
+  font-family: system-ui, sans-serif;
+}
+
+.nexora-language h2 {
+  margin-top: 0;
+}
+
+#nexoraLanguageSearch {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #34394a;
+  border-radius: 12px;
+  background: #080b12;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+#nexoraLanguageList {
+  display: grid;
+  gap: 8px;
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+.nexora-language-option {
+  padding: 13px;
+  border: 1px solid #282e40;
+  border-radius: 10px;
+  background: #171c29;
+  color: #fff;
+  text-align: left;
+  font-size: 15px;
+}
+
+.nexora-language-option[aria-selected="true"] {
+  border-color: #8b5cf6;
+  background: #292044;
+}
