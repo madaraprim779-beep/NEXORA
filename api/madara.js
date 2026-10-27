@@ -3,73 +3,70 @@ Tu es MADARA AI, l'assistant intelligent intégré à NEXORA.
 Réponds en français par défaut et utilise la langue de l'utilisateur.
 Sois utile, professionnel, clair et précis.
 Aide en programmation, études, rédaction, analyse et créativité.
-N'invente pas de résultats et ne prétends pas avoir effectué une action
-que tu n'as pas réellement effectuée.
+N'invente pas de résultats.
 `;
 
-export default async function handler(req, res) {
-  res.setHeader("Content-Type", "application/json; charset=utf-8");
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    }
+  });
+}
 
-  if (req.method !== "POST") {
-    res.setHeader("Allow", "POST");
-    return res.status(405).json({
-      error: "Méthode non autorisée."
-    });
-  }
-
-  const apiKey = process.env.OPENROUTER_API_KEY;
-  const supabaseUrl = process.env.SUPABASE_URL;
-  const supabaseKey = process.env.SUPABASE_PUBLISHABLE_KEY;
+export async function onRequestPost({ request, env }) {
+  const apiKey = env.OPENROUTER_API_KEY;
+  const supabaseUrl = env.SUPABASE_URL;
+  const supabaseKey = env.SUPABASE_PUBLISHABLE_KEY;
 
   if (!apiKey || !supabaseUrl || !supabaseKey) {
-    return res.status(500).json({
-      error: "Configuration serveur incomplète. Vérifie les variables Vercel."
-    });
+    return json({ error: "Configuration serveur incomplète." }, 500);
   }
 
-  const authorization = req.headers.authorization || "";
+  const authorization = request.headers.get("Authorization") || "";
   const token = authorization.startsWith("Bearer ")
     ? authorization.slice(7).trim()
     : "";
 
   if (!token) {
-    return res.status(401).json({
-      error: "Connecte-toi à NEXORA pour utiliser MADARA AI."
-    });
+    return json({ error: "Connecte-toi à NEXORA." }, 401);
   }
 
   try {
-    const baseUrl = supabaseUrl.replace(/\/+$/, "");
-
-    const authResponse = await fetch(`${baseUrl}/auth/v1/user`, {
-      method: "GET",
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${token}`
-      },
-      signal: AbortSignal.timeout(10000)
-    });
+    const authResponse = await fetch(
+      `${supabaseUrl.replace(/\/+$/, "")}/auth/v1/user`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
 
     if (!authResponse.ok) {
-      return res.status(401).json({
-        error: "Session invalide. Reconnecte-toi à NEXORA."
-      });
+      return json({ error: "Session invalide. Reconnecte-toi." }, 401);
     }
 
-    const body = req.body || {};
-    const messages = body.messages;
+    let body;
+
+    try {
+      body = await request.json();
+    } catch {
+      return json({ error: "Requête JSON invalide." }, 400);
+    }
+
+    const messages = body?.messages;
 
     if (
       !Array.isArray(messages) ||
       messages.length === 0 ||
       messages.length > 30
     ) {
-      return res.status(400).json({
-        error: "La conversation est vide ou invalide."
-      });
+      return json({ error: "Conversation invalide." }, 400);
     }
 
-    const validMessages = messages.every((message) =>
+    const valid = messages.every(message =>
       message &&
       ["user", "assistant"].includes(message.role) &&
       typeof message.content === "string" &&
@@ -77,21 +74,16 @@ export default async function handler(req, res) {
       message.content.length <= 8000
     );
 
-    if (
-      !validMessages ||
-      messages[messages.length - 1].role !== "user"
-    ) {
-      return res.status(400).json({
-        error: "Vérifie le format de ton message."
-      });
+    if (!valid || messages[messages.length - 1].role !== "user") {
+      return json({ error: "Format de message invalide." }, 400);
     }
 
-    const history = messages.slice(-10).map((message) => ({
+    const history = messages.slice(-10).map(message => ({
       role: message.role,
       content: message.content
     }));
 
-    const aiResponse = await fetch(
+    const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
@@ -107,46 +99,43 @@ export default async function handler(req, res) {
             ...history
           ],
           temperature: 0.7,
-          max_tokens: 1200,
-          stream: false
-        }),
-        signal: AbortSignal.timeout(55000)
+          max_tokens: 1200
+        })
       }
     );
 
-    const result = await aiResponse.json().catch(() => ({}));
+    const result = await response.json().catch(() => ({}));
 
-    if (!aiResponse.ok) {
-      console.error(
-        "OpenRouter error:",
-        aiResponse.status,
-        result.error?.message || "Erreur inconnue"
-      );
+    if (!response.ok) {
+      console.error("OpenRouter:", response.status, result.error?.message);
 
-      return res.status(502).json({
-        error: aiResponse.status === 429
+      return json({
+        error: response.status === 429
           ? "Limite de requêtes atteinte. Réessaie plus tard."
-          : "OpenRouter n'a pas pu répondre. Vérifie la clé API et le modèle."
-      });
+          : "OpenRouter n'a pas pu répondre."
+      }, 502);
     }
 
     const reply = result.choices?.[0]?.message?.content;
 
     if (typeof reply !== "string" || !reply.trim()) {
-      return res.status(502).json({
-        error: "MADARA AI n'a pas renvoyé de réponse."
-      });
+      return json({ error: "Réponse IA vide." }, 502);
     }
 
-    return res.status(200).json({
+    return json({
       reply: reply.trim(),
       model: result.model || "openrouter/free"
     });
   } catch (error) {
-    console.error("MADARA AI API error:", error.message);
-
-    return res.status(500).json({
-      error: "Erreur serveur pendant la demande à MADARA AI."
-    });
+    console.error("MADARA AI:", error.message);
+    return json({ error: "Erreur serveur MADARA AI." }, 500);
   }
+}
+
+export async function onRequest(context) {
+  if (context.request.method !== "POST") {
+    return json({ error: "Méthode non autorisée." }, 405);
+  }
+
+  return onRequestPost(context);
 }
