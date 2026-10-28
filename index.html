@@ -5,124 +5,447 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#08090b">
   <meta name="description" content="NEXORA — Une messagerie simple, moderne et privée pour rester connecté.">
-  <title>NEXORA — Messagerie</title>
+  <title>NEXORA PRO — Messagerie</title>
+
   <style>
     :root {
       color-scheme: dark;
       --bg: #08090b;
       --panel: #101114;
-      --panel-soft: #15171b;
       --line: #292b30;
       --text: #f7f7f8;
       --muted: #92959e;
       --white: #ffffff;
       --danger: #ff7777;
-      --radius: 22px;
     }
+
     * { box-sizing: border-box; }
+
     html { min-height: 100%; background: var(--bg); }
+
     body {
-      margin: 0; min-height: 100vh; color: var(--text);
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
       background:
         radial-gradient(ellipse at 15% 10%, rgba(255,255,255,.055), transparent 32%),
         radial-gradient(ellipse at 90% 85%, rgba(255,255,255,.035), transparent 28%),
         var(--bg);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
+
     button, input { font: inherit; }
     button { cursor: pointer; }
-    .page { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
-    .topbar {
-      width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 27px 0;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
     }
-    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+
+    .topbar {
+      width: min(1160px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 27px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
     .brand-mark {
-      width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
-      background: var(--white); color: #08090b; font-size: 20px; font-weight: 900; letter-spacing: -2px;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--white);
+      color: #08090b;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -2px;
       box-shadow: 0 8px 30px rgba(255,255,255,.08);
     }
-    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: .15em; }
-    .brand-sub { margin-top: 3px; color: var(--muted); font-size: 10px; letter-spacing: .19em; }
+
+    .brand-name {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: .15em;
+    }
+
+    .brand-sub {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: .19em;
+    }
+
     .top-note { color: var(--muted); font-size: 13px; }
-    .top-note button { border: 0; background: none; color: var(--white); font-weight: 700; padding: 5px 0 5px 5px; }
+
+    .top-note button {
+      border: 0;
+      background: none;
+      color: var(--white);
+      font-weight: 700;
+      padding: 5px 0 5px 5px;
+    }
+
     main {
-      width: min(1160px, calc(100% - 48px)); margin: auto; padding: 36px 0 60px;
-      display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .82fr);
-      gap: clamp(40px, 8vw, 112px); align-items: center;
+      width: min(1160px, calc(100% - 48px));
+      margin: auto;
+      padding: 36px 0 60px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, .82fr);
+      gap: clamp(40px, 8vw, 112px);
+      align-items: center;
     }
+
     .story { padding: 20px 0; }
+
     .eyebrow {
-      display: inline-flex; align-items: center; gap: 9px; color: #d4d5d9;
-      border: 1px solid var(--line); background: rgba(255,255,255,.025);
-      padding: 9px 13px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: #d4d5d9;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.025);
+      padding: 9px 13px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
     }
-    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #bfc1c7; box-shadow: 0 0 14px rgba(255,255,255,.35); }
-    h1 { margin: 26px 0 18px; max-width: 650px; font-size: clamp(42px, 5.6vw, 76px); line-height: .99; letter-spacing: -.065em; font-weight: 760; }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #bfc1c7;
+      box-shadow: 0 0 14px rgba(255,255,255,.35);
+    }
+
+    h1 {
+      margin: 26px 0 18px;
+      max-width: 650px;
+      font-size: clamp(42px, 5.6vw, 76px);
+      line-height: .99;
+      letter-spacing: -.065em;
+      font-weight: 760;
+    }
+
     h1 span { color: #888b94; }
-    .lead { max-width: 480px; color: #a4a6ae; font-size: 16px; line-height: 1.8; }
-    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 42px; max-width: 590px; }
-    .feature { border-top: 1px solid var(--line); padding-top: 17px; }
-    .feature-icon { width: 34px; height: 34px; border: 1px solid #34363c; background: #15161a; border-radius: 11px; display: grid; place-items: center; margin-bottom: 13px; }
+
+    .lead {
+      max-width: 480px;
+      color: #a4a6ae;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 42px;
+      max-width: 590px;
+    }
+
+    .feature {
+      border-top: 1px solid var(--line);
+      padding-top: 17px;
+    }
+
+    .feature-icon {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #34363c;
+      background: #15161a;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 13px;
+    }
+
     .feature-icon svg { width: 17px; height: 17px; }
     .feature strong { display: block; font-size: 12px; margin-bottom: 6px; }
-    .feature p { margin: 0; font-size: 11px; line-height: 1.55; color: var(--muted); }
+
+    .feature p {
+      margin: 0;
+      font-size: 11px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
     .auth-card {
-      width: 100%; max-width: 440px; justify-self: end; padding: clamp(24px, 3.4vw, 38px);
-      border: 1px solid #2b2d32; border-radius: 26px; background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018) 44%), #0e0f12;
+      width: 100%;
+      max-width: 440px;
+      justify-self: end;
+      padding: clamp(24px, 3.4vw, 38px);
+      border: 1px solid #2b2d32;
+      border-radius: 26px;
+      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018) 44%), #0e0f12;
       box-shadow: 0 35px 100px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.045);
     }
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 27px; }
-    .card-top h2 { margin: 0 0 8px; font-size: 25px; letter-spacing: -.045em; }
-    .card-top p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
-    .secure-mark { flex: 0 0 auto; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 13px; border: 1px solid var(--line); color: #dedfe3; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 27px;
+    }
+
+    .card-top h2 {
+      margin: 0 0 8px;
+      font-size: 25px;
+      letter-spacing: -.045em;
+    }
+
+    .card-top p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .secure-mark {
+      flex: 0 0 auto;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      border: 1px solid var(--line);
+      color: #dedfe3;
+    }
+
     .secure-mark svg { width: 19px; height: 19px; }
-    .tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; gap: 4px; background: #08090b; border: 1px solid #26282d; border-radius: 13px; margin-bottom: 25px; }
-    .tab { padding: 11px 8px; border: 0; border-radius: 9px; background: transparent; color: #8e919a; font-size: 13px; font-weight: 700; }
-    .tab[aria-selected="true"] { background: #f6f6f7; color: #0b0c0e; box-shadow: 0 2px 8px rgba(0,0,0,.22); }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 4px;
+      gap: 4px;
+      background: #08090b;
+      border: 1px solid #26282d;
+      border-radius: 13px;
+      margin-bottom: 25px;
+    }
+
+    .tab {
+      padding: 11px 8px;
+      border: 0;
+      border-radius: 9px;
+      background: transparent;
+      color: #8e919a;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .tab[aria-selected="true"] {
+      background: #f6f6f7;
+      color: #0b0c0e;
+      box-shadow: 0 2px 8px rgba(0,0,0,.22);
+    }
+
     .field { margin-bottom: 17px; }
-    .field-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 9px; }
+
+    .field-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
     label { font-size: 12px; color: #e1e2e5; font-weight: 650; }
     .hint { font-size: 10px; color: #737680; }
+
     .input-wrap { position: relative; }
+
     .input-wrap input {
-      display: block; width: 100%; height: 49px; padding: 0 14px; outline: none;
-      border: 1px solid #303238; border-radius: 12px; background: #0a0b0e; color: var(--text);
-      font-size: 14px; transition: border-color .18s, box-shadow .18s;
+      display: block;
+      width: 100%;
+      height: 49px;
+      padding: 0 14px;
+      outline: none;
+      border: 1px solid #303238;
+      border-radius: 12px;
+      background: #0a0b0e;
+      color: var(--text);
+      font-size: 14px;
+      transition: border-color .18s, box-shadow .18s;
     }
+
     .input-wrap input::placeholder { color: #5f626b; }
-    .input-wrap input:focus { border-color: #a8abb3; box-shadow: 0 0 0 3px rgba(255,255,255,.06); }
-    .input-wrap input[aria-invalid="true"] { border-color: var(--danger); }
-    .input-action { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: #a7a9b0; font-size: 11px; font-weight: 700; padding: 8px; }
-    .input-wrap.has-action input { padding-right: 64px; }
-    .form-error { display: none; margin: -1px 0 15px; border: 1px solid rgba(255,119,119,.25); background: rgba(255,119,119,.07); color: #ffaaaa; border-radius: 10px; padding: 11px 12px; font-size: 12px; line-height: 1.5; }
-    .form-error.show { display: block; }
-    .submit {
-      width: 100%; height: 50px; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 10px;
-      background: #f6f6f7; color: #090a0c; border: 1px solid #fff; border-radius: 12px; font-size: 13px; font-weight: 800;
-      transition: transform .18s, background .18s; 
+
+    .input-wrap input:focus {
+      border-color: #a8abb3;
+      box-shadow: 0 0 0 3px rgba(255,255,255,.06);
     }
+
+    .input-wrap input[aria-invalid="true"] { border-color: var(--danger); }
+
+    .input-action {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 0;
+      background: transparent;
+      color: #a7a9b0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px;
+    }
+
+    .input-wrap.has-action input { padding-right: 64px; }
+
+    .form-error {
+      display: none;
+      margin: -1px 0 15px;
+      border: 1px solid rgba(255,119,119,.25);
+      background: rgba(255,119,119,.07);
+      color: #ffaaaa;
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .form-error.show { display: block; }
+
+    .submit {
+      width: 100%;
+      min-height: 50px;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #f6f6f7;
+      color: #090a0c;
+      border: 1px solid #fff;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      transition: transform .18s, background .18s;
+    }
+
     .submit:hover { background: #dedfe2; }
     .submit:active { transform: scale(.99); }
     .submit:disabled { cursor: wait; opacity: .7; }
     .submit svg { width: 16px; height: 16px; }
-    .fine-print { display: flex; gap: 9px; align-items: flex-start; color: #777a83; font-size: 10px; line-height: 1.6; margin-top: 19px; }
-    .fine-print svg { flex: 0 0 auto; width: 14px; height: 14px; margin-top: 1px; }
-    .fine-print a { color: #d2d3d7; text-decoration: underline; text-underline-offset: 3px; }
-    .footer { width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 18px 0 25px; border-top: 1px solid rgba(255,255,255,.07); display: flex; justify-content: space-between; gap: 16px; color: #6f727a; font-size: 10px; }
+
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0 4px;
+      color: #777a83;
+      font-size: 10px;
+      letter-spacing: .08em;
+    }
+
+    .auth-divider::before,
+    .auth-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: #292b30;
+    }
+
+    .google-login {
+      width: 100%;
+      min-height: 49px;
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 1px solid #34363c;
+      border-radius: 12px;
+      background: #111216;
+      color: #f7f7f8;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background .18s, border-color .18s;
+    }
+
+    .google-login:hover {
+      background: #1b1c21;
+      border-color: #555861;
+    }
+
+    .google-login:disabled { opacity: .65; cursor: wait; }
+    .google-logo { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .fine-print {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      color: #777a83;
+      font-size: 10px;
+      line-height: 1.6;
+      margin-top: 19px;
+    }
+
+    .fine-print svg {
+      flex: 0 0 auto;
+      width: 14px;
+      height: 14px;
+      margin-top: 1px;
+    }
+
+    .fine-print a {
+      color: #d2d3d7;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .footer {
+      width: min(1160px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 18px 0 25px;
+      border-top: 1px solid rgba(255,255,255,.07);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: #6f727a;
+      font-size: 10px;
+    }
+
     .footer-links { display: flex; gap: 18px; }
     .footer a { color: inherit; text-decoration: none; }
     .footer a:hover { color: #dfe0e3; }
-    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
     @media (max-width: 850px) {
-      main { grid-template-columns: 1fr; max-width: 520px; gap: 32px; padding-top: 24px; }
+      main {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+        gap: 32px;
+        padding-top: 24px;
+      }
+
       .story { padding: 8px 0 0; }
       h1 { font-size: clamp(42px, 9vw, 62px); }
       .lead { font-size: 14px; }
       .features { margin-top: 25px; }
       .auth-card { justify-self: stretch; max-width: none; }
     }
+
     @media (max-width: 480px) {
       .topbar, main, .footer { width: calc(100% - 32px); }
       .topbar { padding: 19px 0; }
@@ -140,44 +463,90 @@
       .card-top h2 { font-size: 23px; }
       .footer { flex-direction: column; }
     }
-    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="page">
     <header class="topbar">
       <a class="brand" href="/" aria-label="NEXORA accueil">
         <span class="brand-mark" aria-hidden="true">N.</span>
-        <span><span class="brand-name">NEXORA</span><span class="brand-sub" style="display:block">STAY CONNECTED</span></span>
+        <span>
+          <span class="brand-name">NEXORA</span>
+          <span class="brand-sub" style="display:block">STAY CONNECTED</span>
+        </span>
       </a>
-      <div class="top-note"><span id="topPrompt">Déjà membre ?</span> <button id="topSwitch" type="button">Se connecter</button></div>
+      <div class="top-note">
+        <span id="topPrompt">Déjà membre ?</span>
+        <button id="topSwitch" type="button">Se connecter</button>
+      </div>
     </header>
 
     <main>
       <section class="story" aria-labelledby="heroTitle">
         <div class="eyebrow"><span class="eyebrow-dot"></span> VOTRE ESPACE DE CONVERSATION</div>
         <h1 id="heroTitle">Les liens qui comptent.<br><span>Sans détour.</span></h1>
-        <p class="lead">Une expérience de messagerie pensée pour vous. Retrouvez vos conversations, rapprochez-vous de vos contacts et restez connecté dans un espace simple et moderne.</p>
+        <p class="lead">
+          Une expérience de messagerie pensée pour vous. Retrouvez vos conversations,
+          rapprochez-vous de vos contacts et restez connecté dans un espace simple et moderne.
+        </p>
+
         <div class="features">
           <article class="feature">
-            <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg></div>
-            <strong>Conversations</strong><p>Gardez vos échanges à portée de main.</p>
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/>
+              </svg>
+            </div>
+            <strong>Conversations</strong>
+            <p>Gardez vos échanges à portée de main.</p>
           </article>
+
           <article class="feature">
-            <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <strong>Communauté</strong><p>Retrouvez vos contacts simplement.</p>
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="10" cy="7" r="4"/>
+                <path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+            </div>
+            <strong>Communauté</strong>
+            <p>Retrouvez vos contacts simplement.</p>
           </article>
+
           <article class="feature">
-            <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/><path d="M12 14v3"/></svg></div>
-            <strong>Votre espace</strong><p>Un compte personnel, à votre rythme.</p>
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <rect x="4" y="10" width="16" height="11" rx="2"/>
+                <path d="M8 10V7a4 4 0 1 1 8 0v3"/>
+                <path d="M12 14v3"/>
+              </svg>
+            </div>
+            <strong>Votre espace</strong>
+            <p>Un compte personnel, à votre rythme.</p>
           </article>
         </div>
       </section>
 
       <section class="auth-card" aria-labelledby="formTitle">
         <div class="card-top">
-          <div><h2 id="formTitle">Bienvenue sur NEXORA</h2><p id="formSubtitle">Créez votre compte et entrez dans la conversation.</p></div>
-          <div class="secure-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <div>
+            <h2 id="formTitle">Bienvenue sur NEXORA</h2>
+            <p id="formSubtitle">Créez votre compte et entrez dans la conversation.</p>
+          </div>
+          <div class="secure-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/>
+              <path d="m9 12 2 2 4-4"/>
+            </svg>
+          </div>
         </div>
 
         <div class="tabs" role="tablist" aria-label="Choisir une action">
@@ -187,31 +556,90 @@
 
         <form id="authForm" novalidate>
           <div class="field">
-            <div class="field-head"><label for="username">Nom d'utilisateur</label><span class="hint">3 à 24 caractères</span></div>
-            <div class="input-wrap"><input id="username" name="username" type="text" autocomplete="username" placeholder="ex. madara_225" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" required autocapitalize="none" spellcheck="false"></div>
+            <div class="field-head">
+              <label for="username">Nom d'utilisateur</label>
+              <span class="hint">3 à 24 caractères</span>
+            </div>
+            <div class="input-wrap">
+              <input id="username" name="username" type="text"
+                autocomplete="username" placeholder="ex. madara_225"
+                minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}"
+                required autocapitalize="none" spellcheck="false">
+            </div>
           </div>
+
           <div class="field">
-            <div class="field-head"><label for="password">Mot de passe</label><span class="hint">8 caractères minimum</span></div>
-            <div class="input-wrap has-action"><input id="password" name="password" type="password" autocomplete="new-password" placeholder="Votre mot de passe" minlength="8" maxlength="128" required><button class="input-action" id="togglePassword" type="button" aria-label="Afficher le mot de passe">Afficher</button></div>
+            <div class="field-head">
+              <label for="password">Mot de passe</label>
+              <span class="hint">8 caractères minimum</span>
+            </div>
+            <div class="input-wrap has-action">
+              <input id="password" name="password" type="password"
+                autocomplete="new-password" placeholder="Votre mot de passe"
+                minlength="8" maxlength="128" required>
+              <button class="input-action" id="togglePassword" type="button"
+                aria-label="Afficher le mot de passe">Afficher</button>
+            </div>
           </div>
+
           <div class="field" id="confirmField">
-            <div class="field-head"><label for="confirmPassword">Confirmer le mot de passe</label></div>
-            <div class="input-wrap"><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Retapez votre mot de passe" minlength="8" maxlength="128" required></div>
+            <div class="field-head">
+              <label for="confirmPassword">Confirmer le mot de passe</label>
+            </div>
+            <div class="input-wrap">
+              <input id="confirmPassword" name="confirmPassword" type="password"
+                autocomplete="new-password" placeholder="Retapez votre mot de passe"
+                minlength="8" maxlength="128" required>
+            </div>
           </div>
+
           <div class="form-error" id="formError" role="alert" aria-live="polite"></div>
-          <button class="submit" id="submitButton" type="submit"><span id="submitText">Créer mon compte</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-          <p class="fine-print"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/></svg><span>En continuant, vous acceptez d'utiliser NEXORA de manière respectueuse. Ne partagez jamais votre mot de passe. <a href="#confidentialite" id="privacyLink">Confidentialité</a></span></p>
+
+          <button class="submit" id="submitButton" type="submit">
+            <span id="submitText">Créer mon compte</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </button>
+
+          <div class="auth-divider">OU CONTINUER AVEC</div>
+
+          <button class="google-login" id="googleLogin" type="button">
+            <svg class="google-logo" viewBox="0 0 48 48" aria-hidden="true">
+              <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.5l6.7-6.7C35.6 2.5 30.3 0 24 0 14.6 0 6.5 5.4 3 13.3l7.8 6.1C12.7 13.2 17.9 9.5 24 9.5z"/>
+              <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.6 2.9-2.2 5.4-4.6 7.1l7.4 5.7c4.4-4.1 6.9-10.1 6.9-17.3z"/>
+              <path fill="#FBBC05" d="M10.8 28.6a14.5 14.5 0 0 1 0-9.2L3 13.3a24 24 0 0 0 0 21.4z"/>
+              <path fill="#34A853" d="M24 48c6.5 0 12-2.1 16-6.2l-7.4-5.7c-2.1 1.4-4.9 2.3-8.6 2.3-6.1 0-11.3-3.7-13.2-9.1L3 35.3C6.5 43.2 14.6 48 24 48z"/>
+            </svg>
+            <span id="googleLoginText">Continuer avec Google</span>
+          </button>
+
+          <div class="form-error" id="googleError" role="alert" aria-live="polite"></div>
+
+          <p class="fine-print">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+              <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/>
+            </svg>
+            <span>
+              En continuant, vous acceptez d'utiliser NEXORA de manière respectueuse.
+              Ne partagez jamais votre mot de passe.
+              <a href="#confidentialite" id="privacyLink">Confidentialité</a>
+            </span>
+          </p>
         </form>
       </section>
     </main>
 
     <footer class="footer">
       <span>© <span id="year"></span> NEXORA. Conçu pour rester connecté.</span>
-      <div class="footer-links"><a href="#confidentialite" id="footerPrivacy">Confidentialité</a><a href="mailto:support@nexora.app">Assistance</a></div>
+      <div class="footer-links">
+        <a href="#confidentialite" id="footerPrivacy">Confidentialité</a>
+        <a href="mailto:support@nexora.app">Assistance</a>
+      </div>
     </footer>
   </div>
 
-  <script>
+  <script type="module">
     const form = document.getElementById("authForm");
     const usernameInput = document.getElementById("username");
     const passwordInput = document.getElementById("password");
@@ -227,6 +655,10 @@
     const formTitle = document.getElementById("formTitle");
     const formSubtitle = document.getElementById("formSubtitle");
     const togglePassword = document.getElementById("togglePassword");
+    const googleLogin = document.getElementById("googleLogin");
+    const googleLoginText = document.getElementById("googleLoginText");
+    const googleError = document.getElementById("googleError");
+
     let mode = "register";
     let busy = false;
 
@@ -240,47 +672,62 @@
     function clearError() {
       errorBox.textContent = "";
       errorBox.classList.remove("show");
-      [usernameInput, passwordInput, confirmInput].forEach((input) => input.setAttribute("aria-invalid", "false"));
+      [usernameInput, passwordInput, confirmInput].forEach(input => {
+        input.setAttribute("aria-invalid", "false");
+      });
     }
 
     function setMode(nextMode) {
       mode = nextMode;
       const registering = mode === "register";
+
       registerTab.setAttribute("aria-selected", String(registering));
       loginTab.setAttribute("aria-selected", String(!registering));
+
       confirmField.hidden = !registering;
       confirmInput.required = registering;
       confirmInput.autocomplete = registering ? "new-password" : "off";
       passwordInput.autocomplete = registering ? "new-password" : "current-password";
+
       formTitle.textContent = registering ? "Bienvenue sur NEXORA" : "Heureux de vous revoir";
-      formSubtitle.textContent = registering ? "Créez votre compte et entrez dans la conversation." : "Connectez-vous pour retrouver vos conversations.";
+      formSubtitle.textContent = registering
+        ? "Créez votre compte et entrez dans la conversation."
+        : "Connectez-vous pour retrouver vos conversations.";
+
       submitText.textContent = registering ? "Créer mon compte" : "Se connecter";
       topPrompt.textContent = registering ? "Déjà membre ?" : "Nouveau sur NEXORA ?";
       topSwitch.textContent = registering ? "Se connecter" : "Créer un compte";
+
       clearError();
     }
 
     registerTab.addEventListener("click", () => setMode("register"));
     loginTab.addEventListener("click", () => setMode("login"));
-    topSwitch.addEventListener("click", () => setMode(mode === "register" ? "login" : "register"));
+    topSwitch.addEventListener("click", () => {
+      setMode(mode === "register" ? "login" : "register");
+    });
 
     togglePassword.addEventListener("click", () => {
       const reveal = passwordInput.type === "password";
       passwordInput.type = reveal ? "text" : "password";
       togglePassword.textContent = reveal ? "Masquer" : "Afficher";
-      togglePassword.setAttribute("aria-label", reveal ? "Masquer le mot de passe" : "Afficher le mot de passe");
+      togglePassword.setAttribute(
+        "aria-label",
+        reveal ? "Masquer le mot de passe" : "Afficher le mot de passe"
+      );
     });
 
-    [usernameInput, passwordInput, confirmInput].forEach((input) => {
+    [usernameInput, passwordInput, confirmInput].forEach(input => {
       input.addEventListener("input", () => {
         input.setAttribute("aria-invalid", "false");
         if (errorBox.classList.contains("show")) clearError();
       });
     });
 
-    form.addEventListener("submit", async (event) => {
+    form.addEventListener("submit", async event => {
       event.preventDefault();
       if (busy) return;
+
       clearError();
 
       const username = usernameInput.value.trim().toLowerCase();
@@ -293,12 +740,14 @@
         usernameInput.focus();
         return;
       }
+
       if (password.length < 8 || password.length > 128) {
         passwordInput.setAttribute("aria-invalid", "true");
         showError("Le mot de passe doit contenir entre 8 et 128 caractères.");
         passwordInput.focus();
         return;
       }
+
       if (mode === "register" && password !== confirmation) {
         confirmInput.setAttribute("aria-invalid", "true");
         showError("Les deux mots de passe ne correspondent pas.");
@@ -313,7 +762,10 @@
       try {
         const response = await fetch("/api/auth", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
           body: JSON.stringify({ action: mode, username, password })
         });
 
@@ -328,7 +780,12 @@
           throw new Error(data?.error || "Impossible de continuer. Vérifie tes informations et réessaie.");
         }
 
-        if (data.requires_login || !data.session?.access_token || !data.session?.refresh_token || !data.user?.id) {
+        if (
+          data.requires_login ||
+          !data.session?.access_token ||
+          !data.session?.refresh_token ||
+          !data.user?.id
+        ) {
           showError(data.message || "Compte créé. Connecte-toi maintenant avec ton pseudo et ton mot de passe.");
           setMode("login");
           passwordInput.value = "";
@@ -351,17 +808,74 @@
       }
     });
 
+    /*
+      CONFIGURATION GOOGLE :
+      Remplace les deux valeurs ci-dessous par celles de Supabase.
+      Utilise uniquement la clé publique / publishable, jamais la service_role.
+    */
+    const SUPABASE_URL = "REMPLACE_PAR_TON_URL_SUPABASE";
+    const SUPABASE_PUBLISHABLE_KEY = "REMPLACE_PAR_TA_CLE_PUBLISHABLE";
+
+    googleLogin.addEventListener("click", async () => {
+      googleError.textContent = "";
+      googleError.classList.remove("show");
+
+      if (
+        SUPABASE_URL.includes("REMPLACE_PAR") ||
+        SUPABASE_PUBLISHABLE_KEY.includes("REMPLACE_PAR")
+      ) {
+        googleError.textContent =
+          "Google n'est pas encore configuré. Ajoute l'URL et la clé publique Supabase dans le code.";
+        googleError.classList.add("show");
+        return;
+      }
+
+      googleLogin.disabled = true;
+      googleLoginText.textContent = "Redirection vers Google…";
+
+      try {
+        const { createClient } = await import(
+          "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm"
+        );
+
+        const supabase = createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLISHABLE_KEY
+        );
+
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: window.location.origin + "/auth/callback"
+          }
+        });
+
+        if (error) throw error;
+      } catch (error) {
+        googleError.textContent =
+          error.message || "Connexion Google impossible. Vérifie la configuration Supabase.";
+        googleError.classList.add("show");
+        googleLogin.disabled = false;
+        googleLoginText.textContent = "Continuer avec Google";
+      }
+    });
+
     function openPrivacyNotice(event) {
       event.preventDefault();
-      showError("La page de confidentialité doit être publiée par l'équipe NEXORA avant le lancement public. Évite de saisir des informations sensibles.");
+      showError(
+        "La page de confidentialité doit être publiée par l'équipe NEXORA avant le lancement public. Évite de saisir des informations sensibles."
+      );
       errorBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
     }
+
     document.getElementById("privacyLink").addEventListener("click", openPrivacyNotice);
     document.getElementById("footerPrivacy").addEventListener("click", openPrivacyNotice);
 
     try {
       const existing = JSON.parse(sessionStorage.getItem("nexora_session") || "null");
-      if (existing?.access_token) window.location.replace("/chat.html");
+      if (existing?.access_token) {
+        window.location.replace("/chat.html");
+      }
     } catch {
       sessionStorage.removeItem("nexora_session");
       sessionStorage.removeItem("nexora_user");
