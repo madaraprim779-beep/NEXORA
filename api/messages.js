@@ -23,23 +23,31 @@ function reply(res, status, body) {
   return res.status(status).json(body);
 }
 
+function isUuid(value) {
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+    value
+  );
+}
+
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
 
   if (!["GET", "POST"].includes(req.method)) {
     res.setHeader("Allow", "GET, POST");
     return reply(res, 405, {
+      success: false,
       error: "Méthode non autorisée."
     });
   }
 
   const authorization = req.headers.authorization || "";
   const token = authorization.startsWith("Bearer ")
-    ? authorization.slice(7)
+    ? authorization.slice(7).trim()
     : "";
 
   if (!token) {
     return reply(res, 401, {
+      success: false,
       error: "Connecte-toi pour accéder aux messages."
     });
   }
@@ -49,6 +57,7 @@ export default async function handler(req, res) {
     !process.env.SUPABASE_PUBLISHABLE_KEY
   ) {
     return reply(res, 500, {
+      success: false,
       error: "Configuration Supabase manquante."
     });
   }
@@ -59,45 +68,62 @@ export default async function handler(req, res) {
     const { data: auth, error: authError } =
       await supabase.auth.getUser(token);
 
-    if (authError || !auth.user) {
+    if (authError || !auth?.user) {
       return reply(res, 401, {
-        error: "Session invalide."
+        success: false,
+        error: "Session invalide. Reconnecte-toi."
       });
     }
 
     const userId = auth.user.id;
+
+    // Vérifie que l'utilisateur connecté participe à la conversation.
+    async function getAuthorizedConversation(conversationId) {
+      if (!isUuid(conversationId)) {
+        return {
+          error: "Identifiant de conversation invalide.",
+          status: 400
+        };
+      }
+
+      const { data, error } = await supabase
+        .from("conversations")
+        .select("id, user_one, user_two")
+        .eq("id", conversationId)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Vérification conversation :", error);
+        return {
+          error: "Impossible de vérifier la conversation.",
+          status: 500
+        };
+      }
+
+      if (
+        !data ||
+        (data.user_one !== userId && data.user_two !== userId)
+      ) {
+        return {
+          error: "Conversation inaccessible.",
+          status: 403
+        };
+      }
+
+      return { conversation: data };
+    }
 
     if (req.method === "GET") {
       const conversationId = String(
         req.query?.conversation_id || ""
       );
 
-      if (
-        !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-          conversationId
-        )
-      ) {
-        return reply(res, 400, {
-          error: "Identifiant de conversation invalide."
-        });
-      }
+      const result = await getAuthorizedConversation(conversationId);
 
-      const { data: conversation, error: conversationError } =
-        await supabase
-          .from("conversations")
-          .select("id")
-          .eq("id", conversationId)
-          .maybeSingle();
-
-      if (conversationError) {
-        return reply(res, 500, {
-          error: "Impossible de vérifier la conversation."
-        });
-      }
-
-      if (!conversation) {
-        return reply(res, 403, {
-          error: "Conversation inaccessible."
+      if (result.error) {
+        return reply(res, result.status, {
+          success: false,
+          error: result.error
         });
       }
 
@@ -109,9 +135,9 @@ export default async function handler(req, res) {
         .limit(100);
 
       if (error) {
-        console.error("Erreur lecture messages:", error);
-
+        console.error("Lecture messages :", error);
         return reply(res, 500, {
+          success: false,
           error: "Impossible de charger les messages."
         });
       }
@@ -122,6 +148,7 @@ export default async function handler(req, res) {
       });
     }
 
+    // POST : envoi d'un message.
     const conversationId = String(
       req.body?.conversation_id || ""
     );
@@ -131,38 +158,19 @@ export default async function handler(req, res) {
         ? req.body.content.trim()
         : "";
 
-    if (
-      !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-        conversationId
-      )
-    ) {
-      return reply(res, 400, {
-        error: "Identifiant de conversation invalide."
-      });
-    }
-
     if (!content || content.length > 5000) {
       return reply(res, 400, {
+        success: false,
         error: "Le message doit contenir entre 1 et 5000 caractères."
       });
     }
 
-    const { data: conversation, error: conversationError } =
-      await supabase
-        .from("conversations")
-        .select("id")
-        .eq("id", conversationId)
-        .maybeSingle();
+    const result = await getAuthorizedConversation(conversationId);
 
-    if (conversationError) {
-      return reply(res, 500, {
-        error: "Impossible de vérifier la conversation."
-      });
-    }
-
-    if (!conversation) {
-      return reply(res, 403, {
-        error: "Conversation inaccessible."
+    if (result.error) {
+      return reply(res, result.status, {
+        success: false,
+        error: result.error
       });
     }
 
@@ -177,9 +185,9 @@ export default async function handler(req, res) {
       .single();
 
     if (error) {
-      console.error("Erreur envoi message:", error);
-
+      console.error("Envoi message :", error);
       return reply(res, 500, {
+        success: false,
         error: "Impossible d'envoyer le message."
       });
     }
@@ -189,9 +197,10 @@ export default async function handler(req, res) {
       message
     });
   } catch (error) {
-    console.error("Erreur API messages:", error);
+    console.error("API messages :", error);
 
     return reply(res, 500, {
+      success: false,
       error: "Erreur serveur."
     });
   }
