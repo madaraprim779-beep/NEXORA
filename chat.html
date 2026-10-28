@@ -2,129 +2,172 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07111f">
-<title>NEXORA — Messages</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090a0c">
+<meta name="description" content="NEXORA PRO — Une messagerie moderne pour vos conversations.">
+<title>NEXORA PRO — Messages</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg:#07111f; --panel:#0c1a2a; --panel2:#102338;
-  --line:#20384f; --text:#f2f7ff; --muted:#8ca3ba;
-  --cyan:#56e0e9; --blue:#6094ff; --red:#ff7d91;
+:root{
+  color-scheme:dark;
+  --bg:#090a0c;--surface:#101114;--surface2:#17191d;--surface3:#202228;
+  --line:#292b31;--text:#f5f5f6;--muted:#9699a2;--soft:#c4c6cc;
+  --accent:#f5f5f6;--accentText:#0b0c0e;--success:#8ee0b5;--danger:#ff9292;
+  --radius:17px;
 }
 *{box-sizing:border-box}
-body{margin:0;height:100dvh;overflow:hidden;background:var(--bg);
-color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+html,body{height:100%;margin:0;background:var(--bg)}
+body{height:100dvh;overflow:hidden;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
 button,input,textarea{font:inherit}
 button{cursor:pointer}
-.app{height:100dvh;display:grid;grid-template-columns:320px minmax(0,1fr);max-width:1600px;margin:auto;background:#091522}
-.sidebar{min-width:0;display:flex;flex-direction:column;background:var(--panel);border-right:1px solid var(--line)}
-.side-top{padding:20px 16px 15px;border-bottom:1px solid var(--line)}
-.brand-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.brand{display:flex;align-items:center;gap:11px}
-.logo{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;color:#06131d;font-weight:950;font-size:23px;background:linear-gradient(135deg,var(--cyan),var(--blue))}
-.brand-name{font-size:20px;font-weight:900;letter-spacing:1.5px}
-.brand-tag{color:var(--muted);font-size:10px;letter-spacing:1.5px;margin-top:3px}
-.icon-btn{width:39px;height:39px;display:grid;place-items:center;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:12px}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #c7c8ce;outline-offset:2px}
+.app{height:100dvh;max-width:1700px;margin:auto;display:grid;grid-template-columns:320px minmax(0,1fr);background:var(--bg)}
+.sidebar{min-width:0;display:flex;flex-direction:column;background:#0d0e11;border-right:1px solid var(--line)}
+.side-top{padding:21px 17px 15px;border-bottom:1px solid var(--line)}
+.brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.logo{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;background:#f5f5f6;color:#090a0c;font-size:22px;font-weight:950;letter-spacing:-2px}
+.brand-name{font-size:17px;font-weight:850;letter-spacing:2px}
+.brand-tag{color:#777a83;font-size:9px;letter-spacing:1.8px;margin-top:4px}
+.icon-btn{width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;color:var(--soft);background:var(--surface2);border:1px solid var(--line);border-radius:12px;transition:background .18s,border-color .18s}
+.icon-btn:hover{background:#24262b;border-color:#42444c}
+.icon-btn svg{width:17px;height:17px}
 .search-wrap{position:relative;margin-top:19px}
-.search-wrap span{position:absolute;left:12px;top:10px;color:var(--muted);font-size:20px}
-.search{width:100%;padding:12px 12px 12px 37px;background:#071421;border:1px solid var(--line);border-radius:12px;color:var(--text);outline:none}
-.search:focus,textarea:focus{border-color:var(--cyan)}
-.section-head{padding:16px 17px 8px;display:flex;justify-content:space-between;color:var(--muted);font-size:11px;font-weight:850;letter-spacing:1.3px;text-transform:uppercase}
-.list{overflow:auto;min-height:0;flex:1;padding:0 8px 10px}
-.contact{width:100%;display:flex;gap:11px;align-items:center;text-align:left;padding:11px 9px;margin:2px 0;border:1px solid transparent;border-radius:14px;color:var(--text);background:transparent}
-.contact:hover{background:#12263a}
-.contact.active{background:#153047;border-color:#28536b}
-.avatar{width:43px;height:43px;flex:0 0 43px;display:grid;place-items:center;border-radius:15px;color:#e1fbff;font-weight:850;background:linear-gradient(140deg,#1b637a,#344c8e);border:1px solid #39718a}
+.search-wrap svg{position:absolute;left:12px;top:13px;width:16px;height:16px;color:#777a83;pointer-events:none}
+.search{width:100%;height:43px;padding:0 12px 0 38px;background:#090a0c;border:1px solid #282a30;border-radius:12px;color:var(--text);outline:none;font-size:12px}
+.search::placeholder{color:#6f727b}
+.search:focus{border-color:#777a83}
+.list-heading{padding:17px 17px 8px;display:flex;justify-content:space-between;align-items:center;color:#858891;font-size:10px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}
+.count{min-width:22px;padding:3px 6px;text-align:center;border:1px solid #2b2d32;border-radius:7px;color:#c5c6cb;font-size:10px;letter-spacing:0}
+.list{overflow:auto;min-height:0;flex:1;padding:0 8px 10px;overscroll-behavior:contain}
+.contact{width:100%;display:flex;gap:11px;align-items:center;text-align:left;padding:10px 9px;margin:2px 0;border:1px solid transparent;border-radius:13px;color:var(--text);background:transparent;transition:background .15s,border-color .15s}
+.contact:hover{background:#181a1f}
+.contact.active{background:#1a1c21;border-color:#33353c}
+.avatar{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:14px;color:#f0f0f2;font-weight:800;font-size:13px;background:linear-gradient(145deg,#3c3e45,#202228);border:1px solid #4a4c53;overflow:hidden}
+.avatar.me{background:#f2f2f4;color:#111216;border-color:#f2f2f4}
 .contact-text{flex:1;min-width:0}
-.contact-name{font-size:14px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.contact-preview{font-size:12px;color:var(--muted);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.empty-list{color:var(--muted);font-size:13px;line-height:1.7;padding:15px 10px}
-.profile-bar{padding:12px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--line)}
+.contact-name{font-size:12px;font-weight:750;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contact-preview{font-size:11px;color:#888b94;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.empty-list{color:#777a83;font-size:12px;line-height:1.7;padding:13px 10px}
+.profile-bar{padding:13px 12px;display:flex;align-items:center;gap:10px;border-top:1px solid var(--line);background:#0a0b0e}
 .profile-info{flex:1;min-width:0}
-.profile-name{font-size:13px;font-weight:800;overflow-wrap:anywhere}
-.profile-id{font-size:11px;color:var(--muted);margin-top:4px}
-.main{min-width:0;display:flex;flex-direction:column;position:relative}
-.chat-header{min-height:75px;padding:13px 20px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);background:#0a1827}
+.profile-name{font-size:12px;font-weight:800;overflow-wrap:anywhere}
+.profile-id{font-size:10px;color:#858891;margin-top:4px}
+.main{min-width:0;display:flex;flex-direction:column;position:relative;background:#0a0b0e}
+.chat-header{min-height:76px;padding:13px 23px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);background:#0d0e11}
 .chat-person{flex:1;min-width:0}
-.chat-title{font-size:15px;font-weight:850;overflow-wrap:anywhere}
-.chat-subtitle{font-size:12px;color:var(--muted);margin-top:5px}
-.online{color:#69e5b1;font-size:11px;white-space:nowrap}
+.chat-title{font-size:14px;font-weight:800;overflow-wrap:anywhere}
+.chat-subtitle{font-size:11px;color:#888b94;margin-top:5px}
+.presence{display:flex;align-items:center;gap:7px;color:#8f929a;font-size:10px;white-space:nowrap}
+.presence-dot{width:6px;height:6px;border-radius:50%;background:#777a83}
 .back-btn{display:none}
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px;background:radial-gradient(ellipse at center,#12304445,transparent 60%)}
-.welcome-logo{width:86px;height:86px;display:grid;place-items:center;border-radius:28px;background:linear-gradient(140deg,var(--cyan),var(--blue));color:#06131d;font-size:42px;font-weight:950;margin-bottom:24px}
-.welcome h1{font-size:clamp(24px,3vw,36px);letter-spacing:-1px;margin:0}
-.welcome p{max-width:390px;color:var(--muted);font-size:14px;line-height:1.8}
-.messages{display:none;flex:1;min-height:0;overflow-y:auto;padding:22px clamp(13px,4vw,45px);gap:12px;background:#091522;flex-direction:column}
-.day-label{align-self:center;padding:7px 12px;border:1px solid var(--line);border-radius:30px;background:var(--panel2);color:var(--muted);font-size:11px}
-.bubble-row{display:flex;flex-direction:column;gap:5px;max-width:min(78%,570px)}
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:25px;background:radial-gradient(ellipse at center,rgba(255,255,255,.035),transparent 60%)}
+.welcome-logo{width:78px;height:78px;display:grid;place-items:center;border-radius:24px;background:#f4f4f5;color:#090a0c;font-size:37px;font-weight:950;letter-spacing:-4px;margin-bottom:25px;box-shadow:0 18px 60px #0008}
+.welcome h1{font-size:clamp(24px,3vw,35px);letter-spacing:-1.3px;margin:0;font-weight:750}
+.welcome p{max-width:365px;color:#8b8e97;font-size:13px;line-height:1.8;margin:13px 0 0}
+.welcome-tag{margin-top:25px;display:flex;align-items:center;gap:8px;color:#7b7e87;font-size:9px;letter-spacing:1.6px;text-transform:uppercase}
+.welcome-tag:before,.welcome-tag:after{content:"";width:24px;height:1px;background:#34363c}
+.messages{display:none;flex:1;min-height:0;overflow-y:auto;padding:24px clamp(13px,4vw,48px);gap:13px;background:#0a0b0e;flex-direction:column;overscroll-behavior:contain;scroll-behavior:smooth}
+.day-label{align-self:center;padding:7px 12px;border:1px solid #2b2d32;border-radius:30px;background:#141519;color:#858891;font-size:10px}
+.bubble-row{display:flex;flex-direction:column;gap:5px;max-width:min(78%,600px)}
 .bubble-row.mine{align-self:flex-end;align-items:flex-end}
 .bubble-row.theirs{align-self:flex-start;align-items:flex-start}
-.bubble{padding:11px 14px;border:1px solid #263f56;border-radius:16px 16px 16px 5px;background:#12263a;font-size:14px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}
-.mine .bubble{border-color:#24717b;border-radius:16px 16px 5px 16px;background:linear-gradient(135deg,#145568,#244e7a)}
-.time{font-size:10px;color:#8299ad;padding:0 4px}
-.composer{display:none;align-items:flex-end;gap:10px;padding:13px 17px;border-top:1px solid var(--line);background:#0b1a2a}
-.composer textarea{flex:1;min-width:0;min-height:46px;max-height:140px;resize:none;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:#071421;color:var(--text);outline:none}
-.send-btn{width:47px;height:47px;flex:0 0 47px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#06131d;font-size:20px;font-weight:900}
-.status{min-height:20px;padding:3px 18px;color:var(--muted);font-size:11px}
-.status.error{color:var(--red)}
+.bubble{padding:11px 14px;border:1px solid #303238;border-radius:16px 16px 16px 5px;background:#17191e;color:#e9e9ec;font-size:13px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.mine .bubble{border-color:#f1f1f3;background:#f1f1f3;color:#101114;border-radius:16px 16px 5px 16px}
+.time{font-size:9px;color:#777a83;padding:0 4px}
+.composer{display:none;align-items:flex-end;gap:9px;padding:13px 18px;border-top:1px solid var(--line);background:#0d0e11}
+.composer textarea{flex:1;min-width:0;min-height:45px;max-height:140px;resize:none;padding:13px 14px;border:1px solid #303238;border-radius:13px;background:#090a0c;color:var(--text);outline:none;font-size:13px;line-height:1.45}
+.composer textarea::placeholder{color:#737680}
+.composer textarea:focus{border-color:#888b94}
+.send-btn{width:45px;height:45px;flex:0 0 45px;border:1px solid #fff;border-radius:13px;background:#f5f5f6;color:#0b0c0e;display:grid;place-items:center;transition:background .15s,transform .15s}
+.send-btn:hover{background:#d8d9dd}
+.send-btn:active{transform:scale(.97)}
+.send-btn:disabled{opacity:.5;cursor:wait}
+.send-btn svg{width:17px;height:17px}
+.status{min-height:21px;padding:4px 18px;color:#7e818a;background:#0d0e11;font-size:10px}
+.status.error{color:var(--danger)}
 .hidden{display:none!important}
+@media(min-width:721px){
+ .sidebar .list{max-height:calc((100dvh - 245px)/2)}
+ .sidebar .list#contactList{flex:1}
+}
 @media(max-width:720px){
  .app{grid-template-columns:1fr}
  .sidebar{display:flex}
  .main{display:none}
  body.mobile-chat .sidebar{display:none}
  body.mobile-chat .main{display:flex}
- .side-top{padding:16px 13px 12px}
+ .side-top{padding:15px 13px 12px}
  .back-btn{display:grid}
- .chat-header{padding:12px}
- .online{display:none}
- .messages{padding:16px 12px}
+ .chat-header{min-height:68px;padding:11px 12px}
+ .presence{display:none}
+ .messages{padding:17px 12px}
  .bubble-row{max-width:88%}
  .composer{padding:10px 10px max(10px,env(safe-area-inset-bottom))}
+ .profile-bar{padding-bottom:max(12px,env(safe-area-inset-bottom))}
+ .status{padding-left:12px}
 }
+@media(max-width:360px){
+ .brand-name{font-size:15px}
+ .side-top{padding-left:10px;padding-right:10px}
+ .avatar{width:38px;height:38px;flex-basis:38px}
+ .contact{gap:8px;padding:9px 7px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
-  <aside class="sidebar">
+  <aside class="sidebar" aria-label="Navigation et contacts">
     <div class="side-top">
       <div class="brand-row">
         <div class="brand">
-          <div class="logo">N</div>
+          <div class="logo" aria-hidden="true">N.</div>
           <div><div class="brand-name">NEXORA</div><div class="brand-tag">MESSAGERIE PRIVÉE</div></div>
         </div>
-        <button class="icon-btn" id="refreshBtn" title="Actualiser">↻</button>
+        <button class="icon-btn" id="refreshBtn" title="Actualiser les données" aria-label="Actualiser les données">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M5.6 9a7 7 0 0 1 11.6-2L20 12M4 12l2.8 5a7 7 0 0 0 11.6-2"/></svg>
+        </button>
       </div>
-      <div class="search-wrap"><span>⌕</span><input id="searchInput" class="search" placeholder="Rechercher un contact…" autocomplete="off"></div>
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m16 16 4 4"/></svg>
+        <input id="searchInput" class="search" placeholder="Rechercher un contact…" autocomplete="off" aria-label="Rechercher un contact">
+      </div>
     </div>
-    <div class="section-head"><span>Conversations</span><span id="conversationCount">0</span></div>
-    <div class="list" id="conversationList"><div class="empty-list">Chargement…</div></div>
-    <div class="section-head"><span>Contacts</span><span id="contactCount">0</span></div>
-    <div class="list" id="contactList"><div class="empty-list">Chargement…</div></div>
+    <div class="list-heading"><span>Conversations</span><span class="count" id="conversationCount">0</span></div>
+    <div class="list" id="conversationList"><div class="empty-list">Chargement des conversations…</div></div>
+    <div class="list-heading"><span>Contacts</span><span class="count" id="contactCount">0</span></div>
+    <div class="list" id="contactList"><div class="empty-list">Chargement des contacts…</div></div>
     <div class="profile-bar">
-      <div class="avatar" id="myAvatar">N</div>
-      <div class="profile-info"><div class="profile-name" id="myName">Mon compte</div><div class="profile-id" id="myId">NEXORA</div></div>
-      <button class="icon-btn" id="logoutBtn" title="Déconnexion">⇥</button>
+      <div class="avatar me" id="myAvatar">N</div>
+      <div class="profile-info"><div class="profile-name" id="myName">Mon compte</div><div class="profile-id" id="myId">NEXORA PRO</div></div>
+      <button class="icon-btn" id="logoutBtn" title="Déconnexion" aria-label="Se déconnecter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>
+      </button>
     </div>
   </aside>
 
   <main class="main">
     <header class="chat-header">
-      <button class="icon-btn back-btn" id="backBtn" aria-label="Retour">‹</button>
+      <button class="icon-btn back-btn" id="backBtn" aria-label="Retour aux contacts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
       <div class="avatar" id="chatAvatar">N</div>
-      <div class="chat-person"><div class="chat-title" id="chatTitle">Bienvenue sur NEXORA</div><div class="chat-subtitle" id="chatSubtitle">Choisis un contact pour discuter</div></div>
-      <div class="online">● Connecté</div>
+      <div class="chat-person"><div class="chat-title" id="chatTitle">Bienvenue sur NEXORA</div><div class="chat-subtitle" id="chatSubtitle">Choisissez un contact pour discuter</div></div>
+      <div class="presence"><span class="presence-dot"></span><span>Messagerie</span></div>
     </header>
     <section class="welcome" id="welcome">
-      <div class="welcome-logo">N</div>
+      <div class="welcome-logo" aria-hidden="true">N.</div>
       <h1>Chaque échange compte.</h1>
-      <p>Choisis un contact pour commencer une conversation. Tes messages apparaîtront ici.</p>
+      <p>Choisissez un contact pour démarrer une conversation. Vos messages apparaîtront ici dans un espace clair, conçu pour rester concentré sur l'essentiel.</p>
+      <div class="welcome-tag">Votre espace NEXORA</div>
     </section>
-    <section class="messages" id="messages" aria-live="polite"></section>
+    <section class="messages" id="messages" aria-live="polite" aria-label="Messages de la conversation"></section>
     <form class="composer" id="composer">
-      <textarea id="messageInput" rows="1" maxlength="5000" placeholder="Écris ton message…" aria-label="Message"></textarea>
-      <button class="send-btn" id="sendBtn" type="submit" aria-label="Envoyer">➤</button>
+      <label class="visually-hidden" for="messageInput">Écrire un message</label>
+      <textarea id="messageInput" rows="1" maxlength="5000" placeholder="Écrire un message…" aria-label="Écrire un message"></textarea>
+      <button class="send-btn" id="sendBtn" type="submit" aria-label="Envoyer le message">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </button>
     </form>
     <div class="status" id="status" role="status" aria-live="polite"></div>
   </main>
@@ -132,20 +175,22 @@ button{cursor:pointer}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+"use strict";
+
 const SUPABASE_URL = "https://tmjqzeycxgfwowodaxxo.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CJp2PmoUKPPx989lsipQiQ_6nWSp-xl";
 
 const $ = id => document.getElementById(id);
 let db, session, me, myProfile, profiles = [], conversations = [];
-let activeConversation = null, activeContact = null, messageChannel = null;
-let realtimeChannel = null, sending = false;
+let activeConversation = null, activeContact = null, messageChannel = null, realtimeChannel = null;
+let sending = false, loadMessagesRequest = 0;
 
 function status(message, type = "") {
   $("status").textContent = message || "";
   $("status").className = "status" + (type ? " " + type : "");
 }
 function initials(name) {
-  return String(name || "?").trim().slice(0,1).toUpperCase() || "?";
+  return String(name || "?").trim().slice(0, 1).toUpperCase() || "?";
 }
 function nameOf(profile) {
   return profile?.display_name || profile?.username || "Utilisateur";
@@ -153,21 +198,40 @@ function nameOf(profile) {
 function timeOf(value) {
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? "" :
-    date.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+    date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
 }
-function otherId(c) {
-  return c.user_one === me.id ? c.user_two : c.user_one;
+function otherId(conversation) {
+  return conversation.user_one === me.id ? conversation.user_two : conversation.user_one;
+}
+function makeEmpty(text) {
+  const empty = document.createElement("div");
+  empty.className = "empty-list";
+  empty.textContent = text;
+  return empty;
+}
+function makeAvatar(name, extraClass = "") {
+  const avatar = document.createElement("div");
+  avatar.className = "avatar" + (extraClass ? " " + extraClass : "");
+  avatar.textContent = initials(name);
+  avatar.setAttribute("aria-hidden", "true");
+  return avatar;
 }
 
 async function init() {
   let saved;
-  try { saved = JSON.parse(sessionStorage.getItem("nexora_session") || "null"); } catch {}
+  try {
+    saved = JSON.parse(sessionStorage.getItem("nexora_session") || "null");
+  } catch {
+    saved = null;
+  }
+
   if (!saved?.access_token || !saved?.refresh_token) {
     location.replace("/");
     return;
   }
+
   if (!window.supabase?.createClient) {
-    status("Service de messagerie indisponible. Vérifie ta connexion Internet.", "error");
+    status("Le service de messagerie ne s'est pas chargé. Vérifiez votre connexion Internet.", "error");
     return;
   }
 
@@ -175,10 +239,11 @@ async function init() {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
   });
 
-  const {data, error} = await db.auth.setSession({
+  const { data, error } = await db.auth.setSession({
     access_token: saved.access_token,
     refresh_token: saved.refresh_token
   });
+
   if (error || !data.session?.user) {
     sessionStorage.removeItem("nexora_session");
     sessionStorage.removeItem("nexora_user");
@@ -191,10 +256,11 @@ async function init() {
 
   const result = await db.from("profiles")
     .select("id,username,nexora_id,display_name,created_at")
-    .eq("id",me.id).maybeSingle();
+    .eq("id", me.id)
+    .maybeSingle();
 
   if (result.error) {
-    status("Lecture du profil impossible : " + result.error.message,"error");
+    status("Impossible de charger votre profil. Vérifiez la table profiles et ses règles d'accès.", "error");
     return;
   }
 
@@ -202,6 +268,7 @@ async function init() {
     id: me.id,
     username: me.user_metadata?.username || "Utilisateur"
   };
+
   $("myName").textContent = nameOf(myProfile);
   $("myId").textContent = myProfile.nexora_id ? "ID : " + myProfile.nexora_id : "Compte NEXORA";
   $("myAvatar").textContent = initials(nameOf(myProfile));
@@ -211,26 +278,34 @@ async function init() {
 }
 
 async function loadData() {
-  const [pResult, cResult] = await Promise.all([
-    db.from("profiles").select("id,username,nexora_id,display_name,created_at")
-      .neq("id",me.id).order("username").limit(500),
-    db.from("conversations").select("id,user_one,user_two,created_at")
-      .or("user_one.eq."+me.id+",user_two.eq."+me.id)
-      .order("created_at",{ascending:false}).limit(200)
+  if (!db || !me) return;
+
+  const [profileResult, conversationResult] = await Promise.all([
+    db.from("profiles")
+      .select("id,username,nexora_id,display_name,created_at")
+      .neq("id", me.id)
+      .order("username")
+      .limit(500),
+    db.from("conversations")
+      .select("id,user_one,user_two,created_at")
+      .or("user_one.eq." + me.id + ",user_two.eq." + me.id)
+      .order("created_at", { ascending: false })
+      .limit(200)
   ]);
 
-  if (pResult.error) {
-    status("Erreur contacts : " + pResult.error.message,"error");
-    $("contactList").innerHTML = '<div class="empty-list">Vérifie les règles RLS de profiles.</div>';
+  if (profileResult.error) {
+    status("Impossible de charger les contacts. Vérifiez les règles d'accès de profiles.", "error");
+    $("contactList").replaceChildren(makeEmpty("Les contacts ne peuvent pas être chargés pour le moment."));
     return;
   }
-  if (cResult.error) {
-    status("Erreur conversations : " + cResult.error.message,"error");
-    $("conversationList").innerHTML = '<div class="empty-list">Vérifie les règles RLS de conversations.</div>';
+  if (conversationResult.error) {
+    status("Impossible de charger les conversations. Vérifiez les règles d'accès de conversations.", "error");
+    $("conversationList").replaceChildren(makeEmpty("Les conversations ne peuvent pas être chargées."));
     return;
   }
-  profiles = pResult.data || [];
-  conversations = cResult.data || [];
+
+  profiles = profileResult.data || [];
+  conversations = conversationResult.data || [];
   renderContacts();
   await renderConversations();
   status("");
@@ -240,36 +315,37 @@ function renderContacts() {
   const query = $("searchInput").value.trim().toLowerCase();
   const list = $("contactList");
   list.replaceChildren();
-  const filtered = profiles.filter(p =>
-    !query || [nameOf(p),p.username,p.nexora_id].some(v => String(v||"").toLowerCase().includes(query))
+
+  const filtered = profiles.filter(profile =>
+    !query || [nameOf(profile), profile.username, profile.nexora_id]
+      .some(value => String(value || "").toLowerCase().includes(query))
   );
-  $("contactCount").textContent = filtered.length;
+
+  $("contactCount").textContent = String(filtered.length);
 
   if (!filtered.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty-list";
-    empty.textContent = query ? "Aucun contact trouvé." : "Les nouveaux utilisateurs apparaîtront ici.";
-    list.append(empty);
+    list.append(makeEmpty(query ? "Aucun contact ne correspond à votre recherche." : "Les nouveaux utilisateurs apparaîtront ici."));
     return;
   }
-  filtered.forEach(p => {
+
+  filtered.forEach(profile => {
     const button = document.createElement("button");
-    button.className = "contact" + (activeContact?.id === p.id ? " active" : "");
     button.type = "button";
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.textContent = initials(nameOf(p));
+    button.className = "contact" + (activeContact?.id === profile.id ? " active" : "");
+    button.setAttribute("aria-label", "Ouvrir la conversation avec " + nameOf(profile));
+
     const info = document.createElement("div");
     info.className = "contact-text";
     const name = document.createElement("div");
     name.className = "contact-name";
-    name.textContent = nameOf(p);
+    name.textContent = nameOf(profile);
     const preview = document.createElement("div");
     preview.className = "contact-preview";
-    preview.textContent = p.nexora_id ? "ID : " + p.nexora_id : "@" + (p.username||"utilisateur");
-    info.append(name,preview);
-    button.append(avatar,info);
-    button.addEventListener("click",()=>startConversation(p));
+    preview.textContent = profile.nexora_id ? "ID : " + profile.nexora_id : "@" + (profile.username || "utilisateur");
+
+    info.append(name, preview);
+    button.append(makeAvatar(nameOf(profile)), info);
+    button.addEventListener("click", () => startConversation(profile));
     list.append(button);
   });
 }
@@ -277,30 +353,29 @@ function renderContacts() {
 async function renderConversations() {
   const list = $("conversationList");
   list.replaceChildren();
+
   const query = $("searchInput").value.trim().toLowerCase();
-  const rows = conversations.map(c => ({
-    conversation:c,
-    profile:profiles.find(p=>p.id===otherId(c))
-  })).filter(r => r.profile &&
-    (!query || [nameOf(r.profile),r.profile.username].some(v=>String(v||"").toLowerCase().includes(query)))
+  const rows = conversations.map(conversation => ({
+    conversation,
+    profile: profiles.find(profile => profile.id === otherId(conversation))
+  })).filter(row => row.profile &&
+    (!query || [nameOf(row.profile), row.profile.username, row.profile.nexora_id]
+      .some(value => String(value || "").toLowerCase().includes(query)))
   );
-  $("conversationCount").textContent = rows.length;
+
+  $("conversationCount").textContent = String(rows.length);
 
   if (!rows.length) {
-    const empty = document.createElement("div");
-    empty.className = "empty-list";
-    empty.textContent = query ? "Aucune conversation trouvée." : "Tes conversations apparaîtront ici.";
-    list.append(empty);
+    list.append(makeEmpty(query ? "Aucune conversation trouvée." : "Vos conversations apparaîtront ici."));
     return;
   }
 
-  for (const row of rows) {
+  rows.forEach(row => {
     const button = document.createElement("button");
     button.type = "button";
-    button.className = "contact" + (activeConversation?.id===row.conversation.id ? " active" : "");
-    const avatar = document.createElement("div");
-    avatar.className = "avatar";
-    avatar.textContent = initials(nameOf(row.profile));
+    button.className = "contact" + (activeConversation?.id === row.conversation.id ? " active" : "");
+    button.setAttribute("aria-label", "Ouvrir la conversation avec " + nameOf(row.profile));
+
     const info = document.createElement("div");
     info.className = "contact-text";
     const title = document.createElement("div");
@@ -308,55 +383,58 @@ async function renderConversations() {
     title.textContent = nameOf(row.profile);
     const preview = document.createElement("div");
     preview.className = "contact-preview";
-    preview.textContent = "Ouvrir la conversation";
-    info.append(title,preview);
-    button.append(avatar,info);
-    button.addEventListener("click",()=>openConversation(row.conversation,row.profile));
+    preview.textContent = row.conversation.id === activeConversation?.id ? "Conversation ouverte" : "Ouvrir la conversation";
+
+    info.append(title, preview);
+    button.append(makeAvatar(nameOf(row.profile)), info);
+    button.addEventListener("click", () => openConversation(row.conversation, row.profile));
     list.append(button);
-  }
+  });
 }
 
 async function startConversation(profile) {
-  if (!profile || profile.id===me.id) return;
+  if (!profile || profile.id === me.id) return;
   activeContact = profile;
   status("Ouverture de la conversation…");
 
-  let conversation = conversations.find(c =>
-    (c.user_one===me.id && c.user_two===profile.id) ||
-    (c.user_two===me.id && c.user_one===profile.id)
+  let conversation = conversations.find(item =>
+    (item.user_one === me.id && item.user_two === profile.id) ||
+    (item.user_two === me.id && item.user_one === profile.id)
   );
 
   if (!conversation) {
-    const {data,error} = await db.from("conversations")
-      .insert({user_one:me.id,user_two:profile.id})
-      .select("id,user_one,user_two,created_at").single();
+    const { data, error } = await db.from("conversations")
+      .insert({ user_one: me.id, user_two: profile.id })
+      .select("id,user_one,user_two,created_at")
+      .single();
 
     if (error) {
-      // Si l'autre utilisateur a créé la conversation en même temps,
-      // recherche la conversation existante avant d'afficher une erreur.
       const retry = await db.from("conversations")
         .select("id,user_one,user_two,created_at")
-        .or("and(user_one.eq."+me.id+",user_two.eq."+profile.id+"),and(user_one.eq."+profile.id+",user_two.eq."+me.id+")")
-        .limit(1).maybeSingle();
+        .or("and(user_one.eq." + me.id + ",user_two.eq." + profile.id + "),and(user_one.eq." + profile.id + ",user_two.eq." + me.id + ")")
+        .limit(1)
+        .maybeSingle();
 
       if (retry.error || !retry.data) {
-        status("Création impossible : " + error.message,"error");
+        status("Impossible d'ouvrir cette conversation. Vérifiez les règles d'accès et les contraintes de la table.", "error");
         return;
       }
       conversation = retry.data;
-    } else conversation = data;
+    } else {
+      conversation = data;
+    }
   }
 
-  if (!conversations.some(c=>c.id===conversation.id)) conversations.unshift(conversation);
-  await openConversation(conversation,profile);
+  if (!conversations.some(item => item.id === conversation.id)) conversations.unshift(conversation);
+  await openConversation(conversation, profile);
   await renderConversations();
 }
 
-async function openConversation(conversation,profile) {
+async function openConversation(conversation, profile) {
   activeConversation = conversation;
   activeContact = profile;
   $("chatTitle").textContent = nameOf(profile);
-  $("chatSubtitle").textContent = profile.nexora_id ? "ID NEXORA : "+profile.nexora_id : "@"+(profile.username||"utilisateur");
+  $("chatSubtitle").textContent = profile.nexora_id ? "ID NEXORA : " + profile.nexora_id : "@" + (profile.username || "utilisateur");
   $("chatAvatar").textContent = initials(nameOf(profile));
   $("welcome").classList.add("hidden");
   $("messages").style.display = "flex";
@@ -367,12 +445,15 @@ async function openConversation(conversation,profile) {
     await db.removeChannel(messageChannel);
     messageChannel = null;
   }
+
   await loadMessages();
 
-  messageChannel = db.channel("messages-"+conversation.id)
+  messageChannel = db.channel("messages-" + conversation.id)
     .on("postgres_changes", {
-      event:"*", schema:"public", table:"messages",
-      filter:"conversation_id=eq."+conversation.id
+      event: "*",
+      schema: "public",
+      table: "messages",
+      filter: "conversation_id=eq." + conversation.id
     }, () => loadMessages())
     .subscribe();
 
@@ -382,17 +463,24 @@ async function openConversation(conversation,profile) {
 
 async function loadMessages() {
   if (!activeConversation) return;
-  const {data,error} = await db.from("messages")
+  const requestId = ++loadMessagesRequest;
+  const conversationId = activeConversation.id;
+
+  const { data, error } = await db.from("messages")
     .select("id,conversation_id,sender_id,content,created_at")
-    .eq("conversation_id",activeConversation.id)
-    .order("created_at",{ascending:true}).limit(500);
+    .eq("conversation_id", conversationId)
+    .order("created_at", { ascending: true })
+    .limit(500);
+
+  if (requestId !== loadMessagesRequest || activeConversation?.id !== conversationId) return;
 
   if (error) {
-    status("Lecture des messages impossible : "+error.message,"error");
+    status("Impossible de charger les messages. Vérifiez les règles d'accès de messages.", "error");
     return;
   }
 
   const container = $("messages");
+  const nearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
   container.replaceChildren();
 
   if (!data?.length) {
@@ -403,70 +491,85 @@ async function loadMessages() {
   } else {
     data.forEach(message => {
       const row = document.createElement("div");
-      row.className = "bubble-row "+(message.sender_id===me.id?"mine":"theirs");
+      row.className = "bubble-row " + (message.sender_id === me.id ? "mine" : "theirs");
+
       const bubble = document.createElement("div");
       bubble.className = "bubble";
       bubble.textContent = message.content;
+
       const time = document.createElement("div");
       time.className = "time";
       time.textContent = timeOf(message.created_at);
-      row.append(bubble,time);
+
+      row.append(bubble, time);
       container.append(row);
     });
   }
-  container.scrollTop = container.scrollHeight;
+
+  if (nearBottom || requestId === 1) container.scrollTop = container.scrollHeight;
 }
 
-$("composer").addEventListener("submit",async event=>{
+$("composer").addEventListener("submit", async event => {
   event.preventDefault();
-  const content = $("messageInput").value.trim();
+  const input = $("messageInput");
+  const content = input.value.trim();
   if (!content || !activeConversation || sending) return;
 
   sending = true;
   $("sendBtn").disabled = true;
+
   try {
-    const {error} = await db.from("messages").insert({
-      conversation_id:activeConversation.id,
-      sender_id:me.id,
+    const { error } = await db.from("messages").insert({
+      conversation_id: activeConversation.id,
+      sender_id: me.id,
       content
     });
     if (error) throw error;
 
-    $("messageInput").value = "";
-    $("messageInput").style.height = "auto";
+    input.value = "";
+    input.style.height = "auto";
     await loadMessages();
     status("");
   } catch (error) {
-    status("Envoi impossible : "+error.message,"error");
+    status("Envoi impossible. Vérifiez votre connexion et les règles d'accès aux messages.", "error");
   } finally {
     sending = false;
     $("sendBtn").disabled = false;
-    $("messageInput").focus();
+    input.focus();
   }
 });
 
-$("messageInput").addEventListener("input",function(){
+$("messageInput").addEventListener("input", function() {
   this.style.height = "auto";
-  this.style.height = Math.min(this.scrollHeight,140)+"px";
+  this.style.height = Math.min(this.scrollHeight, 140) + "px";
 });
-$("messageInput").addEventListener("keydown",event=>{
-  if (event.key==="Enter" && !event.shiftKey) {
+$("messageInput").addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
     $("composer").requestSubmit();
   }
 });
-$("searchInput").addEventListener("input",()=>{
+$("searchInput").addEventListener("input", () => {
   renderContacts();
   renderConversations();
 });
-$("refreshBtn").addEventListener("click",loadData);
-$("backBtn").addEventListener("click",()=>document.body.classList.remove("mobile-chat"));
+$("refreshBtn").addEventListener("click", async () => {
+  $("refreshBtn").disabled = true;
+  try {
+    await loadData();
+    if (activeConversation) await loadMessages();
+  } finally {
+    $("refreshBtn").disabled = false;
+  }
+});
+$("backBtn").addEventListener("click", () => document.body.classList.remove("mobile-chat"));
 
-$("logoutBtn").addEventListener("click",async()=>{
+$("logoutBtn").addEventListener("click", async () => {
+  $("logoutBtn").disabled = true;
   try {
     if (messageChannel) await db.removeChannel(messageChannel);
     if (realtimeChannel) await db.removeChannel(realtimeChannel);
-    await db.auth.signOut({scope:"local"});
+    if (db) await db.auth.signOut({ scope: "local" });
   } catch {}
   sessionStorage.removeItem("nexora_session");
   sessionStorage.removeItem("nexora_user");
@@ -475,13 +578,13 @@ $("logoutBtn").addEventListener("click",async()=>{
 
 function subscribeRealtime() {
   realtimeChannel = db.channel("nexora-updates")
-    .on("postgres_changes",{event:"*",schema:"public",table:"conversations"},()=>loadData())
+    .on("postgres_changes", { event: "*", schema: "public", table: "conversations" }, () => loadData())
     .subscribe();
 }
 
-init().catch(error=>{
-  console.error(error);
-  status("Erreur au démarrage : "+(error.message||"réessaie"),"error");
+init().catch(error => {
+  console.error("Erreur de démarrage NEXORA:", error);
+  status("NEXORA n'a pas pu démarrer. Actualisez la page ou reconnectez-vous.", "error");
 });
 </script>
 </body>
