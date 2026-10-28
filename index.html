@@ -3,588 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080808">
-  <meta name="description" content="NEXORA PRO — Connecte-toi au monde. Une messagerie moderne, simple et privée.">
-  <title>NEXORA PRO — Connecte-toi au monde</title>
-
+  <meta name="theme-color" content="#08090b">
+  <meta name="description" content="NEXORA — Une messagerie simple, moderne et privée pour rester connecté.">
+  <title>NEXORA — Messagerie</title>
   <style>
     :root {
       color-scheme: dark;
-      --bg: #080808;
-      --panel: #111111;
-      --panel2: #181818;
-      --line: #292929;
-      --text: #f7f7f7;
-      --muted: #999999;
+      --bg: #08090b;
+      --panel: #101114;
+      --panel-soft: #15171b;
+      --line: #292b30;
+      --text: #f7f7f8;
+      --muted: #92959e;
       --white: #ffffff;
       --danger: #ff7777;
-      --success: #75e3a6;
+      --radius: 22px;
     }
-
     * { box-sizing: border-box; }
-
-    html { min-height: 100%; }
-
+    html { min-height: 100%; background: var(--bg); }
     body {
-      margin: 0;
-      min-height: 100vh;
-      min-height: 100dvh;
-      padding: 24px;
-      display: grid;
-      place-items: center;
+      margin: 0; min-height: 100vh; color: var(--text);
       background:
-        radial-gradient(ellipse at 10% 0%, #252525 0%, transparent 38%),
-        radial-gradient(ellipse at 100% 100%, #1b1b1b 0%, transparent 35%),
+        radial-gradient(ellipse at 15% 10%, rgba(255,255,255,.055), transparent 32%),
+        radial-gradient(ellipse at 90% 85%, rgba(255,255,255,.035), transparent 28%),
         var(--bg);
-      color: var(--text);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-
     button, input { font: inherit; }
     button { cursor: pointer; }
-
-    .shell {
-      width: min(1050px, 100%);
-      min-height: 650px;
-      display: grid;
-      grid-template-columns: 1.04fr .96fr;
-      overflow: hidden;
-      background: #0d0d0d;
-      border: 1px solid #303030;
-      border-radius: 28px;
-      box-shadow: 0 35px 100px #0009;
+    .page { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; }
+    .topbar {
+      width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 27px 0;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-
-    .intro {
-      padding: 44px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-      overflow: hidden;
-      background:
-        radial-gradient(circle at 80% 55%, #343434 0, transparent 36%),
-        linear-gradient(145deg, #191919, #090909 75%);
-      border-right: 1px solid #292929;
+    .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text); }
+    .brand-mark {
+      width: 42px; height: 42px; border-radius: 14px; display: grid; place-items: center;
+      background: var(--white); color: #08090b; font-size: 20px; font-weight: 900; letter-spacing: -2px;
+      box-shadow: 0 8px 30px rgba(255,255,255,.08);
     }
-
-    .intro::after {
-      content: "";
-      position: absolute;
-      width: 270px;
-      height: 270px;
-      right: -130px;
-      bottom: 70px;
-      border: 1px solid #ffffff12;
-      border-radius: 50%;
-      box-shadow: 0 0 0 35px #ffffff05, 0 0 0 70px #ffffff03;
-      pointer-events: none;
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: .15em; }
+    .brand-sub { margin-top: 3px; color: var(--muted); font-size: 10px; letter-spacing: .19em; }
+    .top-note { color: var(--muted); font-size: 13px; }
+    .top-note button { border: 0; background: none; color: var(--white); font-weight: 700; padding: 5px 0 5px 5px; }
+    main {
+      width: min(1160px, calc(100% - 48px)); margin: auto; padding: 36px 0 60px;
+      display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .82fr);
+      gap: clamp(40px, 8vw, 112px); align-items: center;
     }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 13px;
-      position: relative;
-      z-index: 1;
+    .story { padding: 20px 0; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 9px; color: #d4d5d9;
+      border: 1px solid var(--line); background: rgba(255,255,255,.025);
+      padding: 9px 13px; border-radius: 999px; font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase;
     }
-
-    .logo {
-      width: 49px;
-      height: 49px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      border-radius: 15px;
-      background: var(--white);
-      color: #080808;
-      font-size: 27px;
-      font-weight: 950;
-      letter-spacing: -2px;
-      box-shadow: 0 5px 25px #ffffff18;
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #bfc1c7; box-shadow: 0 0 14px rgba(255,255,255,.35); }
+    h1 { margin: 26px 0 18px; max-width: 650px; font-size: clamp(42px, 5.6vw, 76px); line-height: .99; letter-spacing: -.065em; font-weight: 760; }
+    h1 span { color: #888b94; }
+    .lead { max-width: 480px; color: #a4a6ae; font-size: 16px; line-height: 1.8; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 42px; max-width: 590px; }
+    .feature { border-top: 1px solid var(--line); padding-top: 17px; }
+    .feature-icon { width: 34px; height: 34px; border: 1px solid #34363c; background: #15161a; border-radius: 11px; display: grid; place-items: center; margin-bottom: 13px; }
+    .feature-icon svg { width: 17px; height: 17px; }
+    .feature strong { display: block; font-size: 12px; margin-bottom: 6px; }
+    .feature p { margin: 0; font-size: 11px; line-height: 1.55; color: var(--muted); }
+    .auth-card {
+      width: 100%; max-width: 440px; justify-self: end; padding: clamp(24px, 3.4vw, 38px);
+      border: 1px solid #2b2d32; border-radius: 26px; background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018) 44%), #0e0f12;
+      box-shadow: 0 35px 100px rgba(0,0,0,.34), inset 0 1px rgba(255,255,255,.045);
     }
-
-    .brand-name {
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: 3px;
-    }
-
-    .brand-sub {
-      margin-top: 5px;
-      color: #858585;
-      font-size: 9px;
-      font-weight: 750;
-      letter-spacing: 2.4px;
-    }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      margin: 50px 0;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 11px;
-      border: 1px solid #414141;
-      border-radius: 30px;
-      color: #d4d4d4;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 1.6px;
-      text-transform: uppercase;
-    }
-
-    .pill-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 10px #fff8;
-    }
-
-    h1 {
-      margin: 24px 0 18px;
-      font-size: clamp(43px, 5vw, 65px);
-      line-height: .99;
-      font-weight: 900;
-      letter-spacing: -3.5px;
-    }
-
-    .hero-highlight {
-      display: block;
-      color: transparent;
-      -webkit-text-stroke: 1px #f5f5f5;
-    }
-
-    .hero-description {
-      max-width: 360px;
-      color: #a5a5a5;
-      font-size: 14px;
-      line-height: 1.9;
-    }
-
-    .features {
-      display: grid;
-      gap: 12px;
-      margin-top: 30px;
-    }
-
-    .feature {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: #e3e3e3;
-      font-size: 13px;
-    }
-
-    .feature-icon {
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border: 1px solid #383838;
-      border-radius: 11px;
-      background: #ffffff08;
-      color: #fff;
-      font-size: 16px;
-    }
-
-    .intro-footer {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      color: #777;
-      font-size: 10px;
-      letter-spacing: 1px;
-    }
-
-    .auth {
-      padding: 44px clamp(24px, 4.5vw, 52px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-width: 0;
-    }
-
-    .auth-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 38px;
-    }
-
-    .auth-label {
-      color: #aaa;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .secure {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #999;
-      font-size: 10px;
-    }
-
-    .secure svg { width: 14px; height: 14px; }
-
-    h2 {
-      margin: 0 0 10px;
-      font-size: 32px;
-      line-height: 1.15;
-      letter-spacing: -1.2px;
-      font-weight: 850;
-    }
-
-    .subtitle {
-      margin: 0 0 28px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.7;
-    }
-
-    .tabs {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5px;
-      padding: 5px;
-      margin-bottom: 25px;
-      background: #080808;
-      border: 1px solid var(--line);
-      border-radius: 13px;
-    }
-
-    .tab {
-      padding: 12px 6px;
-      border: 1px solid transparent;
-      border-radius: 9px;
-      background: transparent;
-      color: #858585;
-      font-size: 12px;
-      font-weight: 750;
-      transition: .2s ease;
-    }
-
-    .tab.active {
-      color: #080808;
-      background: #f5f5f5;
-    }
-
-    .field { display: block; margin-bottom: 18px; }
-
-    .field-label {
-      display: block;
-      margin-bottom: 9px;
-      color: #dedede;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 27px; }
+    .card-top h2 { margin: 0 0 8px; font-size: 25px; letter-spacing: -.045em; }
+    .card-top p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .secure-mark { flex: 0 0 auto; width: 40px; height: 40px; display: grid; place-items: center; border-radius: 13px; border: 1px solid var(--line); color: #dedfe3; }
+    .secure-mark svg { width: 19px; height: 19px; }
+    .tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 4px; gap: 4px; background: #08090b; border: 1px solid #26282d; border-radius: 13px; margin-bottom: 25px; }
+    .tab { padding: 11px 8px; border: 0; border-radius: 9px; background: transparent; color: #8e919a; font-size: 13px; font-weight: 700; }
+    .tab[aria-selected="true"] { background: #f6f6f7; color: #0b0c0e; box-shadow: 0 2px 8px rgba(0,0,0,.22); }
+    .field { margin-bottom: 17px; }
+    .field-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 9px; }
+    label { font-size: 12px; color: #e1e2e5; font-weight: 650; }
+    .hint { font-size: 10px; color: #737680; }
     .input-wrap { position: relative; }
-
-    .field input {
-      width: 100%;
-      min-height: 49px;
-      padding: 14px;
-      border: 1px solid #333;
-      border-radius: 11px;
-      outline: none;
-      background: #111;
-      color: #fff;
-      font-size: 14px;
-      transition: border-color .2s, box-shadow .2s;
+    .input-wrap input {
+      display: block; width: 100%; height: 49px; padding: 0 14px; outline: none;
+      border: 1px solid #303238; border-radius: 12px; background: #0a0b0e; color: var(--text);
+      font-size: 14px; transition: border-color .18s, box-shadow .18s;
     }
-
-    .field input:focus {
-      border-color: #bdbdbd;
-      box-shadow: 0 0 0 3px #ffffff0c;
-    }
-
-    .field input::placeholder { color: #606060; }
-
-    .password-input { padding-right: 78px !important; }
-
-    .show-password {
-      position: absolute;
-      top: 50%;
-      right: 10px;
-      transform: translateY(-50%);
-      padding: 7px 3px;
-      border: 0;
-      background: transparent;
-      color: #d1d1d1;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .hint {
-      margin-top: 7px;
-      color: #777;
-      font-size: 10px;
-      line-height: 1.5;
-    }
-
+    .input-wrap input::placeholder { color: #5f626b; }
+    .input-wrap input:focus { border-color: #a8abb3; box-shadow: 0 0 0 3px rgba(255,255,255,.06); }
+    .input-wrap input[aria-invalid="true"] { border-color: var(--danger); }
+    .input-action { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: #a7a9b0; font-size: 11px; font-weight: 700; padding: 8px; }
+    .input-wrap.has-action input { padding-right: 64px; }
+    .form-error { display: none; margin: -1px 0 15px; border: 1px solid rgba(255,119,119,.25); background: rgba(255,119,119,.07); color: #ffaaaa; border-radius: 10px; padding: 11px 12px; font-size: 12px; line-height: 1.5; }
+    .form-error.show { display: block; }
     .submit {
-      width: 100%;
-      min-height: 51px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 5px;
-      padding: 15px;
-      border: 1px solid #fff;
-      border-radius: 11px;
-      background: #f5f5f5;
-      color: #080808;
-      font-size: 13px;
-      font-weight: 850;
-      transition: transform .2s, background .2s;
+      width: 100%; height: 50px; margin-top: 5px; display: flex; align-items: center; justify-content: center; gap: 10px;
+      background: #f6f6f7; color: #090a0c; border: 1px solid #fff; border-radius: 12px; font-size: 13px; font-weight: 800;
+      transition: transform .18s, background .18s; 
     }
-
-    .submit:hover {
-      background: #fff;
-      transform: translateY(-1px);
+    .submit:hover { background: #dedfe2; }
+    .submit:active { transform: scale(.99); }
+    .submit:disabled { cursor: wait; opacity: .7; }
+    .submit svg { width: 16px; height: 16px; }
+    .fine-print { display: flex; gap: 9px; align-items: flex-start; color: #777a83; font-size: 10px; line-height: 1.6; margin-top: 19px; }
+    .fine-print svg { flex: 0 0 auto; width: 14px; height: 14px; margin-top: 1px; }
+    .fine-print a { color: #d2d3d7; text-decoration: underline; text-underline-offset: 3px; }
+    .footer { width: min(1160px, calc(100% - 48px)); margin: 0 auto; padding: 18px 0 25px; border-top: 1px solid rgba(255,255,255,.07); display: flex; justify-content: space-between; gap: 16px; color: #6f727a; font-size: 10px; }
+    .footer-links { display: flex; gap: 18px; }
+    .footer a { color: inherit; text-decoration: none; }
+    .footer a:hover { color: #dfe0e3; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 850px) {
+      main { grid-template-columns: 1fr; max-width: 520px; gap: 32px; padding-top: 24px; }
+      .story { padding: 8px 0 0; }
+      h1 { font-size: clamp(42px, 9vw, 62px); }
+      .lead { font-size: 14px; }
+      .features { margin-top: 25px; }
+      .auth-card { justify-self: stretch; max-width: none; }
     }
-
-    .submit:disabled {
-      opacity: .65;
-      cursor: wait;
-      transform: none;
+    @media (max-width: 480px) {
+      .topbar, main, .footer { width: calc(100% - 32px); }
+      .topbar { padding: 19px 0; }
+      .brand-mark { width: 38px; height: 38px; }
+      .brand-name { font-size: 16px; }
+      .brand-sub { font-size: 9px; }
+      .top-note { font-size: 11px; }
+      main { padding-top: 14px; padding-bottom: 35px; gap: 27px; }
+      h1 { margin-top: 20px; font-size: 43px; }
+      .lead { line-height: 1.7; }
+      .features { gap: 10px; }
+      .feature strong { font-size: 11px; }
+      .feature p { font-size: 10px; }
+      .auth-card { padding: 23px 19px; border-radius: 21px; }
+      .card-top h2 { font-size: 23px; }
+      .footer { flex-direction: column; }
     }
-
-    .submit svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    .message {
-      display: none;
-      margin-bottom: 17px;
-      padding: 12px 13px;
-      border: 1px solid;
-      border-radius: 10px;
-      font-size: 12px;
-      line-height: 1.6;
-      overflow-wrap: anywhere;
-    }
-
-    .message.show { display: block; }
-    .message.error { color: #ffb8b8; border-color: #633434; background: #291515; }
-    .message.success { color: #a6f2c5; border-color: #28553a; background: #102319; }
-
-    .legal {
-      margin-top: 23px;
-      color: #777;
-      font-size: 10px;
-      line-height: 1.8;
-      text-align: center;
-    }
-
-    .legal strong { color: #aaa; }
-
-    [hidden] { display: none !important; }
-
-    @media (max-width: 760px) {
-      body {
-        display: block;
-        padding: 12px;
-        padding-top: max(12px, env(safe-area-inset-top));
-        padding-bottom: max(12px, env(safe-area-inset-bottom));
-      }
-
-      .shell {
-        width: 100%;
-        min-height: 0;
-        grid-template-columns: 1fr;
-        border-radius: 21px;
-      }
-
-      .intro {
-        min-height: 195px;
-        padding: 22px;
-        border-right: 0;
-        border-bottom: 1px solid #292929;
-      }
-
-      .logo { width: 43px; height: 43px; border-radius: 13px; font-size: 24px; }
-      .brand-name { font-size: 19px; }
-
-      .hero { margin: 28px 0 10px; }
-      .pill { font-size: 9px; }
-      h1 { margin: 17px 0 9px; font-size: 39px; letter-spacing: -2px; }
-      .hero-description, .features, .intro-footer { display: none; }
-
-      .auth { padding: 27px 22px 25px; }
-      .auth-top { margin-bottom: 27px; }
-      h2 { font-size: 29px; }
-      .subtitle { margin-bottom: 24px; }
-    }
-
-    @media (max-width: 360px) {
-      body { padding: 7px; }
-      .intro, .auth { padding-left: 17px; padding-right: 17px; }
-      h1 { font-size: 34px; }
-      .secure { font-size: 9px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        transition-duration: .01ms !important;
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; } }
   </style>
 </head>
-
 <body>
-  <main class="shell">
-    <section class="intro">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">N.</div>
-        <div>
-          <div class="brand-name">NEXORA</div>
-          <div class="brand-sub">PRO · CONNECTÉ AU MONDE</div>
-        </div>
-      </div>
+  <div class="page">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="NEXORA accueil">
+        <span class="brand-mark" aria-hidden="true">N.</span>
+        <span><span class="brand-name">NEXORA</span><span class="brand-sub" style="display:block">STAY CONNECTED</span></span>
+      </a>
+      <div class="top-note"><span id="topPrompt">Déjà membre ?</span> <button id="topSwitch" type="button">Se connecter</button></div>
+    </header>
 
-      <div class="hero">
-        <div class="pill"><span class="pill-dot"></span> TA NOUVELLE EXPÉRIENCE</div>
-        <h1>Le monde.<span class="hero-highlight">À portée.</span></h1>
-        <p class="hero-description">
-          Tes conversations, tes contacts et tes communautés dans un espace
-          moderne conçu pour rester simple et fluide.
-        </p>
-
+    <main>
+      <section class="story" aria-labelledby="heroTitle">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> VOTRE ESPACE DE CONVERSATION</div>
+        <h1 id="heroTitle">Les liens qui comptent.<br><span>Sans détour.</span></h1>
+        <p class="lead">Une expérience de messagerie pensée pour vous. Retrouvez vos conversations, rapprochez-vous de vos contacts et restez connecté dans un espace simple et moderne.</p>
         <div class="features">
-          <div class="feature">
-            <span class="feature-icon" aria-hidden="true">↗</span>
-            Une expérience pensée pour le mobile
-          </div>
-          <div class="feature">
-            <span class="feature-icon" aria-hidden="true">◎</span>
-            Tes contacts et tes communautés
-          </div>
-          <div class="feature">
-            <span class="feature-icon" aria-hidden="true">◇</span>
-            Un espace personnel et épuré
-          </div>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg></div>
+            <strong>Conversations</strong><p>Gardez vos échanges à portée de main.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <strong>Communauté</strong><p>Retrouvez vos contacts simplement.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 1 1 8 0v3"/><path d="M12 14v3"/></svg></div>
+            <strong>Votre espace</strong><p>Un compte personnel, à votre rythme.</p>
+          </article>
         </div>
-      </div>
+      </section>
 
-      <div class="intro-footer">
-        <span>NEXORA PRO</span>
-        <span>TA CONVERSATION, TON ESPACE.</span>
-      </div>
-    </section>
+      <section class="auth-card" aria-labelledby="formTitle">
+        <div class="card-top">
+          <div><h2 id="formTitle">Bienvenue sur NEXORA</h2><p id="formSubtitle">Créez votre compte et entrez dans la conversation.</p></div>
+          <div class="secure-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/><path d="m9 12 2 2 4-4"/></svg></div>
+        </div>
 
-    <section class="auth">
-      <div class="auth-top">
-        <span class="auth-label">Espace personnel</span>
-        <span class="secure">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
-            <rect x="4" y="10" width="16" height="11" rx="2"></rect>
-            <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
-          </svg>
-          Connexion sécurisée
-        </span>
-      </div>
+        <div class="tabs" role="tablist" aria-label="Choisir une action">
+          <button class="tab" id="registerTab" role="tab" aria-selected="true" type="button">Créer un compte</button>
+          <button class="tab" id="loginTab" role="tab" aria-selected="false" type="button">Connexion</button>
+        </div>
 
-      <h2 id="heading">Crée ton compte.</h2>
-      <p class="subtitle" id="subheading">Rejoins NEXORA et commence à communiquer.</p>
-
-      <div class="tabs" role="tablist" aria-label="Accès au compte">
-        <button class="tab active" id="registerTab" type="button" role="tab" aria-selected="true">
-          Inscription
-        </button>
-        <button class="tab" id="loginTab" type="button" role="tab" aria-selected="false">
-          Connexion
-        </button>
-      </div>
-
-      <div id="message" class="message" role="status" aria-live="polite"></div>
-
-      <form id="authForm">
-        <label class="field" for="username">
-          <span class="field-label">Nom d'utilisateur</span>
-          <input
-            id="username"
-            name="username"
-            autocomplete="username"
-            minlength="3"
-            maxlength="24"
-            pattern="[A-Za-z0-9_]{3,24}"
-            autocapitalize="none"
-            spellcheck="false"
-            placeholder="Ex. Madara_225"
-            required
-          >
-          <div class="hint">3 à 24 caractères : lettres, chiffres et tiret bas (_).</div>
-        </label>
-
-        <label class="field" for="password">
-          <span class="field-label">Mot de passe</span>
-          <div class="input-wrap">
-            <input
-              class="password-input"
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="new-password"
-              minlength="8"
-              maxlength="128"
-              placeholder="8 caractères minimum"
-              required
-            >
-            <button class="show-password" id="togglePassword" type="button" aria-label="Afficher le mot de passe">
-              Afficher
-            </button>
+        <form id="authForm" novalidate>
+          <div class="field">
+            <div class="field-head"><label for="username">Nom d'utilisateur</label><span class="hint">3 à 24 caractères</span></div>
+            <div class="input-wrap"><input id="username" name="username" type="text" autocomplete="username" placeholder="ex. madara_225" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" required autocapitalize="none" spellcheck="false"></div>
           </div>
-        </label>
-
-        <label class="field" id="confirmField" for="confirmPassword">
-          <span class="field-label">Confirmer le mot de passe</span>
-          <div class="input-wrap">
-            <input
-              class="password-input"
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              autocomplete="new-password"
-              minlength="8"
-              maxlength="128"
-              placeholder="Répète ton mot de passe"
-            >
-            <button class="show-password" id="toggleConfirm" type="button" aria-label="Afficher la confirmation">
-              Afficher
-            </button>
+          <div class="field">
+            <div class="field-head"><label for="password">Mot de passe</label><span class="hint">8 caractères minimum</span></div>
+            <div class="input-wrap has-action"><input id="password" name="password" type="password" autocomplete="new-password" placeholder="Votre mot de passe" minlength="8" maxlength="128" required><button class="input-action" id="togglePassword" type="button" aria-label="Afficher le mot de passe">Afficher</button></div>
           </div>
-        </label>
+          <div class="field" id="confirmField">
+            <div class="field-head"><label for="confirmPassword">Confirmer le mot de passe</label></div>
+            <div class="input-wrap"><input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" placeholder="Retapez votre mot de passe" minlength="8" maxlength="128" required></div>
+          </div>
+          <div class="form-error" id="formError" role="alert" aria-live="polite"></div>
+          <button class="submit" id="submitButton" type="submit"><span id="submitText">Créer mon compte</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+          <p class="fine-print"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/></svg><span>En continuant, vous acceptez d'utiliser NEXORA de manière respectueuse. Ne partagez jamais votre mot de passe. <a href="#confidentialite" id="privacyLink">Confidentialité</a></span></p>
+        </form>
+      </section>
+    </main>
 
-        <button class="submit" id="submitButton" type="submit">
-          <span id="submitText">Créer mon compte</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M5 12h14M12 5l7 7-7 7"></path>
-          </svg>
-        </button>
-      </form>
-
-      <p class="legal">
-        En continuant, protège tes identifiants et utilise un mot de passe unique.
-        <br><strong>NEXORA PRO</strong> · Connecte-toi au monde.
-      </p>
-    </section>
-  </main>
+    <footer class="footer">
+      <span>© <span id="year"></span> NEXORA. Conçu pour rester connecté.</span>
+      <div class="footer-links"><a href="#confidentialite" id="footerPrivacy">Confidentialité</a><a href="mailto:support@nexora.app">Assistance</a></div>
+    </footer>
+  </div>
 
   <script>
     const form = document.getElementById("authForm");
@@ -592,169 +217,155 @@
     const passwordInput = document.getElementById("password");
     const confirmInput = document.getElementById("confirmPassword");
     const confirmField = document.getElementById("confirmField");
+    const errorBox = document.getElementById("formError");
     const submitButton = document.getElementById("submitButton");
     const submitText = document.getElementById("submitText");
-    const messageBox = document.getElementById("message");
     const registerTab = document.getElementById("registerTab");
     const loginTab = document.getElementById("loginTab");
-
+    const topSwitch = document.getElementById("topSwitch");
+    const topPrompt = document.getElementById("topPrompt");
+    const formTitle = document.getElementById("formTitle");
+    const formSubtitle = document.getElementById("formSubtitle");
+    const togglePassword = document.getElementById("togglePassword");
     let mode = "register";
     let busy = false;
 
-    function showMessage(text, type = "error") {
-      messageBox.textContent = text;
-      messageBox.className = "message show " + type;
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function showError(message) {
+      errorBox.textContent = message;
+      errorBox.classList.add("show");
     }
 
-    function clearMessage() {
-      messageBox.textContent = "";
-      messageBox.className = "message";
+    function clearError() {
+      errorBox.textContent = "";
+      errorBox.classList.remove("show");
+      [usernameInput, passwordInput, confirmInput].forEach((input) => input.setAttribute("aria-invalid", "false"));
     }
 
     function setMode(nextMode) {
-      if (busy) return;
-
       mode = nextMode;
       const registering = mode === "register";
-
-      registerTab.classList.toggle("active", registering);
-      loginTab.classList.toggle("active", !registering);
-
       registerTab.setAttribute("aria-selected", String(registering));
       loginTab.setAttribute("aria-selected", String(!registering));
-
       confirmField.hidden = !registering;
       confirmInput.required = registering;
-      confirmInput.disabled = !registering;
-      confirmInput.value = "";
-
+      confirmInput.autocomplete = registering ? "new-password" : "off";
       passwordInput.autocomplete = registering ? "new-password" : "current-password";
-
-      document.getElementById("heading").textContent =
-        registering ? "Crée ton compte." : "Content de te revoir.";
-
-      document.getElementById("subheading").textContent =
-        registering
-          ? "Rejoins NEXORA et commence à communiquer."
-          : "Connecte-toi pour retrouver tes conversations.";
-
+      formTitle.textContent = registering ? "Bienvenue sur NEXORA" : "Heureux de vous revoir";
+      formSubtitle.textContent = registering ? "Créez votre compte et entrez dans la conversation." : "Connectez-vous pour retrouver vos conversations.";
       submitText.textContent = registering ? "Créer mon compte" : "Se connecter";
-      clearMessage();
+      topPrompt.textContent = registering ? "Déjà membre ?" : "Nouveau sur NEXORA ?";
+      topSwitch.textContent = registering ? "Se connecter" : "Créer un compte";
+      clearError();
     }
 
     registerTab.addEventListener("click", () => setMode("register"));
     loginTab.addEventListener("click", () => setMode("login"));
+    topSwitch.addEventListener("click", () => setMode(mode === "register" ? "login" : "register"));
 
-    function toggleVisibility(input, button) {
-      const visible = input.type === "password";
-      input.type = visible ? "text" : "password";
-      button.textContent = visible ? "Masquer" : "Afficher";
-      button.setAttribute("aria-label", visible ? "Masquer le mot de passe" : "Afficher le mot de passe");
-    }
-
-    document.getElementById("togglePassword").addEventListener("click", function () {
-      toggleVisibility(passwordInput, this);
+    togglePassword.addEventListener("click", () => {
+      const reveal = passwordInput.type === "password";
+      passwordInput.type = reveal ? "text" : "password";
+      togglePassword.textContent = reveal ? "Masquer" : "Afficher";
+      togglePassword.setAttribute("aria-label", reveal ? "Masquer le mot de passe" : "Afficher le mot de passe");
     });
 
-    document.getElementById("toggleConfirm").addEventListener("click", function () {
-      toggleVisibility(confirmInput, this);
+    [usernameInput, passwordInput, confirmInput].forEach((input) => {
+      input.addEventListener("input", () => {
+        input.setAttribute("aria-invalid", "false");
+        if (errorBox.classList.contains("show")) clearError();
+      });
     });
-
-    function openChat(data) {
-      if (!data.session?.access_token || !data.session?.refresh_token || !data.user?.id) {
-        return false;
-      }
-
-      sessionStorage.setItem("nexora_session", JSON.stringify(data.session));
-      sessionStorage.setItem("nexora_user", JSON.stringify(data.user));
-      window.location.assign("/chat.html");
-      return true;
-    }
-
-    // Réutilise une session uniquement dans l'onglet actuel.
-    try {
-      const saved = JSON.parse(sessionStorage.getItem("nexora_session") || "null");
-
-      if (saved?.access_token && saved?.refresh_token) {
-        window.location.replace("/chat.html");
-      }
-    } catch (_) {
-      sessionStorage.removeItem("nexora_session");
-      sessionStorage.removeItem("nexora_user");
-    }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-
       if (busy) return;
+      clearError();
 
-      const username = usernameInput.value.trim();
+      const username = usernameInput.value.trim().toLowerCase();
       const password = passwordInput.value;
+      const confirmation = confirmInput.value;
 
-      if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
-        showMessage("Le pseudo doit contenir de 3 à 24 lettres, chiffres ou tirets bas.");
+      if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
+        usernameInput.setAttribute("aria-invalid", "true");
+        showError("Le pseudo doit contenir 3 à 24 caractères : lettres, chiffres ou _.");
+        usernameInput.focus();
         return;
       }
-
-      if (password.length < 8) {
-        showMessage("Ton mot de passe doit contenir au moins 8 caractères.");
+      if (password.length < 8 || password.length > 128) {
+        passwordInput.setAttribute("aria-invalid", "true");
+        showError("Le mot de passe doit contenir entre 8 et 128 caractères.");
+        passwordInput.focus();
         return;
       }
-
-      if (mode === "register" && password !== confirmInput.value) {
-        showMessage("Les deux mots de passe ne correspondent pas.");
+      if (mode === "register" && password !== confirmation) {
+        confirmInput.setAttribute("aria-invalid", "true");
+        showError("Les deux mots de passe ne correspondent pas.");
         confirmInput.focus();
         return;
       }
 
       busy = true;
       submitButton.disabled = true;
-      submitText.textContent = mode === "register" ? "Création en cours…" : "Connexion…";
-      clearMessage();
+      submitText.textContent = mode === "register" ? "Création du compte…" : "Connexion…";
 
       try {
         const response = await fetch("/api/auth", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify({ action: mode, username, password })
         });
 
-        const data = await response.json().catch(() => ({}));
-
-        if (!response.ok || !data.success) {
-          throw new Error(
-            data.error ||
-            data.message ||
-            "Impossible de continuer. Vérifie ta connexion et réessaie."
-          );
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          throw new Error("Le serveur a renvoyé une réponse invalide. Réessaie plus tard.");
         }
 
-        if (openChat(data)) return;
+        if (!response.ok) {
+          throw new Error(data?.error || "Impossible de continuer. Vérifie tes informations et réessaie.");
+        }
 
-        if (mode === "register") {
+        if (data.requires_login || !data.session?.access_token || !data.session?.refresh_token || !data.user?.id) {
+          showError(data.message || "Compte créé. Connecte-toi maintenant avec ton pseudo et ton mot de passe.");
           setMode("login");
-          usernameInput.value = username;
           passwordInput.value = "";
           confirmInput.value = "";
           passwordInput.focus();
-
-          showMessage(
-            data.message || "Compte créé. Connecte-toi pour continuer.",
-            "success"
-          );
-        } else {
-          throw new Error(
-            "La connexion n'a pas fourni de session valide. Vérifie la configuration de l'API."
-          );
+          return;
         }
+
+        sessionStorage.setItem("nexora_session", JSON.stringify(data.session));
+        sessionStorage.setItem("nexora_user", JSON.stringify(data.user));
+        window.location.assign("/chat.html");
       } catch (error) {
-        showMessage(error.message || "Une erreur est survenue. Réessaie.");
+        showError(error instanceof TypeError
+          ? "Impossible de joindre le serveur. Vérifie ta connexion et que l'API /api/auth est déployée."
+          : (error.message || "Une erreur est survenue. Réessaie plus tard."));
       } finally {
         busy = false;
         submitButton.disabled = false;
         submitText.textContent = mode === "register" ? "Créer mon compte" : "Se connecter";
       }
     });
+
+    function openPrivacyNotice(event) {
+      event.preventDefault();
+      showError("La page de confidentialité doit être publiée par l'équipe NEXORA avant le lancement public. Évite de saisir des informations sensibles.");
+      errorBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+    document.getElementById("privacyLink").addEventListener("click", openPrivacyNotice);
+    document.getElementById("footerPrivacy").addEventListener("click", openPrivacyNotice);
+
+    try {
+      const existing = JSON.parse(sessionStorage.getItem("nexora_session") || "null");
+      if (existing?.access_token) window.location.replace("/chat.html");
+    } catch {
+      sessionStorage.removeItem("nexora_session");
+      sessionStorage.removeItem("nexora_user");
+    }
   </script>
 </body>
 </html>
